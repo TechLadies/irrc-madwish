@@ -1,0 +1,28 @@
+{
+  "name": "irrc-frontend",
+  "version": "1.0.0",
+  "description": "IRRC Frontend",
+  "main": "./src/main.js",
+  "scripts": {
+    "serve": "vite",
+    "build": "vite build"
+  },
+  "keywords": [
+    "vue",
+    "router",
+    "esm",
+    "standards"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "rollup-plugin-vue": "^6.0.0-beta.10",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.2.0",
+    "vite": "^1.0.0-rc.4",
+    "vite-plugin-vue2": "0.1.3",
+    "vue-template-compiler": "^2.6.11"
+  }
+}
