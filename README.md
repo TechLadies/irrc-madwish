@@ -10,7 +10,7 @@ Code and setup instructions for frontend and backend can be accessed in their re
 
 * Install dependencies
   ```
-    git clone https://github.com/therealyingtong/irrc-madwish.git
+    git clone https://github.com/TechLadies/irrc-madwish.git
     npm install or yarn install
   ```
 * Run the Application
