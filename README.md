@@ -4,7 +4,17 @@ This is a student-teacher matching application made for the MAD WISH initiative.
 
 The development of this application was done as part of [Techladies Bootcamp #6](https://github.com/TechLadies/bootcamp6-info). [Techladies](http://www.techladies.co/) is a community for women in Asia to connect, learn, and advance as programmers.
 
-## Getting started
+Getting Started
+------------
 Code and setup instructions for frontend and backend can be accessed in their respective subdirectories.
 
-TODO: global setup instructions
+* Install dependencies
+  ```
+    git clone https://github.com/therealyingtong/irrc-madwish.git
+    npm install or yarn install
+  ```
+* Run the Application
+  ```
+    npm run serve or yarn serve
+  ```
+* Go to http://localhost:3000

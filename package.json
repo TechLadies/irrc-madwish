@@ -1,0 +1,27 @@
+{
+  "name": "irrc-madwish",
+  "version": "1.0.0",
+  "description": "This is a student-teacher matching application made for the MAD WISH initiative. MAD WISH pairs migrant workers in Singapore with volunteer English-language mentors. It is an initiative by [It's Raining Raincoats](https://www.facebook.com/itsrainingraincoats/).",
+  "main": "index.js",
+  "scripts": {
+    "install.frontend": "yarn --cwd frontend install",
+    "install.backend": "yarn --cwd backend install",
+    "postinstall": "yarn clean && concurrently \"yarn install.frontend\" \"yarn install.backend\"",
+    "serve": "concurrently \"yarn --cwd frontend serve\"",
+    "clean": "concurrently \"rm -rf frontend/node_modules\"  \"rm -rf backend/node_modules\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aelbore/irrc-madwish.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aelbore/irrc-madwish/issues"
+  },
+  "homepage": "https://github.com/aelbore/irrc-madwish#readme",
+  "devDependencies": {
+    "concurrently": "^5.3.0"
+  }
+}
