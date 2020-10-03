@@ -1,12 +1,17 @@
 <template>
-  <div>
-    <h1>Hello World</h1>
-  </div>
+  <sc-outlet>
+    <HelloWorld />
+  </sc-outlet>
 </template>
 
 <script>
+import HelloWorld from './pages/HelloWorld.vue'
+
 export default {
   name: 'App',
+  components: {
+    HelloWorld
+  }
 }
 </script>
 
