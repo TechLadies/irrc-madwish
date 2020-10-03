@@ -2,26 +2,26 @@
   <div class="container">
     <div class="Title">
       <span>
-        <h0><b>New Student</b></h0>
+        <b>New Student</b>
       </span>
+      <span>
       <!-- upload button --> 
-      <b-field class="file is-primary is-right" :class="{'has-name': !!file}">
-          <b-upload v-model="file" class="file-label">
-              <span class="file-cta">
-                  <b-icon class="file-icon" icon="upload"></b-icon>
-                  <span class="file-label">  Bulk upload CSV</span>
-              </span>
-          </b-upload>
-      </b-field>   
+        <b-field class="file is-primary is-right" :class="{'has-name': !!file}">
+            <b-upload v-model="file" class="file-label">
+                <span class="file-cta">
+                    <b-icon class="file-icon" icon="upload"></b-icon>
+                    <span class="file-label">  Bulk upload CSV</span>
+                </span>
+            </b-upload>
+        </b-field>   
+      </span>  
     </div>
     <div class="columns is-multiline is-mobile">
-
-      <!--start of first column  --> 
+      <!--start of first column (image) --> 
       <div class="column is-one-third" align="center">
         <img src="../src/assets/student.png" />
       </div>
-      
-      <!-- Start of 2nd column --> 
+      <!-- Start of 2nd column (all input fields) --> 
       <div class="column is-two-thirds">
         <section>
             <b-field label="Name" class="half-width">
@@ -37,10 +37,15 @@
             <b-field label="Source" class="half-width">
                 <b-autocomplete
                     v-model="Source"
-                    ref="autocomplete"
-                    :sourcedata="filteredsourceDataArray"
-                    placeholder="e.g. Rotary Club"
-                    @select="option1 => selected = option1">                  
+                    ref="sourceComplete"
+                    :data="filteredsourceDataArray"
+                    placeholder="Optional"
+                    @select="option => selected = sourceOption">
+                    <template slot="header">
+                        <a @click="showAddSource">
+                            <span> Add new... </span>
+                        </a> 
+                    </template>                    
                 </b-autocomplete>
             </b-field>
             <b-field grouped>
@@ -48,7 +53,7 @@
               <b-field label="Native Language" class="half-width">
                   <b-autocomplete
                       v-model="NativeLanguage"
-                      ref="autocomplete"
+                      ref="languageComplete"
                       :data="filteredDataArray"
                       placeholder="e.g. Bengali"
                       @select="option => selected = option">
@@ -57,18 +62,16 @@
                               <span> Add new... </span>
                           </a> 
                       </template>
-                      <template slot="empty">No results for {{name}}</template>
                   </b-autocomplete>
               </b-field>
 
       
-
               <b-field label="English Proficiency" class="half-width">
                   <b-select placeholder="Select one" expanded>
-                    <option value = "1">None</option>
-                    <option value = "2">Little</option>
-                    <option value = "3">Simple </option>
-                    <option value = "4">Intermediate</option>
+                    <option value = "1">No (Unable to understand at all)</option>
+                    <option value = "2">Little (Able to understand simple words)</option>
+                    <option value = "3">Simple (Able to speak full sentences)</option>
+                    <option value = "4">Intermediate (Able to understand simple words)</option>
                   </b-select>
               </b-field>  
 
@@ -82,26 +85,6 @@
         </section>
         <b-button class="dark-blue" expanded @click="clickMe">Create Student</b-button>
       </div>
-      <!-- Start of third column --> 
-      <!-- <div class="column is-one-third">
-        <section>
-            <b-field class="hide" label="hide">
-                <b-input></b-input>
-            </b-field>
-
-            <b-field class="hide" label="hide">
-                <b-input></b-input>
-            </b-field>
-
-            <b-field class="hide" label="hide">
-                <b-input></b-input>
-            </b-field>
-
-
-        </section>
-      </div>         
-      <div class="column is-one-third">
-      </div>-->
     </div>
   </div>      
 </template>
@@ -110,7 +93,7 @@
 <script>
 
 export default {
-  name: 'works',
+  name: 'App',
 
   data() {
       return {
@@ -126,7 +109,7 @@ export default {
           sourcedata: [
               'Rotary Club',
               'Source 1',
-              'Source 2'
+              'Source 2',
           ],
           NativeLanguage: '',
           Source:'',
@@ -144,8 +127,8 @@ export default {
             })
     },
       filteredsourceDataArray() {
-        return this.sourcedata.filter((option1) => {
-            return option1
+        return this.sourcedata.filter((sourceOption) => {
+            return sourceOption
               .toString()
               .toLowerCase()
               .indexOf(this.Source.toLowerCase()) >= 0
@@ -170,7 +153,7 @@ export default {
           confirmText: 'Add',
           onConfirm: (value) => {
             this.data.push(value)
-            this.$refs.autocomplete.setSelected(value)
+            this.$refs.languageComplete.setSelected(value)
           }
         })
     },
@@ -185,7 +168,7 @@ export default {
           confirmText: 'Add',
           onConfirm: (value) => {
             this.sourcedata.push(value)
-            this.$refs.autocomplete.setSelected(value)
+            this.$refs.sourceComplete.setSelected(value)
           }
         })
     },    
@@ -195,15 +178,12 @@ export default {
 
 <style>
 
-
-select {
-  width: 264px;
-}
-
-
 button.button.dark-blue{
   background-color: #3C4F76;
   color: white; 
+  border: 1px solid #3C4F76;
+  box-sizing: border-box;
+  border-radius: 4px;
 }
 
 
@@ -215,8 +195,7 @@ b {
   font-size: 30px;
 }
 
-
-html {
+body {
   background-color: #F3F7FA !important;
 }
 
@@ -226,10 +205,6 @@ html {
 }
 
 
-.column.is-half {
-  flex: auto;
-}
-
 .columns{
   background-color:white;
   margin-top: 100px;
@@ -237,46 +212,24 @@ html {
 
 .Title{
   padding-bottom:20px;
-  vertical-align: center !important;
+  vertical-align: top !important;
 }
-
-/* select {
-  width: 418.66px;
-} */
 
 
 .columns.is-multiline.is-mobile{
   padding:20px 0px 20px 0px;
-  /* width:968px; */
-  height:608px;
-}
-
-.field.hide{
-  visibility: hidden;
 }
 
 
 .file.is-primary.is-right{
   float:right;
-  background-color: transparent !important;
-}
+  }
 
 .file.is-primary .file-cta {
   background-color: transparent !important;
+  float: right;
   color: #3C4F76 !important;
   padding-left:10px;
-}
-
-span.file-label{
-  padding-left:10px;
-}
-
-.column.is-one-third{
-  padding-bottom:0px;
-}
-
-.column.auto {
-  padding-top:0px;
 }
 
 .half-width{
