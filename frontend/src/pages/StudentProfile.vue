@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <Page blueBg>
     <div class="student-profile-container">
       <div class="student-profile-left">
@@ -106,3 +107,21 @@ export default {
   flex: 1;
 }
 </style>
+=======
+<StudentHistory/>
+</template>
+
+<script>
+import StudentHistory from '../components/StudentHistory.vue'
+export default {
+    name: 'StudentProfile',
+    components: {
+        StudentHistory,
+    }
+}
+</script>
+
+<style>
+
+</style>
+>>>>>>> added timeline
