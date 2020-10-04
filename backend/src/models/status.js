@@ -12,7 +12,7 @@ class Status extends Model {
       required: ['Description'],
       properties: {
         id: { type: 'integer' },
-        Description: { type: 'string', minLength: 1, maxLength: 255 },
+        Description: { type: 'string', minLength: 1, maxLength: 255 }
       }
     }
   }

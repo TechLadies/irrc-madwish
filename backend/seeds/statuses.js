@@ -1,6 +1,6 @@
 const { tableName } = require('../src/models/status')
 
-const SEED_USERS = [
+const SEED_STATUSES = [
     {
       Description: 'Screening',
     },
@@ -22,7 +22,7 @@ exports.seed = (knex) => {
       .del()
       .then(function () {
         // Inserts seed user entries
-        return knex(tableName).insert(SEED_USERS)
+        return knex(tableName).insert(SEED_STATUSES)
       })
 }
   
