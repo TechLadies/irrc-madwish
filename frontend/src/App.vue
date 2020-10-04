@@ -1,10 +1,7 @@
 <template>
   <div class="container">
     <div class="Title">
-      <span>
         <b>New Student</b>
-      </span>
-      <span>
       <!-- upload button --> 
         <b-field class="file is-primary is-right" :class="{'has-name': !!file}">
             <b-upload v-model="file" class="file-label">
@@ -14,7 +11,6 @@
                 </span>
             </b-upload>
         </b-field>   
-      </span>  
     </div>
     <div class="columns is-multiline is-mobile">
       <!--start of first column (image) --> 
@@ -212,12 +208,15 @@ body {
 
 .Title{
   padding-bottom:20px;
-  vertical-align: top !important;
+  vertical-align: bottom !important;
 }
 
 
 .columns.is-multiline.is-mobile{
   padding:20px 0px 20px 0px;
+  margin: auto;
+  margin-left:20px;
+  margin-right:20px;
 }
 
 
@@ -236,5 +235,9 @@ body {
   width:50%;
 }
 
+
+html {
+    background-color: #F3F7FA;
+}
 
 </style>
