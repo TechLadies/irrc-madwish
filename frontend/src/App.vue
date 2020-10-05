@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Hello World</h1>
-    <StudentProfile></StudentProfile>
+    <StudentProfile/>
   </div>
 </template>
 
@@ -15,5 +14,5 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 </style>
