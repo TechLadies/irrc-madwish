@@ -1,72 +1,43 @@
 <template>
-
-<TimelineTemplate :items="timeline"/>
+    <div class="card">
+        <header> HISTORY </header>
+        <div>
+            <ul> 
+                <li v-for="item in timeline" :key="item.id">
+                    {{item.date}} • {{item.description}}
+                </li>
+                <!--li {{date}} (circle) {{description}}-->
+        <!-- div: date; circle; description 
+        -->
+            </ul>
+        
+        </div> 
+    </div>
 </template>
 
 <script>
-import TimelineTemplate from "./TimelineTemplate.vue"
 export default {
     name: 'StudentHistory',
     components: {
-        TimelineTemplate
     },
     data() {
         return { 
             timeline: [
             {
-                id: 5,
-                icon_class: 'glyphicon glyphicon-comment',
-                icon_status: '',
-                title: 'Admin added a comment.',
-                controls: [
-                    { 
-                        method: 'edit', 
-                        icon_class: 'glyphicon glyphicon-pencil' 
-                    },
-                    { 
-                        method: 'delete', 
-                        icon_class: 'glyphicon glyphicon-trash' 
-                    }
-                ],
-                created: '24. Sep 17:03',
-                body: '<p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam, maxime alias nam dignissimos natus voluptate iure deleniti. Doloremque, perspiciatis voluptas dignissimos ex, ullam et, reprehenderit similique possimus iste commodi minima fugiat non culpa, veniam temporibus laborum. Distinctio ipsam cupiditate debitis aliquid deleniti consectetur voluptates corporis officiis tempora minus veniam, accusamus cum optio nesciunt illo nulla odio? Quidem nesciunt, omnis at quo aliquam porro amet fugit mollitia minus explicabo, possimus deserunt rem ut commodi laboriosam quia. Numquam, est facilis rem iste voluptatum. Cupiditate porro fuga saepe quis nulla mollitia, magni dicta soluta distinctio tempore voluptate quo perferendis. Maiores eveniet deleniti, nemo.</i></p>'
-            },
-            {
-                id: 4,
-                icon_class: 'glyphicon glyphicon-edit',
-                icon_status: 'success',
-                title: 'Started editing',
-                controls: [],
-                created: '24. Sep 14:48',
-                body: '<p>Someone has started editing.</p>'
-            },
-            {
-                id: 3,
-                icon_class: 'glyphicon glyphicon-hand-right',
-                icon_status: 'warning',
-                title: 'Message delegated',
-                controls: [],
-                created: '23. Sep 11:12',
-                body: '<p>This message has been delegated.</p>'
-            },
-            {
-                id: 2,
-                icon_class: 'glyphicon glyphicon-map-marker',
-                icon_status: 'danger',
-                title: 'Message approved and forwarded',
-                controls: [],
-                created: '20. Sep 15:56',
-                body: '<p>Message has been approved and forwarded to responsible.</p>'
+                id: 0,
+                date: "Jan 20 2020",
+                description: "Joined Madwish"
             },
             {
                 id: 1,
-                icon_class: 'glyphicon glyphicon-map-marker',
-                icon_status: '',
-                title: 'Message forwarded for approval',
-                controls: [],
-                created: '19. Sep 19:49',
-                body: '<p>Message has been forwarded for approval.</p>'
+                date: "Feb 02 2020",
+                description: "Screened by @Ruchi"
             },
+            {
+                id: 2,
+                date: "Feb 12 2020",
+                description: "@Juliette received call from teacher."
+            }
             ]
         }
     },
@@ -74,5 +45,59 @@ export default {
 </script>
 
 <style>
+.card {
+    position:absolute;
+    width: 448px;
+    height: 600px;
+    /*left: 968px;
+    top: 276px;*/
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 32px;
+}
 
+header {
+    padding-right: 350px;
+    margin-bottom: 12px;
+    /* Roboto 12PX REGULAR */
+
+    font-family: Roboto, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+
+    /* Dark Grey */
+    color: #59666E;
+    }
+
+
+li {
+/* Blue Rectangle Background */
+    border: 1px solid blue;
+    width: 384px;
+    height: 56px;
+    left: 1000px;
+    top: 410px;
+    margin-bottom:10px;
+    
+/* Primary Light */
+
+    background: #F0FCFF;
+    border-radius: 4px;
+    
+/*Font styling*/
+    font-size: 14px;
+    line-height: 20px;
+
+/* identical to box height, or 143% */
+    display: flex;
+    align-items: center;
+    text-align: right;
+
+/* Font colour: Primary Dark */
+    color: #2F4858; 
+    }
 </style>
