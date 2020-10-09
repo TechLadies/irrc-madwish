@@ -1,9 +1,28 @@
 const { Model } = require('objection')
-const tableName = 'status'
+const tableStatuses = 'statuses'
 
 class Status extends Model {
   static get tableName () {
-    return tableName
+    return tableStatuses
+  }
+
+  static get idColumn () {
+    return ['StatusID']
+  }
+
+  static get relationMappings () {
+    const Student = require('./student')
+
+    return {
+      statusID: {
+        relation: Model.HasManyRelation,
+        modelClass: Student,
+        join: {
+          from: 'statuses.StatusID',
+          to: 'students.StatusID'
+        }
+      }
+    }
   }
 
   static get jsonSchema () {
@@ -11,7 +30,7 @@ class Status extends Model {
       type: 'object',
       required: ['Description'],
       properties: {
-        id: { type: 'integer' },
+        StatusID: { type: 'integer' },
         Description: { type: 'string', minLength: 1, maxLength: 255 }
       }
     }
@@ -21,5 +40,5 @@ class Status extends Model {
 module.exports = {
   Status,
   model: Status,
-  tableName
+  tableStatuses
 }

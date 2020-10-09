@@ -1,13 +1,14 @@
-const { tableName } = require('../src/models/student')
+const { tableStudents } = require('../src/models/student')
+
 
 exports.up = (knex) => {
-  return knex.schema.createTable(tableName, (table) => {
-    table.increments('id').primary() // ToDo StudentID vs ID (postgres issue). Figure out uuid
+  return knex.schema.createTable(tableStudents, (table) => {
+    table.increments('StudentID').primary() 
     table.text('PhoneNumber').notNullable().unique()  // ToDO Discuss how to ensure students are unique
     table.text('FirstName').notNullable()
     table.text('LastName').notNullable()
     table.text('Source')
-    table.text('NativeLanguage')
+    table.integer('NativeLanguageID').references('NativeLanguageID').inTable('nativelanguages').onDelete('CASCADE')
     table.enu('EnglishProficiency', [
       "No",
       "Little",
@@ -15,11 +16,11 @@ exports.up = (knex) => {
       "Intermediate"
     ])
     table.text('Notes')
-    table.integer('StatusID').notNullable()
+    table.integer('StatusID').references('StatusID').inTable('statuses').onDelete("CASCADE")
     table.timestamps(true, true)
   })
 }
 
 exports.down = (knex) => {
-  return knex.schema.dropTable(tableName)
+  return knex.schema.dropTable(tableStudents)
 }

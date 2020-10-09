@@ -1,17 +1,18 @@
 
-const { tableName } = require('../src/models/student')
+const { tableStudents } = require('../src/models/student')
 
 exports.seed = (knex) => {
-  return knex(tableName)
+  return knex(tableStudents)
     .del()
     .then(function () {
-      return knex(tableName).insert([
+      return knex(tableStudents).insert([
         {
+          StudentID: 1,
           PhoneNumber: '12345678',
           FirstName: 'firstname',
           LastName: 'lastname',
           Source: 'source',
-          NativeLanguage: 'nativelanguage',
+          NativeLanguageID: 1, //just edited
           EnglishProficiency: 'No',
           Notes: 'notes',
           StatusID: 1,
