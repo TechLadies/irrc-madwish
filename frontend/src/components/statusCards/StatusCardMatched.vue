@@ -13,8 +13,7 @@
           </div>
           <div class="content">
             <div class="content-title">MATCHED TO TEACHER</div>
-            <p> Praveen Kumar </p>
-            </b-taglist>
+            <Teacher />
           </div>
         </div>
 
@@ -32,10 +31,12 @@
 
 <script>
 import Button from "./Button.vue";
+import Teacher from "./Teacher.vue";
 export default {
   name: "StatusCardUnmatched",
   components: {
     Button,
+    Teacher,
   },
 };
 </script>
@@ -58,9 +59,9 @@ export default {
 .card-status-details .content {
   flex: 1;
 }
-.content p{
+.content p {
   font-size: 16px;
-  color: #00488F; 
+  color: #00488f;
 }
 .content {
   font-size: 12px;

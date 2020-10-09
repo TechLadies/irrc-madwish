@@ -13,8 +13,7 @@
           </div>
           <div class="content">
             <div class="content-title">REASON</div>
-            <p> Lorem Ipsum </p>
-            </b-taglist>
+            <Reason />
           </div>
         </div>
         <div class="content">
@@ -30,10 +29,12 @@
 
 <script>
 import Button from "./Button.vue";
+import Reason from "./Reason.vue";
 export default {
   name: "StatusCardUnmatched",
   components: {
     Button,
+    Reason,
   },
 };
 </script>
@@ -56,7 +57,7 @@ export default {
 .card-status-details .content {
   flex: 1;
 }
-.content p{
+.content p {
   font-size: 16px;
 }
 .content {
