@@ -2,18 +2,21 @@
     <div class="card">
         <header> HISTORY </header>
         <div>
+        
             <ul> 
+                <div class = "whiteline"></div>
                 <li v-for="item in timeline" :key="item.id">
-                    <div id="date">{{item.date}} </div> 
-                    <div class="dot"></div>
+        
+                    <div id="date">{{item.date}} </div>
+                    <div class="firstline" v-if="item.id==0"></div>
+                    <div class ="line" v-else></div>
+                    <div class="whitedot" v-if="item.status == 3"></div>
+                    <div class ="dot" v-else></div>
+
                     <div id="description"> {{item.description}} </div>
                 </li>
-                <!--li {{date}} (circle) {{description}}-->
-        <!-- div: date; circle; description 
-        -->
             </ul>
-        
-        </div> 
+        </div>
     </div>
 </template>
 
@@ -28,17 +31,21 @@ export default {
             {
                 id: 0,
                 date: "Feb 20 2020",
-                description: "@Juliette received call from teacher. No overflow."
+                description: "Dropped out of Madwish",
+                status: 3, // Dropped out
+                
             },
             {
                 id: 1,
                 date: "Feb 12 2020",
-                description: "Screened by @Ruchi"
+                description: "Screened by @Ruchi",
+                status: 1 // Unmatched
             },
             {
                 id: 2,
                 date: "Jan 20 2020",
-                description: "Joined Madwish"
+                description: "Joined Madwish",
+                status: 0 // Screening 
             }
             ]
         }
@@ -54,9 +61,7 @@ export default {
     height: 600px;
     /*left: 968px;
     top: 276px;*/
-    padding-left: 32px;
-    padding-right: 32px;
-    padding-top: 32px;
+    padding: 32px;
     /*border: 1px solid red*/
 }
 
@@ -73,6 +78,7 @@ header {
     line-height: 18px;
     letter-spacing: 1.2px;
     text-transform: uppercase;
+    
 
     /* Dark Grey */
     color: #59666E;
@@ -81,13 +87,13 @@ header {
 
 li {
 /* Blue Rectangle Background */
-    /*border: 1px solid blue;*/
+    border: 3px solid white;
     width: 384px;
-    height: auto;
+    height: 56px;
     left: 1000px;
     top: 410px;
     /* Trying to create vertical space between the <li> elements, but it doesn't show*/
-    margin-bottom: 10px;
+    margin-bottom: 50px;
     overflow: auto;
     
 /* Primary Light */
@@ -106,6 +112,8 @@ li {
 /* Font colour: Primary Dark */
     color: #2F4858; 
     }
+
+
 #date {
     /*border: 1px solid green;*/
     margin: auto;
@@ -129,5 +137,44 @@ li {
   background: #2F4858;
   border-radius: 50%;
   text-align: centre;
+  z-index: 2;
 }
+
+.whitedot {
+width: 16px;
+height: 16px;
+border-radius: 50%;
+text-align: centre;
+z-index: 2;
+
+
+/* White */
+
+background: #FFFFFF;
+/* Primary Dark */
+
+border: 3px solid #2F4858;
+box-sizing: border-box;
+}
+
+.line {
+  background: #2F4858;
+  width:1px;
+  height:56px;
+  position:absolute;
+  left: 146px;
+  z-index: 0;
+  }
+
+.firstline {
+  background:  #2F4858;
+  width:1px;
+  height:35px;
+  margin-top: 20px;
+  position:absolute;
+  left: 146px;
+  z-index:1;
+  }
+
+
 </style>
