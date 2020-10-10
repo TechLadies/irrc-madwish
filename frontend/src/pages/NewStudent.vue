@@ -117,6 +117,12 @@ export default {
       }
   },
 
+  watch: {
+    file: function(val){
+      this.UploadFile();
+    }
+  },
+
   computed: {
     filteredDataArray() {
         return this.data.filter((option) => {
@@ -137,12 +143,11 @@ export default {
   },
 
 
-
   methods: {
     CreateStudent(){
       this.$buefy.notification.open({
         message: 'New student added. <u>View profile</u>!',
-        duration: 10000000,
+        duration: 5000,
         type: 'is-success',
         position: 'is-top',
         // color: '#57A773',
@@ -152,8 +157,9 @@ export default {
     UploadFile(){
       this.$buefy.notification.open({
         message: 'The file was uploaded successfully!',
-        duration: 10000000,
-        type: 'is-success'
+        duration: 5000,
+        type: 'is-success',
+        position: 'is-top',
         // color: '#57A773',
       })
     },
@@ -162,7 +168,7 @@ export default {
     ErrorUpload(){
       this.$buefy.notification.open({
         message: '<b>There was an error in uploading.</b> <br> Please check formatting of the file and try again.',
-        duration: 10000000,
+        duration: 5000,
         type: 'is-danger',
         position: 'is-top',
         // color: '#57A773',
@@ -222,6 +228,7 @@ button.button.dark-blue{
 
 b.newstudent {
   font-size: 30px;
+  padding-left: 20px;
 }
 
 body {

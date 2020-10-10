@@ -10,7 +10,6 @@ const status = [
   { id: 1, label: 'Screening', to: '/screening', active: false },
   { id: 2, label: 'Matching', to: '/matching', active: false },
   { id: 3, label: 'Matched', to: '/matched', active: false },
-  { id: 3, label: 'Create New Student', to: '/new', active: false },
 ]
 const profiles = [
   { id: 4, label: 'Students', to: '/students', active: false },
@@ -28,7 +27,7 @@ export default {
   },
   methods: {
     createNew() {
-      console.log('Create New Here')
+      this.$router.push({ path: 'new' })
     }
   }
 }
