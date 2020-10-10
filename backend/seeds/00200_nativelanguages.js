@@ -1,14 +1,14 @@
 const { tableNativelanguages } = require('../src/models/nativelanguage')
 
 const SEED_NATIVELANGUAGES = [
-  {NativeLanguageID: 1, NativeLanguage: 'Chinese'},
-  {NativeLanguageID: 2, NativeLanguage: 'Tamil'},
-  {NativeLanguageID: 3, NativeLanguage: 'Malay'},
-  {NativeLanguageID: 4, NativeLanguage: 'Bangla'},
-  {NativeLanguageID: 5, NativeLanguage: 'Thai'},
-  {NativeLanguageID: 6, NativeLanguage: 'Hindi'},
-  {NativeLanguageID: 7, NativeLanguage: 'Punjabi'},
-  {NativeLanguageID: 8, NativeLanguage: 'Telegu'}
+  {NativeLanguage: 'Chinese'},
+  {NativeLanguage: 'Tamil'},
+  {NativeLanguage: 'Malay'},
+  {NativeLanguage: 'Bangla'},
+  {NativeLanguage: 'Thai'},
+  {NativeLanguage: 'Hindi'},
+  {NativeLanguage: 'Punjabi'},
+  {NativeLanguage: 'Telegu'}
 ]
 
 

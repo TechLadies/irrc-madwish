@@ -7,6 +7,7 @@ const cors = require('cors')
 
 const indexRouter = require('./routes/index')
 const studentsRouter = require('./routes/students')
+const nativeLanguagesRouter = require('./routes/nativeLanguages')
 
 const app = express()
 
@@ -18,5 +19,6 @@ app.use(cookieParser())
 
 app.use('/', indexRouter)
 app.use('/students', studentsRouter)
+app.use('/nativeLanguages', nativeLanguagesRouter)
 
 module.exports = app

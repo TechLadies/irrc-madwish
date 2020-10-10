@@ -28,7 +28,7 @@ class NativeLanguage extends Model {
   static get jsonSchema () {
     return {
       type: 'object',
-      required: ['NativeLanguageID', 'NativeLanguage'],
+      required: ['NativeLanguage'],
       properties: {
         NativeLanguageID: { type: 'integer' },
         NativeLanguage: { type: 'string', minLength: 1, maxLength: 255 }
