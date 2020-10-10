@@ -9,6 +9,7 @@
         
                     <div id="date">{{item.date}} </div>
                     <div class="firstline" v-if="item.id==0"></div>
+                    <div class="lastline" v-else-if="item == timeline[timeline.length -1]"></div>
                     <div class ="line" v-else></div>
                     <div class="whitedot" v-if="item.status == 3"></div>
                     <div class ="dot" v-else></div>
@@ -26,23 +27,33 @@ export default {
     components: {
     },
     data() {
-        return { 
+        return {
+
             timeline: [
             {
                 id: 0,
-                date: "Feb 20 2020",
+                date: "Mar 20 2020",
                 description: "Dropped out of Madwish",
                 status: 3, // Dropped out
+                // Status numbers should be lined up with the backend model later on. 
+                
+            },
+            
+            {
+                id: 1,
+                date: "Feb 20 2020",
+                description: "Matched to @Praveen Kumar",
+                status: 2, // Matched
                 
             },
             {
-                id: 1,
+                id: 2,
                 date: "Feb 12 2020",
                 description: "Screened by @Ruchi",
                 status: 1 // Unmatched
             },
             {
-                id: 2,
+                id: 3,
                 date: "Jan 20 2020",
                 description: "Joined Madwish",
                 status: 0 // Screening 
@@ -50,6 +61,7 @@ export default {
             ]
         }
     },
+
 }
 // TODO: Method to sort status changes by date. Will need to take in date, sort entries, then convert dates tp strings
 </script>
@@ -94,7 +106,7 @@ li {
     top: 410px;
     /* Trying to create vertical space between the <li> elements, but it doesn't show*/
     margin-bottom: 50px;
-    overflow: auto;
+
     
 /* Primary Light */
 
@@ -176,5 +188,13 @@ box-sizing: border-box;
   z-index:1;
   }
 
-
+.lastline {
+  background:  #2F4858;
+  width:1px;
+  height:35px;
+  margin-bottom: 24px;
+  position:absolute;
+  left: 146px;
+  z-index:1;
+  }
 </style>
