@@ -2,18 +2,17 @@
     <div class="card">
         <header> HISTORY </header>
         <div>
-        
             <ul> 
                 <div class = "whiteline"></div>
                 <li v-for="item in timeline" :key="item.id">
-        
                     <div id="date">{{item.date}} </div>
+                    <!-- Length of vertical line changes based on position in array-->
                     <div class="firstline" v-if="item.id==0"></div>
                     <div class="lastline" v-else-if="item == timeline[timeline.length -1]"></div>
                     <div class ="line" v-else></div>
+                    <!-- If a student has dropped out, white dot is rendered -->
                     <div class="whitedot" v-if="item.status == 3"></div>
                     <div class ="dot" v-else></div>
-
                     <div id="description"> {{item.description}} </div>
                 </li>
             </ul>
@@ -57,7 +56,8 @@ export default {
                 date: "Jan 20 2020",
                 description: "Joined Madwish",
                 status: 0 // Screening 
-            }
+            },
+            
             ]
         }
     },
@@ -71,16 +71,16 @@ export default {
     position:absolute;
     width: 448px;
     height: 600px;
-    /*left: 968px;
+    /* From Figma
+    left: 968px;
     top: 276px;*/
     padding: 32px;
-    /*border: 1px solid red*/
 }
 
 header {
-    /*border: 1px solid red;*/
     padding-right: 350px;
     margin-bottom: 12px;
+
     /* Roboto 12PX REGULAR */
 
     font-family: Roboto, sans-serif;
@@ -104,8 +104,7 @@ li {
     height: 56px;
     left: 1000px;
     top: 410px;
-    /* Trying to create vertical space between the <li> elements, but it doesn't show*/
-    margin-bottom: 50px;
+    
 
     
 /* Primary Light */
@@ -135,7 +134,7 @@ li {
     
 }
 #description {
-   /*border: 1px solid red;*/
+   border: 1px solid red;
    margin-top: 8px;
    margin-bottom: 8px;
    margin-right: 24px;

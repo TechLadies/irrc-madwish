@@ -32,9 +32,3 @@ export default {
   }
 }
 </script>
-<<<<<<< HEAD
-=======
-
-<style>
-</style>
->>>>>>> added background to list items
