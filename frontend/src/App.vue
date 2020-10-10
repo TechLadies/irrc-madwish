@@ -7,8 +7,8 @@
 <script>
 import StudentProfile from './pages/StudentProfile.vue'
 export default {
-  name: 'App',
-  components: {
+    name: 'App',
+    components: {
     StudentProfile
   }
 }
