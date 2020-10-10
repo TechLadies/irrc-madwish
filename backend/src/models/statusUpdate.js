@@ -1,9 +1,9 @@
 const { Model } = require('objection')
-const tableStatusupdates = 'statusupdates'
+const tableStatusUpdates = 'statusUpdates'
 
-class Statusupdate extends Model {
+class StatusUpdate extends Model {
   static get tableName () {
-    return tableStatusupdates
+    return tableStatusUpdates
   }
 
   static get idColumn () {
@@ -19,7 +19,7 @@ class Statusupdate extends Model {
         relation: Model.HasOneRelation,
         modelClass: Student,
         join: {
-          from: 'statusupdates.StudentID',
+          from: 'statusUpdates.StudentID',
           to: 'students.StudentID'
         }
       },
@@ -28,7 +28,7 @@ class Statusupdate extends Model {
         relation: Model.ManytoManyRelation,
         modelClass: Status,
         join: {
-          from: 'statusupdates.PreviousStatusID',
+          from: 'statusUpdates.PreviousStatusID',
           to: 'statuses.StatusID'
         }
       },
@@ -37,7 +37,7 @@ class Statusupdate extends Model {
         relation: Model.ManytoManyRelation,
         modelClass: Status,
         join: {
-          from: 'statusupdates.NextStatusID',
+          from: 'statusUpdates.NextStatusID',
           to: 'statuses.StatusID'
         }
       }
@@ -60,7 +60,7 @@ class Statusupdate extends Model {
 }
 
 module.exports = {
-  Statusupdate,
-  model: Statusupdate,
-  tableStatusupdates
+  StatusUpdate,
+  model: StatusUpdate,
+  tableStatusUpdates
 }

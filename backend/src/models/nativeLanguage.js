@@ -1,9 +1,9 @@
 const { Model } = require('objection')
-const tableNativelanguages = 'nativelanguages'
+const tableNativeLanguages = 'nativeLanguages'
 
 class NativeLanguage extends Model {
   static get tableName () {
-    return tableNativelanguages
+    return tableNativeLanguages
   }
 
   static get idColumn () {
@@ -14,11 +14,11 @@ class NativeLanguage extends Model {
     const Student = require('./student')
 
     return {
-      nativelanguage: {
+      nativeLanguage: {
         relation: Model.HasManyRelation,
         modelClass: Student,
         join: {
-          from: 'nativelanguages.NativeLanguageID',
+          from: 'nativeLanguages.NativeLanguageID',
           to: 'students.NativeLanguageID'
         }
       }
@@ -40,5 +40,5 @@ class NativeLanguage extends Model {
 module.exports = {
   NativeLanguage,
   model: NativeLanguage,
-  tableNativelanguages
+  tableNativeLanguages
 }

@@ -15,17 +15,17 @@ class Student extends Model {
   }
 
   static get relationMappings () {
-    const Nativelanguage = require('./nativelanguage')
+    const NativeLanguage = require('./nativeLanguage')
     const Status = require('./status')
-    const Statusupdate = require('./statusupdate')
+    const StatusUpdate = require('./statusUpdate')
 
     return {
-      nativelanguage: {
+      nativeLanguage: {
         relation: Model.HasOneRelation,
-        modelClass: Nativelanguage,
+        modelClass: NativeLanguage,
         join: {
           from: 'students.NativeLanguageID',
-          to: 'nativelanguages.NativeLanguageID'
+          to: 'nativeLanguages.NativeLanguageID'
         }
       },
 
@@ -38,12 +38,12 @@ class Student extends Model {
         }
       },
 
-      statusupdateID: {
+      statusUpdateID: {
         relation: Model.HasManyRelation,
-        modelClass: Statusupdate,
+        modelClass: StatusUpdate,
         join: {
           from: 'students.StudentID',
-          to: 'statusupdates.StudentID'
+          to: 'statusUpdates.StudentID'
         }
       }
     }

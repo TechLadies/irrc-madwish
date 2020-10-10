@@ -1,12 +1,12 @@
-const { tableStatusupdates } = require('../src/models/statusupdate')
+const { tableStatusUpdates } = require('../src/models/statusUpdate')
 const { tableStudents } = require('../src/models/student')
-const { tableNativelanguages } = require('../src/models/nativelanguage')
+const { tableNativeLanguages } = require('../src/models/nativeLanguage')
 const { tableStatuses } = require('../src/models/status')
 
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex(tableStatusupdates).del()
+  return knex(tableStatusUpdates).del()
   //return knex(tableStatusupdates).truncate()
   //knex.schema.raw('TRUNCATE TABLE tableStatusupdates, products CASCADE')
 };
@@ -18,7 +18,7 @@ exports.seed = function(knex) {
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex(tableNativelanguages).del()
+  return knex(tableNativeLanguages).del()
 };
 
 exports.seed = function(knex) {

@@ -1,7 +1,7 @@
-const { tableStatusupdates } = require('../src/models/statusupdate')
+const { tableStatusUpdates } = require('../src/models/statusUpdate')
 
 exports.up = (knex) => {
-  return knex.schema.createTable(tableStatusupdates, (table) => {
+  return knex.schema.createTable(tableStatusUpdates, (table) => {
     table.increments('StatusUpdateID').primary() // ToDo StatusID vs ID (postgres issue). Figure out uuid
     table.integer('StudentID').references('StudentID').inTable('students').onDelete("CASCADE")
     table.integer('PreviousStatusID').references('StatusID').inTable('statuses').onDelete("CASCADE")
@@ -12,5 +12,5 @@ exports.up = (knex) => {
 }
 
 exports.down = (knex) => {
-  return knex.schema.dropTable(tableStatusupdates)
+  return knex.schema.dropTable(tableStatusUpdates)
 }

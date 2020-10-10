@@ -1,4 +1,4 @@
-const { tableNativelanguages } = require('../src/models/nativelanguage')
+const { tableNativeLanguages } = require('../src/models/nativeLanguage')
 
 const SEED_NATIVELANGUAGES = [
   {NativeLanguage: 'Chinese'},
@@ -14,10 +14,10 @@ const SEED_NATIVELANGUAGES = [
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex(tableNativelanguages)
+  return knex(tableNativeLanguages)
     .del()
     .then(function () {
       // Inserts seed entries
-      return knex(tableNativelanguages).insert(SEED_NATIVELANGUAGES);
+      return knex(tableNativeLanguages).insert(SEED_NATIVELANGUAGES);
     });
 };

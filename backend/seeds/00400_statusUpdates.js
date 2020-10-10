@@ -1,12 +1,12 @@
-const { tableStatusupdates } = require('../src/models/statusupdate')
+const { tableStatusUpdates } = require('../src/models/statusUpdate')
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex(tableStatusupdates)
+  return knex(tableStatusUpdates)
     .del()
     .then(function () {
       // Inserts seed entries
-      return knex(tableStatusupdates).insert([
+      return knex(tableStatusUpdates).insert([
         {
           StatusUpdateID: 1,
           StudentID: 1,

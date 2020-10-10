@@ -8,7 +8,7 @@ exports.up = (knex) => {
     table.text('FirstName').notNullable()
     table.text('LastName').notNullable()
     table.text('Source')
-    table.integer('NativeLanguageID').references('NativeLanguageID').inTable('nativelanguages').onDelete('CASCADE')
+    table.integer('NativeLanguageID').references('NativeLanguageID').inTable('nativeLanguages').onDelete('CASCADE')
     table.enu('EnglishProficiency', [
       "No",
       "Little",
