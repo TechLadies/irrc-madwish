@@ -1,13 +1,16 @@
 <template>
   <div class="container">
     <div class="Title">
-        <b>New Student</b>
+        <b class="newstudent">New Student</b>
       <!-- upload button --> 
         <b-field class="file is-primary is-right" :class="{'has-name': !!file}">
             <b-upload v-model="file" class="file-label">
                 <span class="file-cta">
                     <b-icon class="file-icon" icon="upload"></b-icon>
                     <span class="file-label">  Bulk upload CSV</span>
+                </span>
+                <span class="file-name" v-if="file">
+                    {{ file.name }}
                 </span>
             </b-upload>
         </b-field>   
@@ -79,7 +82,7 @@
             </b-field>
 
         </section>
-        <b-button class="dark-blue" expanded @click="clickMe">Create Student</b-button>
+        <b-button class="dark-blue" expanded @click="CreateStudent">Create Student</b-button>
       </div>
     </div>
   </div>      
@@ -109,7 +112,8 @@ export default {
           ],
           NativeLanguage: '',
           Source:'',
-          selected: null
+          selected: null,
+          file: null,
       }
   },
 
@@ -135,9 +139,38 @@ export default {
 
 
   methods: {
-    clickMe(){
-      this.$buefy.notification.open('Student created!')
+    CreateStudent(){
+      this.$buefy.notification.open({
+        message: 'New student added. <u>View profile</u>!',
+        duration: 10000000,
+        type: 'is-success',
+        position: 'is-top',
+        // color: '#57A773',
+      })
     },
+
+    UploadFile(){
+      this.$buefy.notification.open({
+        message: 'The file was uploaded successfully!',
+        duration: 10000000,
+        type: 'is-success'
+        // color: '#57A773',
+      })
+    },
+
+
+    ErrorUpload(){
+      this.$buefy.notification.open({
+        message: '<b>There was an error in uploading.</b> <br> Please check formatting of the file and try again.',
+        duration: 10000000,
+        type: 'is-danger',
+        position: 'is-top',
+        // color: '#57A773',
+      })
+    },
+
+
+
     showAddLanguage() {
         this.$buefy.dialog.prompt({
           message: `Add new language`,
@@ -187,7 +220,7 @@ button.button.dark-blue{
   color: #59666E !important;
 }
 
-b {
+b.newstudent {
   font-size: 30px;
 }
 
@@ -239,5 +272,28 @@ body {
 html {
     background-color: #F3F7FA;
 }
+
+
+.notification.is-success {
+  background-color: #57A773 !important;
+  font: #fff;
+  margin-left: 300px;
+  padding: 15px;
+  border-radius: 32px;
+  text-align: center;
+}
+
+
+
+.notification.is-danger {
+  background-color: #C33715 !important;
+  font: #fff;
+  margin-left: 300px;
+  padding: 15px;
+  border-radius: 32px;
+  text-align: center;
+}
+
+
 
 </style>
