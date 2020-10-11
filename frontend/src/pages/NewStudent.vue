@@ -92,7 +92,7 @@
 <script>
 
 export default {
-  name: 'App',
+  name: 'NewStudent',
 
   data() {
       return {
