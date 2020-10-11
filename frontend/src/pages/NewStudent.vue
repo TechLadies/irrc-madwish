@@ -53,7 +53,7 @@
                   <b-autocomplete
                       v-model="NativeLanguage"
                       ref="languageComplete"
-                      :data="filteredDataArray"
+                      :languageData="filteredLanguageDataArray"
                       placeholder="e.g. Bengali"
                       @select="option => selected = option">
                       <template slot="header">
