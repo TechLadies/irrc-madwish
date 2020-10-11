@@ -132,7 +132,7 @@ export default {
               .indexOf(this.NativeLanguage.toLowerCase()) >= 0
             })
     },
-      filteredsourceDataArray() {
+      filteredSourceDataArray() {
         return this.sourcedata.filter((sourceOption) => {
             return sourceOption
               .toString()
