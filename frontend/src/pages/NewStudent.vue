@@ -202,7 +202,7 @@ export default {
           },
           confirmText: 'Add',
           onConfirm: (value) => {
-            this.sourcedata.push(value)
+            this.sourceData.push(value)
             this.$refs.sourceComplete.setSelected(value)
           }
         })
