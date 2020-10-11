@@ -187,7 +187,7 @@ export default {
           },
           confirmText: 'Add',
           onConfirm: (value) => {
-            this.data.push(value)
+            this.languageData.push(value)
             this.$refs.languageComplete.setSelected(value)
           }
         })
