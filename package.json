@@ -6,7 +6,7 @@
   "scripts": {
     "install.frontend": "npm --prefix frontend install",
     "install.backend": "npm --prefix backend install",
-    "postinstall": "npm clean && concurrently \"npm install.frontend\" \"npm install.backend\"",
+    "postinstall": "npm run clean && concurrently \"npm run install.frontend\" \"npm run install.backend\"",
     "serve": "concurrently \"npm --prefix frontend serve\"",
     "clean": "concurrently \"rm -rf frontend/node_modules\"  \"rm -rf backend/node_modules\""
   },
