@@ -13,7 +13,7 @@
           </div>
           <div class="content">
             <div class="content-title">MATCHED TO TEACHER</div>
-            <Content label="teacherName" />
+            <p>{{ teacherName }}</p>
           </div>
         </div>
 
@@ -31,12 +31,16 @@
 
 <script>
 import Button from "./Button.vue";
-import Content from "./Content.vue";
 export default {
   name: "StatusCardUnmatched",
   components: {
     Button,
-    Content,
+  },
+  props: {
+    teacherName: {
+      type: String,
+      default: "No Teacher Assigned",
+    },
   },
 };
 </script>

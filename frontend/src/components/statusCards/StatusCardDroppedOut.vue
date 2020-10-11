@@ -13,7 +13,7 @@
           </div>
           <div class="content">
             <div class="content-title">REASON</div>
-            <Content label="reason" />
+            <p>{{ reason }}</p>
           </div>
         </div>
         <div class="content">
@@ -29,12 +29,16 @@
 
 <script>
 import Button from "./Button.vue";
-import Content from "./Content.vue";
 export default {
   name: "StatusCardDroppedOut",
   components: {
     Button,
-    Content,
+  },
+  props: {
+    reason: {
+      type: String,
+      default: "No Reason Stated",
+    },
   },
 };
 </script>
