@@ -15,7 +15,6 @@ const router = new VueRouter({
     { path: '/', component: HelloWorld  },
     { path: '/screening', component: Screening  },
     { path: '/matching', component: Matching  },
-    { path: '/matching', component: Matching  },
     { path: '/new', component: NewStudent  }
   ]
 })
