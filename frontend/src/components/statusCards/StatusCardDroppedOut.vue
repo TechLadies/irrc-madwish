@@ -13,7 +13,7 @@
           </div>
           <div class="content">
             <div class="content-title">REASON</div>
-            <Reason />
+            <Content label="reason" />
           </div>
         </div>
         <div class="content">
@@ -29,12 +29,12 @@
 
 <script>
 import Button from "./Button.vue";
-import Reason from "./Reason.vue";
+import Content from "./Content.vue";
 export default {
-  name: "StatusCardUnmatched",
+  name: "StatusCardDroppedOut",
   components: {
     Button,
-    Reason,
+    Content,
   },
 };
 </script>
