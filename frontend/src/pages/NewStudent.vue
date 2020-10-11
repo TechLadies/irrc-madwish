@@ -133,7 +133,7 @@ export default {
             })
     },
       filteredSourceDataArray() {
-        return this.sourcedata.filter((sourceOption) => {
+        return this.sourceData.filter((sourceOption) => {
             return sourceOption
               .toString()
               .toLowerCase()
