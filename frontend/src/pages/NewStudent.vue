@@ -37,7 +37,7 @@
                 <b-autocomplete
                     v-model="Source"
                     ref="sourceComplete"
-                    :data="filteredsourceDataArray"
+                    :data="filteredSourceDataArray"
                     placeholder="Optional"
                     @select="option => selected = sourceOption">
                     <template slot="header">
