@@ -1,4 +1,6 @@
+
 <template>
+<!-- Version 1: Messy code, StudentHistory not broken down into more components. Not great or very readable.-->
     <div class="card">
         <header> HISTORY </header>
         <div>
