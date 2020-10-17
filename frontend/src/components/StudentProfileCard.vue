@@ -5,28 +5,43 @@
       <div class="student-grid">
         <img src="../assets/images/student.png" />
         <div class="student-label">Student</div>
-        <div class="student-main">{{ studentInfo }}</div>
-        <div class="student-main">{{ studentInfo }}</div>
+        <div class="student-main">{{ studentInfo.studentName }}</div>
+        <div class="student-main">{{ studentInfo.studentContact }}</div>
         <div>
-          <div class="student-label-small">Date Joined</div>
-          <div class="student-detail">{{ studentInfo }}</div>
+          <div class="student-label-small padding-large">Date Joined</div>
+          <div class="student-detail">{{ studentInfo.dateJoined }}</div>
         </div>
         <div>
-          <div class="student-label-small">Source</div>
-          <div class="student-detail">{{ studentInfo }}</div>
+          <div class="student-label-small padding-large">Source</div>
+          <div class="student-detail">{{ studentInfo.source }}</div>
         </div>
         <div>
-          <div class="student-label-small">Native Language</div>
-          <div class="student-detail">{{ studentInfo }}</div>
+          <div class="student-label-small padding-small">Native Language</div>
+          <div class="student-detail">{{ studentInfo.nativeLanguage }}</div>
         </div>
         <div>
-          <div class="student-label-small">English Proficiency</div>
+          <div class="student-label-small padding-small">
+            English Proficiency
+          </div>
           <div>
-            <b-select placeholder="Select Proficiency">
-              <option>
-                {{ studentInfo }}
-              </option>
+            <b-select
+              v-if="studentInfo.status === 'Screening'"
+              placeholder="Select Proficiency"
+            >
+              <option value="No">No - Unable to understand at all</option>
+              <option value="Little"
+                >Little - Able to understand simple words</option
+              >
+              <option value="Simple"
+                >Simple - Able to speak full sentences</option
+              >
+              <option value="Intermediate"
+                >Intermediate - Able to carry conversations</option
+              >
             </b-select>
+            <div v-else class="student-detail">
+              {{ studentInfo.proficiencyLevel }}
+            </div>
           </div>
         </div>
       </div>
@@ -34,7 +49,7 @@
       <hr />
       <div class="notes-label">Notes</div>
       <div class="notes-text">
-        {{ studentInfo }}
+        {{ studentInfo.notes }}
       </div>
     </div>
   </div>
@@ -46,13 +61,24 @@ export default {
   props: {
     studentInfo: {
       type: Object,
-      default: new String("cat"),
+      default: function() {
+        return {
+          studentName: "Kasam Rujuthan",
+          studentContact: "9123 4567",
+          dateJoined: "Sept 07 2020",
+          source: "Rotary",
+          nativeLanguage: "Bangla",
+          notes: "Dummy Text",
+          status: "Screening",
+          proficiencyLevel: "Little (able to understand simple words)",
+        };
+      },
     },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .edit-container {
   text-align: right;
   color: #00488f;
@@ -81,13 +107,20 @@ export default {
     color: #12171a;
   }
 
+  .padding-large {
+    padding-top: 32px;
+  }
+
+  .padding-small {
+    padding-top: 24px;
+  }
   .student-label-small {
     font-size: 14px;
     font-weight: 500;
     color: #59666e;
     line-height: 20px;
     display: flex;
-    padding-top: 24px;
+    padding-bottom: 2px;
   }
 
   .student-detail {
@@ -99,13 +132,17 @@ export default {
     padding-top: 8px;
   }
 }
+
+hr {
+  margin: 32px 0px;
+}
+
 .notes-label {
   font-size: 14px;
   font-weight: 500;
   color: #59666e;
   line-height: 20px;
   display: flex;
-  padding-top: 10px;
 }
 
 .notes-text {
