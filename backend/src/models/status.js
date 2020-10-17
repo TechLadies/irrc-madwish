@@ -14,7 +14,7 @@ class Status extends Model {
     const Student = require('./student')
 
     return {
-      statusID: {
+      students: {
         relation: Model.HasManyRelation,
         modelClass: Student,
         join: {

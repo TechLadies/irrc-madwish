@@ -8,7 +8,7 @@ const SEED_NATIVELANGUAGES = [
   {NativeLanguage: 'Thai'},
   {NativeLanguage: 'Hindi'},
   {NativeLanguage: 'Punjabi'},
-  {NativeLanguage: 'Telegu'}
+  {NativeLanguage: 'Telugu'}
 ]
 
 

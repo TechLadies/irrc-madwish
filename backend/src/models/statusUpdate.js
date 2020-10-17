@@ -24,7 +24,7 @@ class StatusUpdate extends Model {
         }
       },
 
-      previousstatusID: {
+      previousStatus: {
         relation: Model.ManytoManyRelation,
         modelClass: Status,
         join: {
@@ -33,7 +33,7 @@ class StatusUpdate extends Model {
         }
       },
 
-      nextstatusID: {
+      nextStatus: {
         relation: Model.ManytoManyRelation,
         modelClass: Status,
         join: {

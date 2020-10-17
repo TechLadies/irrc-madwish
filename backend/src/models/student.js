@@ -29,7 +29,7 @@ class Student extends Model {
         }
       },
 
-      statusID: {
+      status: {
         relation: Model.HasOneRelation,
         modelClass: Status,
         join: {
@@ -38,7 +38,7 @@ class Student extends Model {
         }
       },
 
-      statusUpdateID: {
+      statusUpdates: {
         relation: Model.HasManyRelation,
         modelClass: StatusUpdate,
         join: {

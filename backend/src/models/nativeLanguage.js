@@ -14,7 +14,7 @@ class NativeLanguage extends Model {
     const Student = require('./student')
 
     return {
-      nativeLanguage: {
+      students: {
         relation: Model.HasManyRelation,
         modelClass: Student,
         join: {
