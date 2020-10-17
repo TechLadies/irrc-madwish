@@ -5,28 +5,37 @@
       <div class="student-grid">
         <img src="../assets/images/student.png" />
         <div class="student-label">Student</div>
-        <div class="student-main">Kasam Rujuthan</div>
-        <div class="student-main">91234567</div>
+        <div class="student-main">{{ studentInfo.studentName }}</div>
+        <div class="student-main">{{ studentInfo.studentContact }}</div>
         <div>
-          <div>Date Joined</div>
-          <div>7 2020</div>
+          <div class="student-label-small">Date Joined</div>
+          <div class="student-detail">{{ studentInfo.dateJoined }}</div>
         </div>
         <div>
-          <div>Source</div>
-          <div>Rotary</div>
+          <div class="student-label-small">Source</div>
+          <div class="student-detail">{{ studentInfo.Source }}</div>
         </div>
         <div>
-          <div>Native Language</div>
-          <div>Bangla</div>
+          <div class="student-label-small">Native Language</div>
+          <div class="student-detail">{{ studentInfo }}</div>
         </div>
         <div>
-          <div>English Proficiency</div>
-          <div>Select Proficiency</div>
+          <div class="student-label-small">English Proficiency</div>
+          <div>
+            <b-select placeholder="Select Proficiency">
+              <option>
+                {{ studentInfo }}
+              </option>
+            </b-select>
+          </div>
         </div>
       </div>
 
       <hr />
-      <div>Notes</div>
+      <div class="student-label-small">Notes</div>
+      <div>
+        {{ studentInfo }}
+      </div>
     </div>
   </div>
 </template>
@@ -34,12 +43,19 @@
 <script>
 export default {
   name: "StudentProfileCard",
+  props: {
+    studentInfo: {
+      type: Object,
+      default: new String("cat"),
+    },
+  },
 };
 </script>
 
 <style lang="scss">
 .edit-container {
   text-align: right;
+  color: #00488f;
 }
 .student-grid {
   display: grid;
@@ -63,6 +79,24 @@ export default {
     font-size: 24px;
     font-weight: 700;
     color: #12171a;
+  }
+
+  .student-label-small {
+    font-size: 14px;
+    font-weight: 500;
+    color: #59666e;
+    line-height: 20px;
+    display: flex;
+    padding-top: 24px;
+  }
+
+  .student-detail {
+    font-size: 16px;
+    font-weight: 400;
+    color: #12171a;
+    line-height: 24px;
+    display: flex;
+    padding-top: 8px;
   }
 }
 </style>
