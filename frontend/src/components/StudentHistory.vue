@@ -41,7 +41,8 @@ export default {
                 description: "Joined Madwish",
                 status: 0 // Screening 
             }
-            ]
+            ],
+
         }
     }
 }

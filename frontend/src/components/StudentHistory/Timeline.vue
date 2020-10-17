@@ -17,9 +17,6 @@
 
 <script>
 export default {
-    /*
-    * item: { date: Date, description: String, status: Number }
-    */ 
     name: "Timeline",
     props: {
         items: {

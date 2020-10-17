@@ -8,9 +8,6 @@ export default {
     name: 'StudentProfile',
     components: {
         StudentHistory,
-    },
-    data (){
-
     }
 }
 </script>
