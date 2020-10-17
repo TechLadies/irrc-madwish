@@ -5,15 +5,15 @@
       <div class="student-grid">
         <img src="../assets/images/student.png" />
         <div class="student-label">Student</div>
-        <div class="student-main">{{ studentInfo.studentName }}</div>
-        <div class="student-main">{{ studentInfo.studentContact }}</div>
+        <div class="student-main">{{ studentInfo }}</div>
+        <div class="student-main">{{ studentInfo }}</div>
         <div>
           <div class="student-label-small">Date Joined</div>
-          <div class="student-detail">{{ studentInfo.dateJoined }}</div>
+          <div class="student-detail">{{ studentInfo }}</div>
         </div>
         <div>
           <div class="student-label-small">Source</div>
-          <div class="student-detail">{{ studentInfo.Source }}</div>
+          <div class="student-detail">{{ studentInfo }}</div>
         </div>
         <div>
           <div class="student-label-small">Native Language</div>
@@ -32,8 +32,8 @@
       </div>
 
       <hr />
-      <div class="student-label-small">Notes</div>
-      <div>
+      <div class="notes-label">Notes</div>
+      <div class="notes-text">
         {{ studentInfo }}
       </div>
     </div>
@@ -98,5 +98,22 @@ export default {
     display: flex;
     padding-top: 8px;
   }
+}
+.notes-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #59666e;
+  line-height: 20px;
+  display: flex;
+  padding-top: 10px;
+}
+
+.notes-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #12171a;
+  line-height: 24px;
+  display: flex;
+  padding-top: 8px;
 }
 </style>
