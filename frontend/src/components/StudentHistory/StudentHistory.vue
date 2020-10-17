@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Timeline from "./StudentHistory/Timeline.vue"
+import Timeline from "./Timeline.vue"
 export default {
     name: 'StudentHistory',
     components: {

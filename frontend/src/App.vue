@@ -19,8 +19,19 @@ const profiles = [
 ]
 
 export default {
+  name: 'App',
   components: {
-    StudentProfile
+    Sidebar
+  },
+  data() {
+    return { 
+      menu: { status, profiles } 
+    }
+  },
+  methods: {
+    createNew() {
+      console.log('Create New Here')
+    }
   }
 }
 </script>

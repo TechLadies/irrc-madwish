@@ -6,6 +6,7 @@ import router from "./router.js"
 
 Vue.use(Buefy)
 new Vue({ 
+  router,
   el: '#app',
   components: {
     App
