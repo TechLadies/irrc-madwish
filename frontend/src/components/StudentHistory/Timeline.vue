@@ -38,8 +38,7 @@ export default {
     border: 3px solid white;
     width: 384px;
     height: 56px;
-    left: 1000px;
-    top: 410px;
+    overflow: auto;
     
 /* Primary Light */
 
@@ -56,11 +55,11 @@ export default {
 
 /* Font colour: Primary Dark */
     color: #2F4858; 
+
     }
 
 
 #date {
-    /*border: 1px solid green;*/
     margin: auto;
     margin-right: 9px;
     width: 85px; /* deviated from Figma*/
@@ -68,65 +67,65 @@ export default {
     
 }
 #description {
-   margin-top: 8px;
-   margin-bottom: 8px;
-   margin-right: 24px;
-   margin-left: 9px;
-   width: 225px;
-   height: 40px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 24px;
+    margin-left: 9px;
+    width: 225px;
+    height: 40px;
 }
 .dot {
-  height: 16px;
-  width: 16px;
-  background: #2F4858;
-  border-radius: 50%;
-  text-align: centre;
-  z-index: 2;
+    height: 16px;
+    width: 16px;
+    background: #2F4858;
+    border-radius: 50%;
+    text-align: centre;
+    z-index: 2;
 }
 
 .whitedot {
-width: 16px;
-height: 16px;
-border-radius: 50%;
-text-align: centre;
-z-index: 2;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    text-align: centre;
+    z-index: 2;
 
 
-/* White */
+    /* White */
 
-background: #FFFFFF;
-/* Primary Dark */
+    background: #FFFFFF;
+    /* Primary Dark */
 
-border: 3px solid #2F4858;
-box-sizing: border-box;
+    border: 3px solid #2F4858;
+    box-sizing: border-box;
 }
 
 .line {
-  background: #2F4858;
-  width:1px;
-  height:56px;
-  position:absolute;
-  left: 146px;
-  z-index: 0;
-  }
+    background: #2F4858;
+    width:1px;
+    height:56px;
+    position:absolute;
+    left: 146px;
+    z-index: 0;
+    }
 
 .firstline {
-  background:  #2F4858;
-  width:1px;
-  height:35px;
-  margin-top: 20px;
-  position:absolute;
-  left: 146px;
-  z-index:1;
-  }
+    background:  #2F4858;
+    width:1px;
+    height:35px;
+    margin-top: 20px;
+    position:absolute;
+    left: 146px;
+    z-index:1;
+    }
 
 .lastline {
-  background:  #2F4858;
-  width:1px;
-  height:35px;
-  margin-bottom: 24px;
-  position:absolute;
-  left: 146px;
-  z-index:1;
-  }
+    background:  #2F4858;
+    width:1px;
+    height:35px;
+    margin-bottom: 24px;
+    position:absolute;
+    left: 146px;
+    z-index:1;
+    }
 </style>
