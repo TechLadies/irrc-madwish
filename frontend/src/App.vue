@@ -1,23 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div>
-    <StudentProfile/>
-  </div>
-</template>
-
-<script>
-import StudentProfile from './pages/StudentProfile.vue'
-export default {
-    name: 'App',
-    components: {
-    StudentProfile
-  }
-}
-</script>
-
-<style>
-</style>
-=======
   <Sidebar :menu="menu" @createNew="createNew">
     <router-view></router-view>
   </Sidebar>
@@ -54,4 +35,3 @@ export default {
   }
 }
 </script>
->>>>>>> dbec15d7730f2814bd75e11a78903f5a8a36c551
