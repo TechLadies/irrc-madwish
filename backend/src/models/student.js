@@ -21,7 +21,7 @@ class Student extends Model {
 
     return {
       nativeLanguage: {
-        relation: Model.HasOneRelation,
+        relation: Model.BelongsToOneRelation,
         modelClass: NativeLanguage,
         join: {
           from: 'students.NativeLanguageID',
@@ -30,7 +30,7 @@ class Student extends Model {
       },
 
       status: {
-        relation: Model.HasOneRelation,
+        relation: Model.BelongsToOneRelation,
         modelClass: Status,
         join: {
           from: 'students.StatusID',
