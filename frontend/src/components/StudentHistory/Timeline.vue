@@ -1,6 +1,6 @@
 <template>
     <div class ="Timeline">
-        <div class="TimelineItem" v-for="(item, index) in items" :key="item">
+        <div class="TimelineItem" v-for="(item, index) in items" :key="index">
                 <div id="date"> {{item.date}} </div>
                 <!-- Length of vertical line changes based on position in array-->
                 <div class="firstline" v-if="index == 0"></div>
@@ -17,11 +17,17 @@
 
 <script>
 export default {
+    /*
+    * item: { date: Date, description: String, status: Number }
+    */ 
     name: "Timeline",
     props: {
         items: {
             type: Array,
             default: () => []
+            /*
+            * item: { date: Date, description: String, status: Number }
+            */ 
         }
     }
     
