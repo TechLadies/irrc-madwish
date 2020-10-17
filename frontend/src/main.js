@@ -6,7 +6,6 @@ import 'buefy/dist/buefy.css'
 Vue.use(Buefy)
 new Vue({ 
   el: '#app',
-  router,
   components: {
     App
   },
