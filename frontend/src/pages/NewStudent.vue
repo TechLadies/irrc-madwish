@@ -35,7 +35,7 @@
 
             <b-field label="Source" class="half-width">
                 <b-autocomplete
-                    v-model="Source"
+                    v-model="source"
                     ref="sourceComplete"
                     :data="filteredSourceDataArray"
                     placeholder="Optional"
@@ -51,7 +51,7 @@
 
               <b-field label="Native Language" class="half-width">
                   <b-autocomplete
-                      v-model="NativeLanguage"
+                      v-model="nativeLanguage"
                       ref="languageComplete"
                       :languageData="filteredLanguageDataArray"
                       placeholder="e.g. Bengali"
@@ -82,7 +82,7 @@
             </b-field>
 
         </section>
-        <b-button class="dark-blue" expanded @click="CreateStudent">Create Student</b-button>
+        <b-button class="dark-blue" expanded @click="createStudent">Create Student</b-button>
       </div>
     </div>
   </div>      
@@ -96,7 +96,7 @@ export default {
 
   data() {
       return {
-          data: [
+          languageData: [
               'Bengali',
               'English',
               'Mandarin',
@@ -105,13 +105,13 @@ export default {
               'Urdu',
               'Tamil'
           ],
-          sourcedata: [
+          sourceData: [
               'Rotary Club',
               'Source 1',
               'Source 2',
           ],
-          NativeLanguage: '',
-          Source:'',
+          nativeLanguage: '',
+          source:'',
           selected: null,
           file: null,
       }
@@ -119,17 +119,17 @@ export default {
 
   watch: {
     file: function(val){
-      this.UploadFile();
+      this.uploadFile();
     }
   },
 
   computed: {
-    filteredDataArray() {
-        return this.data.filter((option) => {
+    filteredLanguageDataArray() {
+        return this.languageData.filter((option) => {
             return option
               .toString()
               .toLowerCase()
-              .indexOf(this.NativeLanguage.toLowerCase()) >= 0
+              .indexOf(this.nativeLanguage.toLowerCase()) >= 0
             })
     },
       filteredSourceDataArray() {
@@ -137,14 +137,14 @@ export default {
             return sourceOption
               .toString()
               .toLowerCase()
-              .indexOf(this.Source.toLowerCase()) >= 0
+              .indexOf(this.source.toLowerCase()) >= 0
             })
     }  
   },
 
 
   methods: {
-    CreateStudent(){
+    createStudent(){
       this.$buefy.notification.open({
         message: 'New student added. <u>View profile</u>!',
         duration: 5000,
@@ -154,7 +154,7 @@ export default {
       })
     },
 
-    UploadFile(){
+    uploadFile(){
       this.$buefy.notification.open({
         message: 'The file was uploaded successfully!',
         duration: 5000,
@@ -165,7 +165,7 @@ export default {
     },
 
 
-    ErrorUpload(){
+    errorUpload(){
       this.$buefy.notification.open({
         message: '<b>There was an error in uploading.</b> <br> Please check formatting of the file and try again.',
         duration: 5000,
@@ -262,7 +262,7 @@ body {
 
 .file.is-primary.is-right{
   float:right;
-  }
+}
 
 .file.is-primary .file-cta {
   background-color: transparent !important;
