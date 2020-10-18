@@ -1,7 +1,7 @@
 
 const express = require('express')
 const router = express.Router()
-//const debug = require('debug')('app:students')
+// const debug = require('debug')('app:students')
 const db = require('../models/index')
 const students = require('../helpers/students')
 
@@ -10,11 +10,53 @@ const { NotFoundError } = require('objection')
 
 /* GET students listing. */
 router.get('/', async (req, res) => {
-  // debug('Hello World!')
+  const result = await students.getAllStudents()
+ 
+  // handle error
+  if (result.err) {
+    //console.log('entered result.err')
+    const err = result.err
+    res.status(500).send({
+      message: err.message,
+      type: 'UnknownError',
+      data: {}
+    })
+    return
+  }
 
-  const students = await db.Student.query().select('FirstName', 'LastName', 'Notes')
-  res.json(students)
+  res.json(result)
 })
+
+ /* GET student by ID */
+router.get('/:id', async (req, res) => {
+  const result = await students.getStudentById(req.params.id)
+  // console.log(result.err)
+
+  // if student not found
+  if (JSON.stringify(result) === '[]') {
+    res.status(409).send({
+      message: 'StudentNotFound',
+      type: 'StudentNotFound',
+      data: {}
+    })
+    return
+  }
+
+  // handle error
+  if (result.err) {
+    //console.log('entered result.err')
+    const err = result.err
+    res.status(500).send({
+      message: err.message,
+      type: 'UnknownError',
+      data: {}
+    })
+    return
+  }
+
+  res.json(result)
+})
+
 
 /* POST students listing */
 router.post('/', async (req, res) => {
@@ -79,4 +121,3 @@ router.patch('/:id', async (req, res) => {
 
 module.exports = router
 
-module.exports = router
