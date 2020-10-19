@@ -110,6 +110,7 @@ export default {
               'Source 1',
               'Source 2',
           ],
+          name: '',
           nativeLanguage: '',
           source:'',
           selected: null,
@@ -183,7 +184,6 @@ export default {
           inputAttrs: {
             placeholder: 'e.g. Italian',
             maxlength: 255,
-            value: this.name
           },
           confirmText: 'Add',
           onConfirm: (value) => {
@@ -198,7 +198,6 @@ export default {
           inputAttrs: {
             placeholder: 'e.g. Rotary Club',
             maxlength: 500,
-            value: this.name
           },
           confirmText: 'Add',
           onConfirm: (value) => {
