@@ -7,6 +7,7 @@ const HelloWorld = () => import('./pages/HelloWorld.vue')
 const Screening = () => import('./pages/Screening.vue')
 const Matching = () => import('./pages/Matching.vue')
 const NewStudent = () => import('./pages/NewStudent.vue')
+const Students = () => import('./pages/Students.vue')
 
 const router = new VueRouter({
   mode: 'history',
@@ -15,7 +16,9 @@ const router = new VueRouter({
     { path: '/', component: HelloWorld  },
     { path: '/screening', component: Screening  },
     { path: '/matching', component: Matching  },
-    { path: '/new', component: NewStudent  }
+    { path: '/matching', component: Matching  },
+    { path: '/new', component: NewStudent  },
+    { path: '/students', component: Students  }
   ]
 })
 
