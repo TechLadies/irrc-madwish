@@ -35,9 +35,9 @@
 
             <b-field label="Source" class="half-width">
                 <b-autocomplete
-                    v-model="Source"
+                    v-model="source"
                     ref="sourceComplete"
-                    :data="filteredsourceDataArray"
+                    :data="filteredSourceDataArray"
                     placeholder="Optional"
                     @select="option => selected = sourceOption">
                     <template slot="header">
@@ -51,9 +51,9 @@
 
               <b-field label="Native Language" class="half-width">
                   <b-autocomplete
-                      v-model="NativeLanguage"
+                      v-model="nativeLanguage"
                       ref="languageComplete"
-                      :data="filteredDataArray"
+                      :languageData="filteredLanguageDataArray"
                       placeholder="e.g. Bengali"
                       @select="option => selected = option">
                       <template slot="header">
@@ -82,7 +82,7 @@
             </b-field>
 
         </section>
-        <b-button class="dark-blue" expanded @click="CreateStudent">Create Student</b-button>
+        <b-button class="dark-blue" expanded @click="createStudent">Create Student</b-button>
       </div>
     </div>
   </div>      
@@ -90,13 +90,11 @@
 
 
 <script>
-
 export default {
-  name: 'App',
-
+  name: 'NewStudent',
   data() {
       return {
-          data: [
+          languageData: [
               'Bengali',
               'English',
               'Mandarin',
@@ -105,46 +103,43 @@ export default {
               'Urdu',
               'Tamil'
           ],
-          sourcedata: [
+          sourceData: [
               'Rotary Club',
               'Source 1',
               'Source 2',
           ],
-          NativeLanguage: '',
-          Source:'',
+          name: '',
+          nativeLanguage: '',
+          source:'',
           selected: null,
           file: null,
       }
   },
-
   watch: {
     file: function(val){
-      this.UploadFile();
+      this.uploadFile();
     }
   },
-
   computed: {
-    filteredDataArray() {
-        return this.data.filter((option) => {
+    filteredLanguageDataArray() {
+        return this.languageData.filter((option) => {
             return option
               .toString()
               .toLowerCase()
-              .indexOf(this.NativeLanguage.toLowerCase()) >= 0
+              .indexOf(this.nativeLanguage.toLowerCase()) >= 0
             })
     },
-      filteredsourceDataArray() {
-        return this.sourcedata.filter((sourceOption) => {
+      filteredSourceDataArray() {
+        return this.sourceData.filter((sourceOption) => {
             return sourceOption
               .toString()
               .toLowerCase()
-              .indexOf(this.Source.toLowerCase()) >= 0
+              .indexOf(this.source.toLowerCase()) >= 0
             })
     }  
   },
-
-
   methods: {
-    CreateStudent(){
+    createStudent(){
       this.$buefy.notification.open({
         message: 'New student added. <u>View profile</u>!',
         duration: 5000,
@@ -153,8 +148,7 @@ export default {
         // color: '#57A773',
       })
     },
-
-    UploadFile(){
+    uploadFile(){
       this.$buefy.notification.open({
         message: 'The file was uploaded successfully!',
         duration: 5000,
@@ -163,9 +157,7 @@ export default {
         // color: '#57A773',
       })
     },
-
-
-    ErrorUpload(){
+    errorUpload(){
       this.$buefy.notification.open({
         message: '<b>There was an error in uploading.</b> <br> Please check formatting of the file and try again.',
         duration: 5000,
@@ -174,20 +166,16 @@ export default {
         // color: '#57A773',
       })
     },
-
-
-
     showAddLanguage() {
         this.$buefy.dialog.prompt({
           message: `Add new language`,
           inputAttrs: {
             placeholder: 'e.g. Italian',
             maxlength: 255,
-            value: this.name
           },
           confirmText: 'Add',
           onConfirm: (value) => {
-            this.data.push(value)
+            this.languageData.push(value)
             this.$refs.languageComplete.setSelected(value)
           }
         })
@@ -198,11 +186,10 @@ export default {
           inputAttrs: {
             placeholder: 'e.g. Rotary Club',
             maxlength: 500,
-            value: this.name
           },
           confirmText: 'Add',
           onConfirm: (value) => {
-            this.sourcedata.push(value)
+            this.sourceData.push(value)
             this.$refs.sourceComplete.setSelected(value)
           }
         })
@@ -212,7 +199,6 @@ export default {
 </script>
 
 <style>
-
 button.button.dark-blue{
   background-color: #3C4F76;
   color: white; 
@@ -220,67 +206,49 @@ button.button.dark-blue{
   box-sizing: border-box;
   border-radius: 4px;
 }
-
-
 .label {
   color: #59666E !important;
 }
-
 b.newstudent {
   font-size: 30px;
   padding-left: 20px;
 }
-
 body {
   background-color: #F3F7FA !important;
 }
-
 .container {
   padding: 20px;
   background-color: transparent;
 }
-
-
 .columns{
   background-color:white;
   margin-top: 100px;
 }
-
 .Title{
   padding-bottom:20px;
   vertical-align: bottom !important;
 }
-
-
 .columns.is-multiline.is-mobile{
   padding:20px 0px 20px 0px;
   margin: auto;
   margin-left:20px;
   margin-right:20px;
 }
-
-
 .file.is-primary.is-right{
   float:right;
-  }
-
+}
 .file.is-primary .file-cta {
   background-color: transparent !important;
   float: right;
   color: #3C4F76 !important;
   padding-left:10px;
 }
-
 .half-width{
   width:50%;
 }
-
-
 html {
     background-color: #F3F7FA;
 }
-
-
 .notification.is-success {
   background-color: #57A773 !important;
   font: #fff;
@@ -289,9 +257,6 @@ html {
   border-radius: 32px;
   text-align: center;
 }
-
-
-
 .notification.is-danger {
   background-color: #C33715 !important;
   font: #fff;
@@ -300,7 +265,4 @@ html {
   border-radius: 32px;
   text-align: center;
 }
-
-
-
 </style>
