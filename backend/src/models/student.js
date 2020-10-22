@@ -22,7 +22,7 @@ class Student extends Model {
     return {
       nativeLanguage: {
         relation: Model.BelongsToOneRelation,
-        modelClass: NativeLanguage,
+        modelClass: NativeLanguage.model,
         join: {
           from: 'students.NativeLanguageID',
           to: 'nativeLanguages.NativeLanguageID'
@@ -31,7 +31,7 @@ class Student extends Model {
 
       status: {
         relation: Model.BelongsToOneRelation,
-        modelClass: Status,
+        modelClass: Status.model,
         join: {
           from: 'students.StatusID',
           to: 'statuses.StatusID'
@@ -40,7 +40,7 @@ class Student extends Model {
 
       statusUpdates: {
         relation: Model.HasManyRelation,
-        modelClass: StatusUpdate,
+        modelClass: StatusUpdate.model,
         join: {
           from: 'students.StudentID',
           to: 'statusUpdates.StudentID'

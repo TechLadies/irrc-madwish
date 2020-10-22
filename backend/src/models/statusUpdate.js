@@ -17,7 +17,7 @@ class StatusUpdate extends Model {
     return {
       student: {
         relation: Model.BelongsToOneRelation,
-        modelClass: Student,
+        modelClass: Student.model,
         join: {
           from: 'statusUpdates.StudentID',
           to: 'students.StudentID'
@@ -26,7 +26,7 @@ class StatusUpdate extends Model {
 
       previousStatus: {
         relation: Model.BelongsToOneRelation,
-        modelClass: Status,
+        modelClass: Status.model,
         join: {
           from: 'statusUpdates.PreviousStatusID',
           to: 'statuses.StatusID'
@@ -35,7 +35,7 @@ class StatusUpdate extends Model {
 
       nextStatus: {
         relation: Model.BelongsToOneRelation,
-        modelClass: Status,
+        modelClass: Status.model,
         join: {
           from: 'statusUpdates.NextStatusID',
           to: 'statuses.StatusID'

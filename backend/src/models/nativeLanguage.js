@@ -16,7 +16,7 @@ class NativeLanguage extends Model {
     return {
       students: {
         relation: Model.HasManyRelation,
-        modelClass: Student,
+        modelClass: Student.model,
         join: {
           from: 'nativeLanguages.NativeLanguageID',
           to: 'students.NativeLanguageID'

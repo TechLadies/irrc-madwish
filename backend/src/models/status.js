@@ -16,7 +16,7 @@ class Status extends Model {
     return {
       students: {
         relation: Model.HasManyRelation,
-        modelClass: Student,
+        modelClass: Student.model,
         join: {
           from: 'statuses.StatusID',
           to: 'students.StatusID'

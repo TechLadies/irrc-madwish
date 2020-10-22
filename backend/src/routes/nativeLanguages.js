@@ -1,7 +1,7 @@
 
 const express = require('express')
 const router = express.Router()
-const debug = require('debug')('app:nativeLanguages')
+//const debug = require('debug')('app:nativeLanguages')
 const db = require('../models/index')
 const nativeLanguages = require('../helpers/nativeLanguages')
 
@@ -9,8 +9,6 @@ const { UniqueViolationError } = require('objection')
 
 /* GET nativeLanguages listing. */
 router.get('/', async (req, res) => {
-  debug('Hello World!')
-
   const nativeLanguages = await db.NativeLanguage.query().select('NativeLanguageID', 'NativeLanguage')
   res.json(nativeLanguages)
 })

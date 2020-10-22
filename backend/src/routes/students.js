@@ -1,7 +1,7 @@
 
 const express = require('express')
 const router = express.Router()
-const debug = require('debug')('app:students')
+//const debug = require('debug')('app:students')
 const db = require('../models/index')
 const students = require('../helpers/students')
 
@@ -9,8 +9,7 @@ const { UniqueViolationError } = require('objection')
 
 /* GET students listing. */
 router.get('/', async (req, res) => {
-  debug('Hello World!')
-
+  //debug('Hello World!')
   const students = await db.Student.query().select('FirstName', 'LastName')
   res.json(students)
 })
