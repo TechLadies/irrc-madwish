@@ -6,18 +6,15 @@
 
 <script>
 import Sidebar from './components/Sidebar.vue'
-
 const status = [
   { id: 1, label: 'Screening', to: '/screening', active: false },
   { id: 2, label: 'Matching', to: '/matching', active: false },
-  { id: 3, label: 'Matched', to: '/matched', active: false }
+  { id: 3, label: 'Matched', to: '/matched', active: false },
 ]
-
 const profiles = [
   { id: 4, label: 'Students', to: '/students', active: false },
   { id: 5, label: 'Teachers', to: '/teachers', active: false  },
 ]
-
 export default {
   name: 'App',
   components: {
@@ -30,7 +27,7 @@ export default {
   },
   methods: {
     createNew() {
-      console.log('Create New Here')
+      this.$router.push({ path: 'new' })
     }
   }
 }
