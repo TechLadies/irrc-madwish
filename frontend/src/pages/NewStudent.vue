@@ -291,7 +291,7 @@ html {
 .notification.is-success {
   background-color: #57A773 !important;
   font: #fff;
-  margin-left: 300px;
+  margin-left: 100px;
   padding: 15px;
   border-radius: 32px;
   text-align: center;
@@ -302,7 +302,7 @@ html {
 .notification.is-danger {
   background-color: #C33715 !important;
   font: #fff;
-  margin-left: 300px;
+  margin-left: 100px;
   padding: 15px;
   border-radius: 32px;
   text-align: center;
