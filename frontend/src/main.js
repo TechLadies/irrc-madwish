@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 import App from './App.vue'
 import Buefy from 'buefy'
@@ -6,8 +7,8 @@ import router from "./router.js"
 
 Vue.use(Buefy)
 new Vue({ 
-  el: '#app',
   router,
+  el: '#app',
   components: {
     App
   },
