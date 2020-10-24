@@ -1,28 +1,26 @@
 <template>
   <div class="status-container">
     <div class="card">
-      <div class="card-content">
-        <div class="card-status-details">
-          <div class="content">
-            <div class="content-title">STATUS</div>
-            <b-taglist>
-              <b-tag type="is-success is-light" size="is-large"
-                >&#9679; Matched</b-tag
-              >
-            </b-taglist>
-          </div>
-          <div class="content">
-            <div class="content-title">MATCHED TO TEACHER</div>
-            <p>{{ teacherName }}</p>
-          </div>
-        </div>
-
+      <div class="card-status-details">
         <div class="content">
-          <div class="content-title">ACTION</div>
-          <div class="buttons">
-            <Button label="Drop Out" />
-            <Button label="View Match" solid />
-          </div>
+          <div class="content-title">STATUS</div>
+          <b-taglist>
+            <b-tag type="is-success is-light" size="is-medium"
+              >&#9679; Matched</b-tag
+            >
+          </b-taglist>
+        </div>
+        <div class="content">
+          <div class="content-title">MATCHED TO TEACHER</div>
+          <p>{{ teacherName }}</p>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="content-title">ACTION</div>
+        <div class="buttons">
+          <Button label="Drop Out" />
+          <Button label="View Match" solid />
         </div>
       </div>
     </div>
@@ -46,15 +44,8 @@ export default {
 </script>
 
 <style scoped>
-.status-container {
-  width: 448px;
-  height: 228px;
-}
 .status-container .card {
   border-radius: 4px;
-}
-.card-content {
-  padding: 32px;
 }
 .card-status-details {
   display: flex;
