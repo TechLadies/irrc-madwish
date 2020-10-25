@@ -2,7 +2,7 @@
 const express = require('express')
 const router = express.Router()
 // const debug = require('debug')('app:students')
-const db = require('../models/index')
+//const db = require('../models/index')
 const students = require('../helpers/students')
 
 const { UniqueViolationError } = require('objection')
@@ -11,10 +11,10 @@ const { NotFoundError } = require('objection')
 /* GET students listing. */
 router.get('/', async (req, res) => {
   const result = await students.getAllStudents()
- 
+
   // handle error
   if (result.err) {
-    //console.log('entered result.err')
+    // console.log('entered result.err')
     const err = result.err
     res.status(500).send({
       message: err.message,
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
   res.json(result)
 })
 
- /* GET student by ID */
+/* GET student by ID */
 router.get('/:id', async (req, res) => {
   const result = await students.getStudentById(req.params.id)
   // console.log(result.err)
@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
 
   // handle error
   if (result.err) {
-    //console.log('entered result.err')
+    // console.log('entered result.err')
     const err = result.err
     res.status(500).send({
       message: err.message,
@@ -56,7 +56,6 @@ router.get('/:id', async (req, res) => {
 
   res.json(result)
 })
-
 
 /* POST students listing */
 router.post('/', async (req, res) => {
@@ -120,4 +119,3 @@ router.patch('/:id', async (req, res) => {
 })
 
 module.exports = router
-
