@@ -2,7 +2,7 @@
 const express = require('express')
 const router = express.Router()
 // const debug = require('debug')('app:students')
-//const db = require('../models/index')
+// const db = require('../models/index')
 const students = require('../helpers/students')
 
 const { UniqueViolationError } = require('objection')

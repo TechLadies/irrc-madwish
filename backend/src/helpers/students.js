@@ -8,14 +8,14 @@ exports.getAllStudents = async function () {
   } catch (err) {
     return { err }
   }
-} 
+}
 
 exports.getStudentById = async function (id) {
   try {
     const student = await db.Student.query()
       .select()
       .where('StudentID', id)
-      return student  // return student[0] || 'Not found'
+    return student // return student[0] || 'Not found'
   } catch (err) {
     return { err }
   }
@@ -44,10 +44,10 @@ exports.patchStudent = async function (id, patchStudent) {
   }
 }
 
-exports.getStatusByStudentId = async function (studentID){
+exports.getStatusByStudentId = async function (studentID) {
   try {
     // Note that there is no `await` here. This query does not get executed.
-    const studentSubQuery = db.Student.query().where('StudentID', studentID);
+    const studentSubQuery = db.Student.query().where('StudentID', studentID)
 
     // This is the only executed query in this example.
     const status = await db.Student.relatedQuery('status')
