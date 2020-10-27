@@ -13,7 +13,7 @@
         <div class="content">
           <div class="content-title">ACTION</div>
           <div class="buttons">
-            <Button label="Drop Out" />
+            <Button @click.native="unmatchedToDroppedOut" label="Drop Out" />
             <Button label="Select Match" solid />
           </div>
         </div>
@@ -29,6 +29,49 @@ export default {
   components: {
     Button,
   },
+  methods: {   
+    unmatchedToDroppedOut(studentID) {
+      // ToDo: Dummy studentID to be removed later
+      studentID=1
+       
+      // PATCH student
+      const studentRequestOptions = {
+        method: "PATCH",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({StudentID: studentID, StatusID: 4})
+      }
+      
+      fetch("http://localhost:3001/students/" + studentID, studentRequestOptions)
+        .then(
+          function(response) {
+            // If PATCH fails, return
+            if(response.status !== 200) {
+              return;
+            }
+          }
+        )
+
+      // POST statusUpdate
+      const statusUpdateRequestOptions = {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          StudentID: studentID,
+          PreviousStatusID: 2,
+          NextStatusID: 4,
+          UpdatedBy: "IRRCAdmin"
+        })
+      }
+      fetch("http://localhost:3001/statusUpdates", statusUpdateRequestOptions)
+        .then(response => response.json())
+    }
+  }
 };
 </script>
 
