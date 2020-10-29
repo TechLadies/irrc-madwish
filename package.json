@@ -4,10 +4,10 @@
   "description": "This is a student-teacher matching application made for the MAD WISH initiative. MAD WISH pairs migrant workers in Singapore with volunteer English-language mentors. It is an initiative by [It's Raining Raincoats](https://www.facebook.com/itsrainingraincoats/).",
   "main": "index.js",
   "scripts": {
-    "install.frontend": "yarn --cwd frontend install",
-    "install.backend": "yarn --cwd backend install",
-    "postinstall": "yarn clean && concurrently \"yarn install.frontend\" \"yarn install.backend\"",
-    "serve": "concurrently \"yarn --cwd frontend serve\"",
+    "install.frontend": "npm --prefix frontend install",
+    "install.backend": "npm --prefix backend install",
+    "postinstall": "npm run clean && concurrently \"npm run install.frontend\" \"npm run install.backend\"",
+    "serve": "concurrently \"npm run --prefix frontend serve\"",
     "clean": "concurrently \"rm -rf frontend/node_modules\"  \"rm -rf backend/node_modules\""
   },
   "repository": {
