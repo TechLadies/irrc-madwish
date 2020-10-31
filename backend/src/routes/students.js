@@ -33,7 +33,7 @@ router.get('/:id', async (req, res) => {
   // console.log(result.err)
 
   // if student not found
-  if (JSON.stringify(result) === '[]') {
+  if (result.length === 0) {
     res.status(409).send({
       message: 'StudentNotFound',
       type: 'StudentNotFound',
@@ -124,7 +124,7 @@ router.get('/:id/status', async (req, res) => {
   // console.log(result.err)
 
   // if student not found
-  if (JSON.stringify(result) === '[]') {
+  if (result.length === 0) {
     res.status(409).send({
       message: 'StudentNotFound',
       type: 'StudentNotFound',
