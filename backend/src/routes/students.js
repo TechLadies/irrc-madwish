@@ -118,4 +118,34 @@ router.patch('/:id', async (req, res) => {
   res.status(200).json(result)
 })
 
+/* GET status by StudentID */
+router.get('/:id/status', async (req, res) => {
+  const result = await students.getStatusByStudentId(req.params.id)
+  // console.log(result.err)
+
+  // if student not found
+  if (JSON.stringify(result) === '[]') {
+    res.status(409).send({
+      message: 'StudentNotFound',
+      type: 'StudentNotFound',
+      data: {}
+    })
+    return
+  }
+
+  // handle error
+  if (result.err) {
+    // console.log('entered result.err')
+    const err = result.err
+    res.status(500).send({
+      message: err.message,
+      type: 'UnknownError',
+      data: {}
+    })
+    return
+  }
+
+  res.json(result)
+})
+
 module.exports = router
