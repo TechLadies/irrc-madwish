@@ -22,6 +22,7 @@ const router = new VueRouter({
   hash: false,
   routes: [
 <<<<<<< HEAD
+<<<<<<< HEAD
     { path: '/', component: HelloWorld  },
     { path: '/screening', component: Screening  },
     { path: '/matching', component: Matching  },
@@ -36,6 +37,14 @@ const router = new VueRouter({
     { path: "/matching", component: Matching },
     { path: "/student/:id", component: StudentProfile },
     { path: "/student/:id/edit", HelloWorld }
+=======
+    { path: "/", component: HelloWorld},
+    { path: "/screening", component: Screening },
+    { path: "/matching", component: Matching },
+    { path: "/student/:id", component: StudentProfile },
+    { path: "/student/:id/edit", component: EditStudent },
+    { path: "/new", component: NewStudent },
+>>>>>>> added route and component for EditStudent
   ],
 });
 >>>>>>> added route for EditStudent
