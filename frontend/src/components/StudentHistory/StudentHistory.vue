@@ -1,53 +1,47 @@
-
 <template>
-    <div class="card">
-        <header> HISTORY </header>
-        <Timeline :items="items"></Timeline>
-    </div>
+  <div class="card">
+    <header>HISTORY</header>
+    <Timeline :items="items"></Timeline>
+  </div>
 </template>
 
 <script>
-import Timeline from "./Timeline.vue"
+import Timeline from "./Timeline.vue";
 export default {
-    name: 'StudentHistory',
-    components: {
-        Timeline
+  name: "StudentHistory",
+  components: {
+    Timeline,
+  },
+  props: {
+    items: {
+      type: Array,
+      default: () => [],
+      /*
+       * item: { date: Date, description: String, status: Number }
+       */
     },
-    props: {
-        items: {
-            type: Array,
-            default: () => []
-            /*
-            * item: { date: Date, description: String, status: Number }
-            */ 
-        }
-    },
-}
-    
+  },
+};
 </script>
 
 <style>
 .card {
-    position:absolute;
-    width: 448px;
-    height: 600px;
-    padding: 32px;
+  padding: 32px;
 }
 header {
-    margin-bottom: 12px;
+  margin-bottom: 12px;
 
-    /* Roboto 12PX REGULAR */
+  /* Roboto 12PX REGULAR */
 
-    font-family: Roboto, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 18px;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
 
-    /* Dark Grey */
-    color: #59666E;
-    }
+  /* Dark Grey */
+  color: #59666e;
+}
 </style>
