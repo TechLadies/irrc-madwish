@@ -19,4 +19,15 @@ module.exports = {
       database: "irrc_test",
     },
   },
+  production: {
+    client: "pg",
+    useNullAsDefault: true,
+    connection: process.env.DATABASE_URL,
+    migrations: {
+      directory: "./migrations",
+    },
+    seeds: {
+      directory: "./seeds",
+    },
+  },
 };
