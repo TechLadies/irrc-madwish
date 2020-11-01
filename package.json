@@ -6,6 +6,8 @@
   "scripts": {
     "install.frontend": "npm --prefix frontend install",
     "install.backend": "npm --prefix backend install",
+    "build": "npm run --prefix frontend build",
+    "start": "npm run --prefix backend db:migrate && npm run --prefix backend start",
     "postinstall": "npm run clean && concurrently \"npm run install.frontend\" \"npm run install.backend\"",
     "serve": "concurrently \"npm --prefix frontend serve\"",
     "clean": "concurrently \"rm -rf frontend/node_modules\"  \"rm -rf backend/node_modules\""
