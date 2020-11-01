@@ -8,7 +8,7 @@
       <!--start of table -->
       <section>
           <b-table 
-            :data="data"
+            :data="tableData"
             :sort-icon="sortIcon"
             :sort-icon-size="sortIconSize"
             :sortDirection="sortDirection">
@@ -74,7 +74,8 @@
                   </template>
                   <template v-slot="props">
                       <span :class="['nameStyle']">
-                          {{ props.row.FirstName }} {{ props.row.LastName }} 
+                          <!-- {{ props.row.FirstName }} {{ props.row.LastName }} -->
+                          {{ props.row.FullName }}
                       </span> 
                       <br> 
                   </template>
@@ -97,21 +98,37 @@
                           size="is-small" />
                   </template>
                   <template v-slot="props">
-                      <!-- Need to either pipe in status as string, or pipe in statusID but find some way to convert it to string-->
-                      <span :class="
+                      <span v-if="props.row.StatusID == 1" :class="
                               [
-                                  'tag',
-                                  {'is-info': props.row.StatusID === 1},
-                                  {'is-success':  props.row.StatusID === 2},
-                                  {'is-danger':  props.row.StatusID === 3},
-                                  {'is-warning':  props.row.StatusID === 4},
+                                  'tag is-info',
                               ]">
-                          <li v-if="props.row.StatusID == 1">Screened</li>
-                          <li v-if="props.row.StatusID == 2">Matched</li>
-                          <li v-if="props.row.StatusID == 3">Dropped Out</li>
-                          <li v-if="props.row.StatusID == 4">Unmatched</li>
+                          <li>Screened</li>
+                      </span> 
+
+                      <span v-if="props.row.StatusID == 2" :class="
+                              [
+                                  'tag is-success',
+                              ]">
+                          <li>Matched</li>
+                      </span> 
+
+                      <span v-if="props.row.StatusID == 3" :class="
+                              [
+                                  'tag is-danger',
+                              ]">
+                          <li>Dropped Out</li>
+                      </span> 
+
+                      <span v-if="props.row.StatusID == 4" :class="
+                              [
+                                  'tag is-warning',
+                              ]">
+                          <li>Unmatched</li>
                       </span> 
                   </template>
+
+
+
                   </b-table-column>
               </template>
 
@@ -148,6 +165,23 @@
 // Placeholder for API //
 // const API_URL = "http://localhost:3001/students";
 
+import PageHeader from '../components/PageHeader.vue'
+import Page from '../components/Page.vue'
+
+
+function getFullName(data){
+  var FullName = [data.FirstName,data.LastName].join(" ");
+  return {
+    'StudentID': data.StudentID,
+    'FullName': FullName,
+    'created_at': data.created_at,
+    'StatusID': data.StatusID,
+    'PhoneNumber': data.PhoneNumber,
+  };
+}
+
+// var data = data.data.map(getFullName);
+
 
 export default {
         data() {
@@ -158,8 +192,9 @@ export default {
                     { 'StudentID': 23456, 'FirstName': 'John', 'LastName': 'Jacobs', 'created_at': '2020-10-25T06:18:24.738Z', 'StatusID': 2, 'PhoneNumber': '91312231' },
                     { 'StudentID': 31232, 'FirstName': 'Tina', 'LastName': 'Gilbert', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102'},
                     { 'StudentID': 41231, 'FirstName': 'Clarence', 'LastName': 'Flores', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID': 4,  'PhoneNumber': '93141234' },
-                    { 'StudentID': 53212, 'FirstName': 'Anne', 'LastName': 'Lee', 'created_at': '2020-10-27T06:18:24.738Z', 'StatusID': 1,  'PhoneNumber': '81230532' }
+                    { 'StudentID': 53212, 'FirstName': 'Anne', 'LastName': 'Lee', 'created_at': '2020-10-27T06:18:24.738Z', 'StatusID': 1,  'PhoneNumber': '81230532' },
                 ],
+                selected: null,
                 sortIcon: 'arrow-up',
                 sortIconSize: 'is-small',
                 sortDirection: 'asc',
@@ -175,7 +210,7 @@ export default {
                         searchable: true,
                     },
                     {
-                        field: 'FirstName',
+                        field: 'FullName',
                         label: 'Student Name',
                         searchable: true,
                     },                               
@@ -192,20 +227,34 @@ export default {
                 ]
             }
         },
-        computed: {
-          fullname: function(){
-            return this.FirstName + ' ' + this.LastName;
+        computed:{
+          tableData(){
+            return this.data.map(student => {
+              return {
+                StudentID: `${student.StudentID}`,
+                FullName: `${student.FirstName} ${student.LastName}`,
+                created_at: `${student.created_at}`,
+                StatusID: `${student.StatusID}`,
+                PhoneNumber: `${student.PhoneNumber}`  
+              }                
+            })
           }
         },
-        // Placeholder for API
-        mounted() {
-          fetch(API_URL)
-            .then(response => response.json())
-            .then(result => {
-              console.log(result)
-              this.data = result;
-            });
-        }        
+        components:{
+          Page,
+          PageHeader
+        },        
+
+        // // Placeholder for API
+        // mounted() {
+        //   fetch(API_URL)
+        //     .then(response => response.json())
+        //     .then(result => {
+        //       console.log(result)
+        //       this.data = result;
+        //     });
+        // }
+      
     }   
 </script>
 
