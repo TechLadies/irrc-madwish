@@ -1,56 +1,54 @@
 <template>
   <div class="card">
-    <div class="card-content">
-      <div class="edit-container">Edit</div>
-      <div class="student-grid">
-        <img src="../assets/images/student.png" />
-        <div class="student-label">Student</div>
-        <div class="student-main">{{ studentInfo.studentName }}</div>
-        <div class="student-main">{{ studentInfo.studentContact }}</div>
-        <div>
-          <div class="student-label-small padding-large">Date Joined</div>
-          <div class="student-detail">{{ studentInfo.dateJoined }}</div>
+    <div class="edit-container">Edit</div>
+    <div class="student-grid">
+      <img src="../assets/images/student.png" />
+      <div class="student-label">Student</div>
+      <div class="student-main">{{ studentInfo.studentName }}</div>
+      <div class="student-main">{{ studentInfo.studentContact }}</div>
+      <div>
+        <div class="student-label-small padding-large">Date Joined</div>
+        <div class="student-detail">{{ studentInfo.dateJoined }}</div>
+      </div>
+      <div>
+        <div class="student-label-small padding-large">Source</div>
+        <div class="student-detail">{{ studentInfo.source }}</div>
+      </div>
+      <div>
+        <div class="student-label-small padding-small">Native Language</div>
+        <div class="student-detail">{{ studentInfo.nativeLanguage }}</div>
+      </div>
+      <div>
+        <div class="student-label-small padding-small">
+          English Proficiency
         </div>
         <div>
-          <div class="student-label-small padding-large">Source</div>
-          <div class="student-detail">{{ studentInfo.source }}</div>
-        </div>
-        <div>
-          <div class="student-label-small padding-small">Native Language</div>
-          <div class="student-detail">{{ studentInfo.nativeLanguage }}</div>
-        </div>
-        <div>
-          <div class="student-label-small padding-small">
-            English Proficiency
-          </div>
-          <div>
-            <b-select
-              v-if="studentInfo.status === 'Screening'"
-              placeholder="Select Proficiency"
+          <b-select
+            v-if="studentInfo.status === 'Screening'"
+            placeholder="Select Proficiency"
+          >
+            <option value="No">No - Unable to understand at all</option>
+            <option value="Little"
+              >Little - Able to understand simple words</option
             >
-              <option value="No">No - Unable to understand at all</option>
-              <option value="Little"
-                >Little - Able to understand simple words</option
-              >
-              <option value="Simple"
-                >Simple - Able to speak full sentences</option
-              >
-              <option value="Intermediate"
-                >Intermediate - Able to carry conversations</option
-              >
-            </b-select>
-            <div v-else class="student-detail">
-              {{ studentInfo.proficiencyLevel }}
-            </div>
+            <option value="Simple"
+              >Simple - Able to speak full sentences</option
+            >
+            <option value="Intermediate"
+              >Intermediate - Able to carry conversations</option
+            >
+          </b-select>
+          <div v-else class="student-detail">
+            {{ studentInfo.proficiencyLevel }}
           </div>
         </div>
       </div>
+    </div>
 
-      <hr />
-      <div class="notes-label">Notes</div>
-      <div class="notes-text">
-        {{ studentInfo.notes }}
-      </div>
+    <hr />
+    <div class="notes-label">Notes</div>
+    <div class="notes-text">
+      {{ studentInfo.notes }}
     </div>
   </div>
 </template>
@@ -79,6 +77,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card {
+  width: 100%;
+}
 .edit-container {
   text-align: right;
   color: #00488f;
