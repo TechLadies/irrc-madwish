@@ -30,27 +30,25 @@ router.get('/', async (req, res) => {
 /* GET student by ID */
 router.get('/:id', async (req, res) => {
   const result = await students.getStudentById(req.params.id)
-  // console.log(result.err)
-
-  // if student not found
-  if (result.length === 0) {
-    res.status(409).send({
-      message: 'StudentNotFound',
-      type: 'StudentNotFound',
-      data: {}
-    })
-    return
-  }
+  //  console.log(result.err)
 
   // handle error
   if (result.err) {
-    // console.log('entered result.err')
     const err = result.err
-    res.status(500).send({
-      message: err.message,
-      type: 'UnknownError',
-      data: {}
-    })
+    if (err instanceof NotFoundError) {
+      res.status(409).send({
+        message: err.message,
+        type: 'StudentNotFound',
+        data: {}
+      })
+    } else {
+      res.status(500).send({
+        message: err.message,
+        type: 'UnknownError',
+        data: {}
+      })
+    }
+
     return
   }
 
