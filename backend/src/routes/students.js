@@ -2,11 +2,7 @@
 const express = require('express')
 const router = express.Router()
 // const debug = require('debug')('app:students')
-<<<<<<< HEAD
-const db = require('../models/index')
-=======
 // const db = require('../models/index')
->>>>>>> xuanjane/status-integration
 const students = require('../helpers/students')
 
 const { UniqueViolationError } = require('objection')
@@ -14,11 +10,6 @@ const { NotFoundError } = require('objection')
 
 /* GET students listing. */
 router.get('/', async (req, res) => {
-<<<<<<< HEAD
-  // debug('Hello World!')
-  const students = await db.Student.query().select('FirstName', 'LastName')
-  res.json(students)
-=======
   const result = await students.getAllStudents()
 
   // handle error
@@ -64,7 +55,6 @@ router.get('/:id', async (req, res) => {
   }
 
   res.json(result)
->>>>>>> xuanjane/status-integration
 })
 
 /* POST students listing */

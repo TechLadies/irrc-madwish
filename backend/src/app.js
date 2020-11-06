@@ -18,15 +18,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-<<<<<<< HEAD
 app.use('/api', indexRouter)
 app.use('/api/students', studentsRouter)
 app.use('/api/nativeLanguages', nativeLanguagesRouter)
-=======
-app.use('/', indexRouter)
-app.use('/students', studentsRouter)
-app.use('/nativeLanguages', nativeLanguagesRouter)
-app.use('/statusUpdates', statusUpdatesRouter)
->>>>>>> xuanjane/status-integration
+app.use('/api/statusUpdates', statusUpdatesRouter)
 
 module.exports = app
