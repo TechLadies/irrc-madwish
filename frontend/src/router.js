@@ -8,6 +8,7 @@ const Screening = () => import("./pages/Screening.vue");
 const Matching = () => import("./pages/Matching.vue");
 const StudentProfile = () => import("./pages/StudentProfile.vue");
 const NewStudent = () => import("./pages/NewStudent.vue");
+const AllStudents = () => import('./pages/Students.vue');
 
 const router = new VueRouter({
   mode: "history",
@@ -18,6 +19,7 @@ const router = new VueRouter({
     { path: "/matching", component: Matching },
     { path: "/student/:id", component: StudentProfile },
     { path: "/new", component: NewStudent },
+    { path: "/students", component: AllStudents },  
   ],
 });
 
