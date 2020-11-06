@@ -162,6 +162,7 @@ export default {
   
   methods: {
     createStudent(){
+      
        const studentCreate = {
         method: "POST",
         headers: {
@@ -169,17 +170,17 @@ export default {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          StudentID: 2,
           PhoneNumber: this.PhoneNumber,
           FirstName: this.name,
-          LastName: 'Testing',
+          LastName: 'Testing123',
           Source: this.source,
-          NativeLanguageID: 1, // hardcoded as I haven't figured out how to transform string e.g. Bengali to int 
-          EnglishProficiency: 'Basic',
+          NativeLanguageID: 1, // hardcoded as I haven't figured out how to transform string as per the student model e.g. Bengali to int 
+          EnglishProficiency: 'Simple', // must be No, Little, Simple or Intermediate
           Notes: this.Notes,
           StatusID: 1, //Screening
         })
       }
+        console.log(this.name, this.source, this.Notes)
       fetch("/api/students", studentCreate)
         .then(response => response.json()) 
       //Pop-up notification that new student has been added
