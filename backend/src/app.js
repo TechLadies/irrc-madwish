@@ -17,8 +17,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-app.use('/', indexRouter)
-app.use('/students', studentsRouter)
-app.use('/nativeLanguages', nativeLanguagesRouter)
+app.use('/api', indexRouter)
+app.use('/api/students', studentsRouter)
+app.use('/api/nativeLanguages', nativeLanguagesRouter)
 
 module.exports = app
