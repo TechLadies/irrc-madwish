@@ -24,7 +24,7 @@
         </div>
         <!-- Start of 2nd column (all input fields) --> 
         <div class="column is-two-thirds">
-          <form method="POST" action ="/api/students" @submit>
+          <form method="POST" action ="/api/students" @submit.prevent="createStudent">
           <!--.prevent prevents the default submit behaviour and executes createStudent instead -->
             <section>
                 <b-field label="Name" class="half-width">
@@ -162,26 +162,26 @@ export default {
   
   methods: {
     createStudent(){
-      //  const studentCreate = {
-      //   method: "POST",
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({
-      //     StudentID: 2, // dummy ID, need to create new ID.
-      //     FirstName: name,
-      //     LastName: '',
-      //     PhoneNumber: '', 
-      //     Source: source,
-      //     NativeLanguage: 1, // hardcoded as I haven't figured out how to transform string e.g. Bengali to int 
-      //     EnglishProficiency: EnglishProficiency,
-      //     Notes: Notes,
-      //     StatusID: 1, //Screening
-      //   })
-      // }
-      // fetch("/api", studentCreate)
-      //   .then(response => response.json()) 
+       const studentCreate = {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          StudentID: 2,
+          PhoneNumber: this.PhoneNumber,
+          FirstName: this.name,
+          LastName: 'Testing',
+          Source: this.source,
+          NativeLanguageID: 1, // hardcoded as I haven't figured out how to transform string e.g. Bengali to int 
+          EnglishProficiency: 'Basic',
+          Notes: this.Notes,
+          StatusID: 1, //Screening
+        })
+      }
+      fetch("/api/students", studentCreate)
+        .then(response => response.json()) 
       //Pop-up notification that new student has been added
       this.$buefy.notification.open({
         message: 'New student added. <u>View profile</u>!',
