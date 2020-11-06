@@ -4,7 +4,6 @@
     <div class="container">
       <div class="Title">
           <b class="newstudent">New Student</b>
-          <p> Hi {{student}}</p>
         <!-- upload button --> 
           <b-field class="file is-primary is-right" :class="{'has-name': !!file}">
               <b-upload v-model="file" class="file-label">
@@ -25,67 +24,69 @@
         </div>
         <!-- Start of 2nd column (all input fields) --> 
         <div class="column is-two-thirds">
-          <section>
-              <b-field label="Name" class="half-width">
-                  <b-input v-model="name"></b-input>
-              </b-field>
-
-              <b-field label="Phone Number" class="half-width">
-                  <b-input type="PhoneNumber"
-                      value="">
-                  </b-input>
-              </b-field>
-
-              <b-field label="Source" class="half-width">
-                  <b-autocomplete
-                      v-model="source"
-                      ref="sourceComplete"
-                      :data="filteredSourceDataArray"
-                      placeholder="Optional"
-                      @select="option => selected = sourceOption">
-                      <template slot="header">
-                          <a @click="showAddSource">
-                              <span> Add new... </span>
-                          </a> 
-                      </template>                    
-                  </b-autocomplete>
-              </b-field>
-              <b-field grouped>
-
-                <b-field label="Native Language" class="half-width">
-                    <b-autocomplete
-                        v-model="nativeLanguage"
-                        ref="languageComplete"
-                        :languageData="filteredLanguageDataArray"
-                        placeholder="e.g. Bengali"
-                        @select="option => selected = option">
-                        <template slot="header">
-                            <a @click="showAddLanguage">
-                                <span> Add new... </span>
-                            </a> 
-                        </template>
-                    </b-autocomplete>
+          <form method="POST" action ="/api">
+            <section>
+                <b-field label="Name" class="half-width">
+                    <b-input v-model="name"></b-input>
                 </b-field>
 
+                <b-field label="Phone Number" class="half-width">
+                    <b-input type="PhoneNumber"
+                        value="">
+                    </b-input>
+                </b-field>
+
+                <b-field label="Source" class="half-width">
+                    <b-autocomplete
+                        v-model="source"
+                        ref="sourceComplete"
+                        :data="filteredSourceDataArray"
+                        placeholder="Optional"
+                        @select="option => selected = sourceOption">
+                        <template slot="header">
+                            <a @click="showAddSource">
+                                <span> Add new... </span>
+                            </a> 
+                        </template>                    
+                    </b-autocomplete>
+                </b-field>
+                <b-field grouped>
+
+                  <b-field label="Native Language" class="half-width">
+                      <b-autocomplete
+                          v-model="nativeLanguage"
+                          ref="languageComplete"
+                          :languageData="filteredLanguageDataArray"
+                          placeholder="e.g. Bengali"
+                          @select="option => selected = option">
+                          <template slot="header">
+                              <a @click="showAddLanguage">
+                                  <span> Add new... </span>
+                              </a> 
+                          </template>
+                      </b-autocomplete>
+                  </b-field>
+
+          
+                  <b-field label="English Proficiency" class="half-width">
+                      <b-select placeholder="Select one" expanded>
+                        <option value = "1">No (Unable to understand at all)</option>
+                        <option value = "2">Little (Able to understand simple words)</option>
+                        <option value = "3">Simple (Able to speak full sentences)</option>
+                        <option value = "4">Intermediate (Able to understand simple words)</option>
+                      </b-select>
+                  </b-field>  
+
+                </b-field>
+                
         
-                <b-field label="English Proficiency" class="half-width">
-                    <b-select placeholder="Select one" expanded>
-                      <option value = "1">No (Unable to understand at all)</option>
-                      <option value = "2">Little (Able to understand simple words)</option>
-                      <option value = "3">Simple (Able to speak full sentences)</option>
-                      <option value = "4">Intermediate (Able to understand simple words)</option>
-                    </b-select>
-                </b-field>  
+                <b-field label="Notes" class="half-width">
+                    <b-input maxlength="200" type="textarea" placeholder="Optional"></b-input>
+                </b-field>
 
-              </b-field>
-              
-      
-              <b-field label="Notes" class="half-width">
-                  <b-input maxlength="200" type="textarea" placeholder="Optional"></b-input>
-              </b-field>
-
-          </section>
-          <b-button class="dark-blue" expanded @click="createStudent">Create Student</b-button>
+            </section>
+            <b-button class="dark-blue" input type="submit" expanded @click="createStudent">Create Student</b-button>
+          </form>
         </div>
       </div>
     </div>  
@@ -125,8 +126,7 @@ export default {
           nativeLanguage: '',
           source:'',
           selected: null,
-          file: null,
-          student: [],
+          file: null
       }
   },
 
@@ -158,12 +158,8 @@ export default {
 
   
   methods: {
-    
     createStudent(){
-      fetch("/api",{
-        method: 'PUT',
-        body 
-      })
+      //Pop-up notification that new student has been added
       this.$buefy.notification.open({
         message: 'New student added. <u>View profile</u>!',
         duration: 5000,
