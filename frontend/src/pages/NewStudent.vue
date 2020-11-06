@@ -24,7 +24,7 @@
         </div>
         <!-- Start of 2nd column (all input fields) --> 
         <div class="column is-two-thirds">
-          <form method="POST" action ="/api" @submit.prevent="createStudent">
+          <form method="POST" action ="/api/students" @submit>
           <!--.prevent prevents the default submit behaviour and executes createStudent instead -->
             <section>
                 <b-field label="Name" class="half-width">
@@ -32,7 +32,7 @@
                 </b-field>
 
                 <b-field label="Phone Number" class="half-width">
-                    <b-input type="string" name="PhoneNumber"
+                    <b-input v-model="PhoneNumber" type="string"
                         value="">
                     </b-input>
                 </b-field>
@@ -70,7 +70,7 @@
 
           
                   <b-field label="English Proficiency" class="half-width">
-                      <b-select name="EnglishProficiency" placeholder="Select one" expanded>
+                      <b-select v-model="EnglishProficiency" placeholder="Select one" expanded>
                         <option value = "1">No (Unable to understand at all)</option>
                         <option value = "2">Little (Able to understand simple words)</option>
                         <option value = "3">Simple (Able to speak full sentences)</option>
@@ -79,10 +79,9 @@
                   </b-field>  
 
                 </b-field>
-                
         
                 <b-field label="Notes" class="half-width">
-                    <b-input id="Notes" maxlength="200" type="textarea" placeholder="Optional"></b-input>
+                    <b-input v-model="Notes" maxlength="200" type="textarea" placeholder="Optional"></b-input>
                 </b-field>
 
             </section>
@@ -91,7 +90,7 @@
         </div>
       </div>
     </div>  
-    
+
   </Page>    
 </template>
 
@@ -122,10 +121,11 @@ export default {
               'Source 2',
           ],
           name: '',
-          nativeLanguage: '',
           PhoneNumber: '',
           source:'',
           sourceOption: '',
+          nativeLanguage: '',
+          EnglishProficiency: '',
           selected: null,
           file: null,
           Notes: ''
@@ -147,40 +147,41 @@ export default {
               .indexOf(this.nativeLanguage.toLowerCase()) >= 0
             })
     },
-      filteredSourceDataArray() {
+    filteredSourceDataArray() {
         return this.sourceData.filter((sourceOption) => {
             return sourceOption
               .toString()
               .toLowerCase()
               .indexOf(this.source.toLowerCase()) >= 0
             })
-    }  
+    },
+    
   },
 
 
   
   methods: {
     createStudent(){
-       const studentCreate = {
-        method: "POST",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          StudentID: 2, // dummy ID, need to create new ID.
-          FirstName: name,
-          LastName: '',
-          PhoneNumber: PhoneNumber, 
-          Source: sourceOption,
-          NativeLanguage: 1, // hardcoded as I haven't figured out how to transform string e.g. Bengali to int 
-          EnglishProficiency: EnglishProficiency,
-          Notes: Notes,
-          StatusID: 1, //Screening
-        })
-      }
-      fetch("/api", studentCreate)
-        .then(response => response.json()) 
+      //  const studentCreate = {
+      //   method: "POST",
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify({
+      //     StudentID: 2, // dummy ID, need to create new ID.
+      //     FirstName: name,
+      //     LastName: '',
+      //     PhoneNumber: '', 
+      //     Source: source,
+      //     NativeLanguage: 1, // hardcoded as I haven't figured out how to transform string e.g. Bengali to int 
+      //     EnglishProficiency: EnglishProficiency,
+      //     Notes: Notes,
+      //     StatusID: 1, //Screening
+      //   })
+      // }
+      // fetch("/api", studentCreate)
+      //   .then(response => response.json()) 
       //Pop-up notification that new student has been added
       this.$buefy.notification.open({
         message: 'New student added. <u>View profile</u>!',
