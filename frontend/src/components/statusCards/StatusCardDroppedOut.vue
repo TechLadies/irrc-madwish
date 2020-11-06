@@ -11,6 +11,7 @@
           </b-taglist>
         </div>
         <div class="content">
+<<<<<<< HEAD
           <div class="content-title">REASON</div>
           <p>{{ reason }}</p>
         </div>
@@ -19,6 +20,12 @@
         <div class="content-title">ACTION</div>
         <div class="buttons">
           <Button label="Reactivate for Matching" />
+=======
+          <div class="content-title">ACTION</div>
+          <div class="buttons">
+            <Button @click.native="droppedOutToScreening" label="Reactivate for Screening" />
+          </div>
+>>>>>>> xuanjane/status-integration
         </div>
       </div>
     </div>
@@ -38,6 +45,49 @@ export default {
       default: "No Reason Stated",
     },
   },
+  methods: {   
+    droppedOutToScreening(studentID) {
+      // ToDo: Dummy studentID to be removed later
+      studentID=1
+       
+      // PATCH student
+      const studentRequestOptions = {
+        method: "PATCH",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({StudentID: studentID, StatusID: 1})
+      }
+      
+      fetch("http://localhost:3001/students/" + studentID, studentRequestOptions)
+        .then(
+          function(response) {
+            // If PATCH fails, return
+            if(response.status !== 200) {
+              return;
+            }
+          }
+        )
+
+      // POST statusUpdate
+      const statusUpdateRequestOptions = {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          StudentID: studentID,
+          PreviousStatusID: 4,
+          NextStatusID: 1,
+          UpdatedBy: "IRRCAdmin"
+        })
+      }
+      fetch("http://localhost:3001/statusUpdates", statusUpdateRequestOptions)
+        .then(response => response.json())
+    }
+  }
 };
 </script>
 

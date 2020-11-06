@@ -1,8 +1,10 @@
 <template>
   <Page>
+    
     <div class="container">
       <div class="Title">
           <b class="newstudent">New Student</b>
+          <p> Hi {{student}}</p>
         <!-- upload button --> 
           <b-field class="file is-primary is-right" :class="{'has-name': !!file}">
               <b-upload v-model="file" class="file-label">
@@ -87,6 +89,7 @@
         </div>
       </div>
     </div>  
+    
   </Page>    
 </template>
 
@@ -123,6 +126,7 @@ export default {
           source:'',
           selected: null,
           file: null,
+          student: [],
       }
   },
 
@@ -152,8 +156,14 @@ export default {
   },
 
 
+  
   methods: {
+    
     createStudent(){
+      fetch("/api",{
+        method: 'PUT',
+        body 
+      })
       this.$buefy.notification.open({
         message: 'New student added. <u>View profile</u>!',
         duration: 5000,
