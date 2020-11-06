@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - 12
+install:
+  - "npm ci"
+script:
+  - "npm run build"
+deploy:
+  - provider: heroku
+    app: irrc-app
+    edge: true # opt in to dpl v2
+    api_key:
+      secure: azvganM1nXOrh9nOuqHDujoQ6CfyEWg3PWiaIoHbbN0y3JU73aicP1GiD6yyPH7W8fZIebPL2DmB+No8gYx0YRhpigsZtTCkPFPyM3DPkCteg1DJN4kZrzPuO05X1Sq5HCzZnshPL6TnIUO3gOx6t53BeXIZxsRjLahG6xJFohCvo9JLmlYIN9FkreH4gdkcDHAf+6Abt1PPcaieA37GTJqRdZGH7GFfzYUiS23K81mkCasBqrkgf4NxgYXOniJgBDzuSqFHWU5UKDwwyNWKEGquGSPC5WF1waT40s9Fy5AmW7JV7hQFtwzzj9Bkwe+3fCHG/Qvo7CmQ9ukUNUDCEx0LLZ0AiGUCEZV9wp/0ScTA7aagV9b4TmFLgUUgI90gGGqplY9nqRuxbu8DLC6FurDeJFrfMgLvmopRbO1UH9wv7AUZek2KmmqBleTzIvB2riU4wBP8nTalEAM1fI/fGOzT2tMiApvc//eVdVUzHBS0HGoaH1/EW/f7oWhYsYTZPGerIGKdvXHSt8E0UAbPpZ69uwEPLyQVJDC6iVvwyfREJ4PMnDee12MrsOLT+GZ7Hss8YGkxcQCRWK+3ufPAFqlpXZ2VFgXiyxsr7G7H/kTlyhd/jCwGVtwXFqrs9KkhQP2KPjADH08KB9EEpU4h99S4p6wLKhmIPtsqf/LLlZU= # Encrypted, only works in Travis CI
+    on:
+      branch: master
