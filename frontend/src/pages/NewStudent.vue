@@ -24,14 +24,15 @@
         </div>
         <!-- Start of 2nd column (all input fields) --> 
         <div class="column is-two-thirds">
-          <form method="POST" action ="/api">
+          <form method="POST" action ="/api" @submit.prevent="createStudent">
+          <!--.prevent prevents the default submit behaviour and executes createStudent instead -->
             <section>
                 <b-field label="Name" class="half-width">
-                    <b-input v-model="name"></b-input>
+                    <b-input v-model="name" name="Name"></b-input>
                 </b-field>
 
                 <b-field label="Phone Number" class="half-width">
-                    <b-input type="PhoneNumber"
+                    <b-input type="string" name="PhoneNumber"
                         value="">
                     </b-input>
                 </b-field>
@@ -69,7 +70,7 @@
 
           
                   <b-field label="English Proficiency" class="half-width">
-                      <b-select placeholder="Select one" expanded>
+                      <b-select name="EnglishProficiency" placeholder="Select one" expanded>
                         <option value = "1">No (Unable to understand at all)</option>
                         <option value = "2">Little (Able to understand simple words)</option>
                         <option value = "3">Simple (Able to speak full sentences)</option>
@@ -81,7 +82,7 @@
                 
         
                 <b-field label="Notes" class="half-width">
-                    <b-input maxlength="200" type="textarea" placeholder="Optional"></b-input>
+                    <b-input id="Notes" maxlength="200" type="textarea" placeholder="Optional"></b-input>
                 </b-field>
 
             </section>
@@ -98,13 +99,11 @@
 <script>
 
 import Page from '../components/Page.vue'
-
 export default {
   name: 'NewStudent',
     components: {
     Page,
   },
-  
 
   data() {
       return {
@@ -124,9 +123,12 @@ export default {
           ],
           name: '',
           nativeLanguage: '',
+          PhoneNumber: '',
           source:'',
+          sourceOption: '',
           selected: null,
-          file: null
+          file: null,
+          Notes: ''
       }
   },
 
@@ -159,6 +161,26 @@ export default {
   
   methods: {
     createStudent(){
+       const studentCreate = {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          StudentID: 2, // dummy ID, need to create new ID.
+          FirstName: name,
+          LastName: '',
+          PhoneNumber: PhoneNumber, 
+          Source: sourceOption,
+          NativeLanguage: 1, // hardcoded as I haven't figured out how to transform string e.g. Bengali to int 
+          EnglishProficiency: EnglishProficiency,
+          Notes: Notes,
+          StatusID: 1, //Screening
+        })
+      }
+      fetch("/api", studentCreate)
+        .then(response => response.json()) 
       //Pop-up notification that new student has been added
       this.$buefy.notification.open({
         message: 'New student added. <u>View profile</u>!',

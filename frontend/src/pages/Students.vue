@@ -163,7 +163,7 @@
 <script>
 
 // Placeholder for API //
-// const API_URL = "http://localhost:3001/students";
+const API_URL = "/api/students";
 
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
@@ -245,16 +245,15 @@ export default {
           PageHeader
         },        
 
-        // // Placeholder for API
-        // mounted() {
-        //   fetch(API_URL)
-        //     .then(response => response.json())
-        //     .then(result => {
-        //       console.log(result)
-        //       this.data = result;
-        //     });
-        // }
-      
+        // Placeholder for API
+        mounted() {
+          fetch(API_URL)
+            .then(response => response.json())
+            .then(result => {
+              console.log(result)
+              this.data = result;
+            });
+        }
     }   
 </script>
 
