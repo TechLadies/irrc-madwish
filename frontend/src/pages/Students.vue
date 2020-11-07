@@ -21,12 +21,18 @@
                     v-if="column.searchable"
                     slot="searchable"
                     slot-scope="props">
+<<<<<<< HEAD
                     <b-tooltip label="Search: YYYY-MM-DD">
+=======
+>>>>>>> 8ed84ca20742ef1aada06a1f88bed75013ab0ead
                       <b-input
                           v-model="props.filters[props.column.field]"
                           icon="magnify"
                           size="is-small" />
+<<<<<<< HEAD
                     </b-tooltip>
+=======
+>>>>>>> 8ed84ca20742ef1aada06a1f88bed75013ab0ead
                   </template>
                   <template v-slot="props">
                       <span :class="['idStyle']">
@@ -76,6 +82,10 @@
                   </template>
                   <template v-slot="props">
                       <span :class="['nameStyle']">
+<<<<<<< HEAD
+=======
+                          <!-- {{ props.row.FirstName }} {{ props.row.LastName }} -->
+>>>>>>> 8ed84ca20742ef1aada06a1f88bed75013ab0ead
                           {{ props.row.FullName }}
                       </span> 
                       <br> 
