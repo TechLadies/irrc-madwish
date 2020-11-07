@@ -162,7 +162,6 @@ export default {
   
   methods: {
     createStudent(){
-      
        const studentCreate = {
         method: "POST",
         headers: {
@@ -171,13 +170,15 @@ export default {
         },
         body: JSON.stringify({
           PhoneNumber: this.PhoneNumber,
+
+          // Replace FirstName and LastName with Name when Student Model is changed
           FirstName: this.name,
-          LastName: 'Testing123',
+          LastName: 'Hossein', // Placeholder as I haven't split Name 
           Source: this.source,
-          NativeLanguageID: 1, // hardcoded as I haven't figured out how to transform string as per the student model e.g. Bengali to int 
-          EnglishProficiency: 'Simple', // must be No, Little, Simple or Intermediate
+          NativeLanguageID: 1, // how to avoid hardcoding the languageID? can the backend process text then match to the appropriate ID? 
+          EnglishProficiency: 'Little', // must be No, Little, Simple or Intermediate. form input is int 
           Notes: this.Notes,
-          StatusID: 1, //Screening
+          StatusID: 1, //How to avoid hardcoding StatusID? Let the backend handle it?
         })
       }
         console.log(this.name, this.source, this.Notes)
