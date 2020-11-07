@@ -9,8 +9,7 @@ exports.seed = (knex) => {
         {
           StudentID: 1,
           PhoneNumber: '12345678',
-          FirstName: 'firstname',
-          LastName: 'lastname',
+          FullName: 'fullname',
           Source: 'source',
           NativeLanguageID: 1, //just edited
           EnglishProficiency: 'No',
