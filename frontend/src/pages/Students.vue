@@ -21,10 +21,12 @@
                     v-if="column.searchable"
                     slot="searchable"
                     slot-scope="props">
+                    <b-tooltip label="Search: YYYY-MM-DD">
                       <b-input
                           v-model="props.filters[props.column.field]"
                           icon="magnify"
                           size="is-small" />
+                    </b-tooltip>
                   </template>
                   <template v-slot="props">
                       <span :class="['idStyle']">
@@ -74,7 +76,6 @@
                   </template>
                   <template v-slot="props">
                       <span :class="['nameStyle']">
-                          <!-- {{ props.row.FirstName }} {{ props.row.LastName }} -->
                           {{ props.row.FullName }}
                       </span> 
                       <br> 
@@ -169,30 +170,16 @@ import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
 
 
-function getFullName(data){
-  var FullName = [data.FirstName,data.LastName].join(" ");
-  return {
-    'StudentID': data.StudentID,
-    'FullName': FullName,
-    'created_at': data.created_at,
-    'StatusID': data.StatusID,
-    'PhoneNumber': data.PhoneNumber,
-  };
-}
-
-// var data = data.data.map(getFullName);
-
-
 export default {
         data() {
             return {
                 data: [
                     //Placeholder data if you don't want to run the backend
-                    { 'StudentID': 12345, 'FirstName': 'Jesse', 'LastName': 'Simmons', 'created_at': '2020-10-24T06:18:24.738Z', 'StatusID': 1,'PhoneNumber': '91233217' },
-                    { 'StudentID': 23456, 'FirstName': 'John', 'LastName': 'Jacobs', 'created_at': '2020-10-25T06:18:24.738Z', 'StatusID': 2, 'PhoneNumber': '91312231' },
-                    { 'StudentID': 31232, 'FirstName': 'Tina', 'LastName': 'Gilbert', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102'},
-                    { 'StudentID': 41231, 'FirstName': 'Clarence', 'LastName': 'Flores', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID': 4,  'PhoneNumber': '93141234' },
-                    { 'StudentID': 53212, 'FirstName': 'Anne', 'LastName': 'Lee', 'created_at': '2020-10-27T06:18:24.738Z', 'StatusID': 1,  'PhoneNumber': '81230532' },
+                    { 'StudentID': 12345, 'FullName': 'Jesse Simmons', 'created_at': '2020-10-24T06:18:24.738Z', 'StatusID': 1,'PhoneNumber': '91233217' },
+                    { 'StudentID': 23456, 'FullName': 'John Jacobs', 'created_at': '2020-10-25T06:18:24.738Z', 'StatusID': 2, 'PhoneNumber': '91312231' },
+                    { 'StudentID': 31232, 'FullName': 'Tina Gilbert', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102'},
+                    { 'StudentID': 41231, 'FullName': 'Clarence Flores', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID': 4,  'PhoneNumber': '93141234' },
+                    { 'StudentID': 53212, 'FullName': 'Anne Lee', 'created_at': '2020-10-27T06:18:24.738Z', 'StatusID': 1,  'PhoneNumber': '81230532' },
                 ],
                 selected: null,
                 sortIcon: 'arrow-up',
@@ -232,7 +219,7 @@ export default {
             return this.data.map(student => {
               return {
                 StudentID: `${student.StudentID}`,
-                FullName: `${student.FirstName} ${student.LastName}`,
+                FullName: `${student.FullName}`,
                 created_at: `${student.created_at}`,
                 StatusID: `${student.StatusID}`,
                 PhoneNumber: `${student.PhoneNumber}`  
@@ -245,7 +232,7 @@ export default {
           PageHeader
         },        
 
-        // // Placeholder for API
+        // Placeholder for API
         // mounted() {
         //   fetch(API_URL)
         //     .then(response => response.json())
