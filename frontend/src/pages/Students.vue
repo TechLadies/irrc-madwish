@@ -129,6 +129,10 @@
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ca982c4... edit vue-router routes to comply with description in jira
                   </b-table-column>
               </template>
 
@@ -152,6 +156,34 @@
                   </template>
                   </b-table-column>
               </template>
+<<<<<<< HEAD
+=======
+
+
+        
+
+            <!-- phone column --> 
+
+              <template v-for="(column, index) in columns" v-if="index == 5">
+                <b-table-column :key="column.id" v-bind="column" sortable>
+                  <template
+                    v-if="column.searchable"
+                    slot="searchable"
+                    slot-scope="props">
+                      <b-input
+                          v-model="props.filters[props.column.field]"
+                          icon="magnify"
+                          size="is-small" />
+                  </template>
+                  <template v-slot="props">
+                      {{ props.row.Status }}
+                  </template>
+                  </b-table-column>
+              </template>
+
+
+
+>>>>>>> ca982c4... edit vue-router routes to comply with description in jira
               
           </b-table>
       </section>
@@ -163,12 +195,17 @@
 <script>
 
 // Placeholder for API //
+<<<<<<< HEAD
 // const API_URL = "http://localhost:3001/students";
+=======
+const API_URL = "http://localhost:3001/students";
+>>>>>>> ca982c4... edit vue-router routes to comply with description in jira
 
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
 
 
+<<<<<<< HEAD
 function getFullName(data){
   var FullName = [data.FirstName,data.LastName].join(" ");
   return {
@@ -180,6 +217,8 @@ function getFullName(data){
   };
 }
 
+=======
+>>>>>>> ca982c4... edit vue-router routes to comply with description in jira
 // var data = data.data.map(getFullName);
 
 
@@ -187,7 +226,11 @@ export default {
         data() {
             return {
                 data: [
+<<<<<<< HEAD
                     //Placeholder data if you don't want to run the backend
+=======
+                //     //Placeholder data if you don't want to run the backend
+>>>>>>> ca982c4... edit vue-router routes to comply with description in jira
                     { 'StudentID': 12345, 'FirstName': 'Jesse', 'LastName': 'Simmons', 'created_at': '2020-10-24T06:18:24.738Z', 'StatusID': 1,'PhoneNumber': '91233217' },
                     { 'StudentID': 23456, 'FirstName': 'John', 'LastName': 'Jacobs', 'created_at': '2020-10-25T06:18:24.738Z', 'StatusID': 2, 'PhoneNumber': '91312231' },
                     { 'StudentID': 31232, 'FirstName': 'Tina', 'LastName': 'Gilbert', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102'},
@@ -223,19 +266,21 @@ export default {
                         field: 'PhoneNumber',
                         label: 'Phone Number',
                         searchable: true,
-                    }
+                    },
+                 
                 ]
             }
         },
         computed:{
           tableData(){
-            return this.data.map(student => {
+            return this.data.map(student => {            
+
               return {
                 StudentID: `${student.StudentID}`,
                 FullName: `${student.FirstName} ${student.LastName}`,
                 created_at: `${student.created_at}`,
                 StatusID: `${student.StatusID}`,
-                PhoneNumber: `${student.PhoneNumber}`  
+                PhoneNumber: `${student.PhoneNumber}`
               }                
             })
           }
@@ -246,14 +291,14 @@ export default {
         },        
 
         // // Placeholder for API
-        // mounted() {
-        //   fetch(API_URL)
-        //     .then(response => response.json())
-        //     .then(result => {
-        //       console.log(result)
-        //       this.data = result;
-        //     });
-        // }
+        mounted() {
+          fetch(API_URL)
+            .then(response => response.json())
+            .then(result => {
+              console.log(result)
+              this.data = result;
+            });
+        }
       
     }   
 </script>
