@@ -71,13 +71,12 @@
           
                   <b-field label="English Proficiency" class="half-width">
                       <b-select v-model="EnglishProficiency" placeholder="Select one" expanded>
-                        <option value = "1">No (Unable to understand at all)</option>
-                        <option value = "2">Little (Able to understand simple words)</option>
-                        <option value = "3">Simple (Able to speak full sentences)</option>
-                        <option value = "4">Intermediate (Able to understand simple words)</option>
+                        <option value = "No">No (Unable to understand at all)</option>
+                        <option value = "Little">Little (Able to understand simple words)</option>
+                        <option value = "Simple">Simple (Able to speak full sentences)</option>
+                        <option value = "Intermediate">Intermediate (Able to understand simple words)</option>
                       </b-select>
                   </b-field>  
-
                 </b-field>
         
                 <b-field label="Notes" class="half-width">
@@ -174,12 +173,11 @@ export default {
           LastName: 'Hossein', // Placeholder as I haven't split Name 
           Source: this.source,
           NativeLanguageID: 1, // how to avoid hardcoding the languageID? can the backend process text then match to the appropriate ID? 
-          EnglishProficiency: 'Little', // must be No, Little, Simple or Intermediate. form input is int 
+          EnglishProficiency: this.EnglishProficiency, // must be No, Little, Simple or Intermediate. form input is int 
           Notes: this.Notes,
           StatusID: 1, //How to avoid hardcoding StatusID? Let the backend handle it?
         })
       }
-        console.log(this.name, this.source, this.Notes)
       fetch("/api/students", studentCreate)
         .then(response => response.json()) 
       //Pop-up notification that new student has been added
