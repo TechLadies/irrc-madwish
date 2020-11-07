@@ -1,5 +1,6 @@
 <template>
   <Page>
+    
     <div class="container">
       <div class="Title">
           <b class="newstudent">New Student</b>
@@ -23,70 +24,73 @@
         </div>
         <!-- Start of 2nd column (all input fields) --> 
         <div class="column is-two-thirds">
-          <section>
-              <b-field label="Name" class="half-width">
-                  <b-input v-model="name"></b-input>
-              </b-field>
-
-              <b-field label="Phone Number" class="half-width">
-                  <b-input type="PhoneNumber"
-                      value="">
-                  </b-input>
-              </b-field>
-
-              <b-field label="Source" class="half-width">
-                  <b-autocomplete
-                      v-model="source"
-                      ref="sourceComplete"
-                      :data="filteredSourceDataArray"
-                      placeholder="Optional"
-                      @select="option => selected = sourceOption">
-                      <template slot="header">
-                          <a @click="showAddSource">
-                              <span> Add new... </span>
-                          </a> 
-                      </template>                    
-                  </b-autocomplete>
-              </b-field>
-              <b-field grouped>
-
-                <b-field label="Native Language" class="half-width">
-                    <b-autocomplete
-                        v-model="nativeLanguage"
-                        ref="languageComplete"
-                        :languageData="filteredLanguageDataArray"
-                        placeholder="e.g. Bengali"
-                        @select="option => selected = option">
-                        <template slot="header">
-                            <a @click="showAddLanguage">
-                                <span> Add new... </span>
-                            </a> 
-                        </template>
-                    </b-autocomplete>
+          <form method="POST" action ="/api/students" @submit.prevent="createStudent">
+          <!--.prevent prevents the default submit behaviour and executes createStudent instead -->
+            <section>
+                <b-field label="Name" class="half-width">
+                    <b-input v-model="name" name="Name"></b-input>
                 </b-field>
 
+                <b-field label="Phone Number" class="half-width">
+                    <b-input v-model="PhoneNumber" type="string"
+                        value="">
+                    </b-input>
+                </b-field>
+
+                <b-field label="Source" class="half-width">
+                    <b-autocomplete
+                        v-model="source"
+                        ref="sourceComplete"
+                        :data="filteredSourceDataArray"
+                        placeholder="Optional"
+                        @select="option => selected = sourceOption">
+                        <template slot="header">
+                            <a @click="showAddSource">
+                                <span> Add new... </span>
+                            </a> 
+                        </template>                    
+                    </b-autocomplete>
+                </b-field>
+                <b-field grouped>
+
+                  <b-field label="Native Language" class="half-width">
+                      <b-autocomplete
+                          v-model="nativeLanguage"
+                          ref="languageComplete"
+                          :languageData="filteredLanguageDataArray"
+                          placeholder="e.g. Bengali"
+                          @select="option => selected = option">
+                          <template slot="header">
+                              <a @click="showAddLanguage">
+                                  <span> Add new... </span>
+                              </a> 
+                          </template>
+                      </b-autocomplete>
+                  </b-field>
+
+          
+                  <b-field label="English Proficiency" class="half-width">
+                      <b-select v-model="EnglishProficiency" placeholder="Select one" expanded>
+                        <option value = "1">No (Unable to understand at all)</option>
+                        <option value = "2">Little (Able to understand simple words)</option>
+                        <option value = "3">Simple (Able to speak full sentences)</option>
+                        <option value = "4">Intermediate (Able to understand simple words)</option>
+                      </b-select>
+                  </b-field>  
+
+                </b-field>
         
-                <b-field label="English Proficiency" class="half-width">
-                    <b-select placeholder="Select one" expanded>
-                      <option value = "1">No (Unable to understand at all)</option>
-                      <option value = "2">Little (Able to understand simple words)</option>
-                      <option value = "3">Simple (Able to speak full sentences)</option>
-                      <option value = "4">Intermediate (Able to understand simple words)</option>
-                    </b-select>
-                </b-field>  
+                <b-field label="Notes" class="half-width">
+                    <b-input v-model="Notes" maxlength="200" type="textarea" placeholder="Optional"></b-input>
+                </b-field>
 
-              </b-field>
-              
-      
-              <b-field label="Notes" class="half-width">
-                  <b-input maxlength="200" type="textarea" placeholder="Optional"></b-input>
-              </b-field>
-
-          </section>
-          <b-button class="dark-blue" expanded @click="createStudent">Create Student</b-button>
+            </section>
+            <b-button class="dark-blue" input type="submit" expanded @click="createStudent">Create Student</b-button>
+          </form>
         </div>
       </div>
     </div>  
+
   </Page>    
 </template>
 
@@ -94,13 +98,11 @@
 <script>
 
 import Page from '../components/Page.vue'
-
 export default {
   name: 'NewStudent',
     components: {
     Page,
   },
-  
 
   data() {
       return {
@@ -119,10 +121,14 @@ export default {
               'Source 2',
           ],
           name: '',
-          nativeLanguage: '',
+          PhoneNumber: '',
           source:'',
+          sourceOption: '',
+          nativeLanguage: '',
+          EnglishProficiency: '',
           selected: null,
           file: null,
+          Notes: ''
       }
   },
 
@@ -141,19 +147,42 @@ export default {
               .indexOf(this.nativeLanguage.toLowerCase()) >= 0
             })
     },
-      filteredSourceDataArray() {
+    filteredSourceDataArray() {
         return this.sourceData.filter((sourceOption) => {
             return sourceOption
               .toString()
               .toLowerCase()
               .indexOf(this.source.toLowerCase()) >= 0
             })
-    }  
+    },
+    
   },
-
 
   methods: {
     createStudent(){
+       const studentCreate = {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          PhoneNumber: this.PhoneNumber,
+
+          // Replace FirstName and LastName with Name when Student Model is changed
+          FirstName: this.name,
+          LastName: 'Hossein', // Placeholder as I haven't split Name 
+          Source: this.source,
+          NativeLanguageID: 1, // how to avoid hardcoding the languageID? can the backend process text then match to the appropriate ID? 
+          EnglishProficiency: 'Little', // must be No, Little, Simple or Intermediate. form input is int 
+          Notes: this.Notes,
+          StatusID: 1, //How to avoid hardcoding StatusID? Let the backend handle it?
+        })
+      }
+        console.log(this.name, this.source, this.Notes)
+      fetch("/api/students", studentCreate)
+        .then(response => response.json()) 
+      //Pop-up notification that new student has been added
       this.$buefy.notification.open({
         message: 'New student added. <u>View profile</u>!',
         duration: 5000,
