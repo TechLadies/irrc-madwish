@@ -31,7 +31,7 @@
                   <template v-slot="props">
                       <span :class="['idStyle']">
 
-                        {{ new Date(props.row.created_at).toLocaleDateString('en-US', {
+                        {{ new Date(props.row.CreatedAt).toLocaleDateString('en-US', {
     day: '2-digit', month: 'short', year: 'numeric'
   }).replace(',', ' ') }}
                       </span>
@@ -163,8 +163,7 @@
 
 <script>
 
-// Placeholder for API - Note that this will only work after the FullName method has been merged in the backend//
-const API_URL = "http://localhost:3001/api/students";
+const API_URL = "/api/students";
 
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
@@ -174,12 +173,6 @@ export default {
         data() {
             return {
                 data: [
-                    //Placeholder data if you don't want to run the backend
-                    // { 'StudentID': 12345, 'FullName': 'Jesse Simmons', 'created_at': '2020-10-24T06:18:24.738Z', 'StatusID': 1,'PhoneNumber': '91233217' },
-                    // { 'StudentID': 23456, 'FullName': 'John Jacobs', 'created_at': '2020-10-25T06:18:24.738Z', 'StatusID': 2, 'PhoneNumber': '91312231' },
-                    // { 'StudentID': 31232, 'FullName': 'Tina Gilbert', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102'},
-                    // { 'StudentID': 41231, 'FullName': 'Clarence Flores', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID': 4,  'PhoneNumber': '93141234' },
-                    // { 'StudentID': 53212, 'FullName': 'Anne Lee', 'created_at': '2020-10-27T06:18:24.738Z', 'StatusID': 1,  'PhoneNumber': '81230532' },
                 ],
                 selected: null,
                 sortIcon: 'arrow-up',
@@ -187,7 +180,7 @@ export default {
                 sortDirection: 'asc',
                 columns: [
                     {
-                        field: 'created_at',
+                        field: 'CreatedAt',
                         label: 'Date Joined',
                         searchable: true,
                     },
@@ -220,7 +213,7 @@ export default {
               return {
                 StudentID: `${student.StudentID}`,
                 FullName: `${student.FullName}`,
-                created_at: `${student.created_at}`,
+                CreatedAt: `${student.created_at}`,
                 StatusID: `${student.StatusID}`,
                 PhoneNumber: `${student.PhoneNumber}`  
               }                
@@ -237,7 +230,6 @@ export default {
           fetch(API_URL)
             .then(response => response.json())
             .then(result => {
-              console.log(result)
               this.data = result;
             });
         }
