@@ -14,7 +14,7 @@ export default new Vuex.Store({
   },
   actions: {
     getAllStudents( {commit} ) {
-      return fetch('http://localhost:3001/api/students')
+      return fetch('/api/students')
         .then(response => {
           return response.json();
         }).then(data => {
