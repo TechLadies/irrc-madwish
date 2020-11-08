@@ -29,7 +29,7 @@
                   <template v-slot="props">
                       <span :class="['idStyle']">
 
-                        {{ new Date(props.row.created_at).toLocaleDateString('en-US', {
+                        {{ new Date(props.row.CreatedAt).toLocaleDateString('en-US', {
     day: '2-digit', month: 'short', year: 'numeric'
   }).replace(',', ' ') }}
                       </span>
@@ -74,7 +74,6 @@
                   </template>
                   <template v-slot="props">
                       <span :class="['nameStyle']">
-                          <!-- {{ props.row.FirstName }} {{ props.row.LastName }} -->
                           {{ props.row.FullName }}
                       </span> 
                       <br> 
@@ -163,36 +162,17 @@
 <script>
 
 // Placeholder for API //
-// const API_URL = "http://localhost:3001/students";
+const API_URL = "http://localhost:3001/api/students";
 
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
 
-
-function getFullName(data){
-  var FullName = [data.FirstName,data.LastName].join(" ");
-  return {
-    'StudentID': data.StudentID,
-    'FullName': FullName,
-    'created_at': data.created_at,
-    'StatusID': data.StatusID,
-    'PhoneNumber': data.PhoneNumber,
-  };
-}
-
-// var data = data.data.map(getFullName);
 
 
 export default {
         data() {
             return {
                 data: [
-                    //Placeholder data if you don't want to run the backend
-                    { 'StudentID': 12345, 'FirstName': 'Jesse', 'LastName': 'Simmons', 'created_at': '2020-10-24T06:18:24.738Z', 'StatusID': 1,'PhoneNumber': '91233217' },
-                    { 'StudentID': 23456, 'FirstName': 'John', 'LastName': 'Jacobs', 'created_at': '2020-10-25T06:18:24.738Z', 'StatusID': 2, 'PhoneNumber': '91312231' },
-                    { 'StudentID': 31232, 'FirstName': 'Tina', 'LastName': 'Gilbert', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102'},
-                    { 'StudentID': 41231, 'FirstName': 'Clarence', 'LastName': 'Flores', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID': 4,  'PhoneNumber': '93141234' },
-                    { 'StudentID': 53212, 'FirstName': 'Anne', 'LastName': 'Lee', 'created_at': '2020-10-27T06:18:24.738Z', 'StatusID': 1,  'PhoneNumber': '81230532' },
                 ],
                 selected: null,
                 sortIcon: 'arrow-up',
@@ -200,7 +180,7 @@ export default {
                 sortDirection: 'asc',
                 columns: [
                     {
-                        field: 'created_at',
+                        field: 'CreatedAt',
                         label: 'Date Joined',
                         searchable: true,
                     },
@@ -233,7 +213,7 @@ export default {
               return {
                 StudentID: `${student.StudentID}`,
                 FullName: `${student.FirstName} ${student.LastName}`,
-                created_at: `${student.created_at}`,
+                CreatedAt: `${student.created_at}`,
                 StatusID: `${student.StatusID}`,
                 PhoneNumber: `${student.PhoneNumber}`  
               }                
@@ -245,15 +225,14 @@ export default {
           PageHeader
         },        
 
-        // // Placeholder for API
-        // mounted() {
-        //   fetch(API_URL)
-        //     .then(response => response.json())
-        //     .then(result => {
-        //       console.log(result)
-        //       this.data = result;
-        //     });
-        // }
+        // Placeholder for API
+        mounted() {
+          fetch(API_URL)
+            .then(response => response.json())
+            .then(result => {
+              this.data = result;
+            });
+        }
       
     }   
 </script>
