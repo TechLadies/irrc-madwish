@@ -3,27 +3,32 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+// Create enum style variables (to reduce typo errors)
+const MUTATIONS = Object.freeze({
+  SET_STUDENTS: 'SET_STUDENTS'
+})
+
 export default new Vuex.Store({
   state: {
     students: []
   },
   mutations: {
-    SET_STUDENTS(state, students) {
+    [MUTATIONS.SET_STUDENTS](state, students) {
       state.students = students
     }
   },
   actions: {
-    getAllStudents( {commit} ) {
-      return fetch('/api/students')
+    async getAllStudents({ commit }) {
+      await fetch('/api/students')
         .then(response => {
           return response.json();
         }).then(data => {
-          commit('SET_STUDENTS', data)
+          commit(MUTATIONS.SET_STUDENTS, data)
         })
     }
 
   },
   getters: {
-    students: (state) => {return state.students}
+    students: (state) => state.students
   }
 })
