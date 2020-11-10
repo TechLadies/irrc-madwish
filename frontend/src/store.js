@@ -19,12 +19,9 @@ export default new Vuex.Store({
   },
   actions: {
     async getAllStudents({ commit }) {
-      await fetch('/api/students')
-        .then(response => {
-          return response.json();
-        }).then(data => {
-          commit(MUTATIONS.SET_STUDENTS, data)
-        })
+      const response = await fetch("/api/students")
+      const data = await response.json()
+      commit(MUTATIONS.SET_STUDENTS, data)
     }
 
   },
