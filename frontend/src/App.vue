@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     createNew() {
-      this.$router.push({ path: 'new' })
+      this.$router.push({ path: 'new-student' })
     }
   }
 }

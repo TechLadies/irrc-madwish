@@ -20,7 +20,7 @@ const router = new VueRouter({
     { path: "/student/:id", component: StudentProfile },
     { path: "/new-student", component: NewStudent },
     { path: "/students", component: Students },
-    /* Placeholder for edit student page
+    /* Placeholder for edit student page which is not done yet 
     { path: "/edit-student/:id", component: EditStudent },*/
   ],
 });
