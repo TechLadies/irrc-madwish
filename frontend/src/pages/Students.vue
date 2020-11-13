@@ -163,6 +163,7 @@
 <script>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const API_URL = "/api/students";
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
@@ -170,13 +171,19 @@ import Page from '../components/Page.vue'
 =======
 // Placeholder for API //
 const API_URL = "http://localhost:3001/api/students";
+=======
+const API_URL = "/api/students";
+>>>>>>> fba1228... initial commit
 
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
 
 
+<<<<<<< HEAD
 
 >>>>>>> 736a974... clean up code on Students.vue
+=======
+>>>>>>> fba1228... initial commit
 export default {
         data() {
             return {
@@ -221,10 +228,14 @@ export default {
               return {
                 StudentID: `${student.StudentID}`,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 FullName: `${student.FullName}`,
 =======
                 FullName: `${student.FirstName} ${student.LastName}`,
 >>>>>>> 736a974... clean up code on Students.vue
+=======
+                FullName: `${student.FullName}`,
+>>>>>>> fba1228... initial commit
                 CreatedAt: `${student.created_at}`,
                 StatusID: `${student.StatusID}`,
                 PhoneNumber: `${student.PhoneNumber}`  
