@@ -161,9 +161,11 @@
 
 
 <script>
+
 const API_URL = "/api/students";
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
+
 export default {
         data() {
             return {
@@ -219,6 +221,7 @@ export default {
           Page,
           PageHeader
         },        
+
         // Placeholder for API
         mounted() {
           fetch(API_URL)
