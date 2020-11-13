@@ -21,10 +21,12 @@
                     v-if="column.searchable"
                     slot="searchable"
                     slot-scope="props">
+                    <b-tooltip label="Search: YYYY-MM-DD">
                       <b-input
                           v-model="props.filters[props.column.field]"
                           icon="magnify"
                           size="is-small" />
+                    </b-tooltip>
                   </template>
                   <template v-slot="props">
                       <span :class="['idStyle']">
@@ -161,12 +163,10 @@
 
 <script>
 
-// Placeholder for API //
-const API_URL = "http://localhost:3001/api/students";
+const API_URL = "/api/students";
 
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
-
 
 
 export default {
@@ -212,7 +212,7 @@ export default {
             return this.data.map(student => {
               return {
                 StudentID: `${student.StudentID}`,
-                FullName: `${student.FirstName} ${student.LastName}`,
+                FullName: `${student.FullName}`,
                 CreatedAt: `${student.created_at}`,
                 StatusID: `${student.StatusID}`,
                 PhoneNumber: `${student.PhoneNumber}`  
