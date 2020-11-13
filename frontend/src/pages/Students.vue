@@ -3,7 +3,7 @@
   <Page>
     <div class="container">
       <div class="Title">
-          <b class="newStudent">All Students</b>
+          <b class="newStudent">All Students Test</b>
       </div>
       <!--start of table -->
       <section>
@@ -129,10 +129,6 @@
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ca982c4... edit vue-router routes to comply with description in jira
                   </b-table-column>
               </template>
 
@@ -156,8 +152,6 @@
                   </template>
                   </b-table-column>
               </template>
-<<<<<<< HEAD
-=======
 
 
         
@@ -183,7 +177,6 @@
 
 
 
->>>>>>> ca982c4... edit vue-router routes to comply with description in jira
               
           </b-table>
       </section>
@@ -195,30 +188,12 @@
 <script>
 
 // Placeholder for API //
-<<<<<<< HEAD
-// const API_URL = "http://localhost:3001/students";
-=======
 const API_URL = "http://localhost:3001/students";
->>>>>>> ca982c4... edit vue-router routes to comply with description in jira
 
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
 
 
-<<<<<<< HEAD
-function getFullName(data){
-  var FullName = [data.FirstName,data.LastName].join(" ");
-  return {
-    'StudentID': data.StudentID,
-    'FullName': FullName,
-    'created_at': data.created_at,
-    'StatusID': data.StatusID,
-    'PhoneNumber': data.PhoneNumber,
-  };
-}
-
-=======
->>>>>>> ca982c4... edit vue-router routes to comply with description in jira
 // var data = data.data.map(getFullName);
 
 
@@ -226,11 +201,7 @@ export default {
         data() {
             return {
                 data: [
-<<<<<<< HEAD
-                    //Placeholder data if you don't want to run the backend
-=======
                 //     //Placeholder data if you don't want to run the backend
->>>>>>> ca982c4... edit vue-router routes to comply with description in jira
                     { 'StudentID': 12345, 'FirstName': 'Jesse', 'LastName': 'Simmons', 'created_at': '2020-10-24T06:18:24.738Z', 'StatusID': 1,'PhoneNumber': '91233217' },
                     { 'StudentID': 23456, 'FirstName': 'John', 'LastName': 'Jacobs', 'created_at': '2020-10-25T06:18:24.738Z', 'StatusID': 2, 'PhoneNumber': '91312231' },
                     { 'StudentID': 31232, 'FirstName': 'Tina', 'LastName': 'Gilbert', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102'},
