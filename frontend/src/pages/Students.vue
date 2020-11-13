@@ -3,7 +3,7 @@
   <Page>
     <div class="container">
       <div class="Title">
-          <b class="newStudent">All Students Test</b>
+          <b class="newStudent">All Students</b>
       </div>
       <!--start of table -->
       <section>
@@ -129,6 +129,10 @@
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ca982c4d7f22501b0a35ddadf12229ff43a35d3f
                   </b-table-column>
               </template>
 
