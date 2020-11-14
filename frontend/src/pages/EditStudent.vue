@@ -52,12 +52,13 @@
                 <b-field grouped>
 
                   <b-field label="Native Language" class="half-width">
-                      <b-autocomplete
-                          v-model="selected"
+                      <b-autocomplete :value="selected.NativeLanguage"
+                          field= "NativeLanguage"
                           ref="languageComplete"
-                          :data="filteredLanguageDataArray"
-                          placeholder="e.g. Bengali"
-                          @select="option => selected = option">
+                          :data="languages"
+                          placeholder="e.g. Bengali" 
+                          @select="option => selected = option"
+                          @typing="filteredLanguageDataArray">
                           <template slot="header">
                               <a @click="showAddLanguage">
                                   <span> Add new... </span>
@@ -101,15 +102,15 @@ export default {
   },
   data() {
       return {
-          languageData: [
-              'Bengali',
-              'English',
-              'Mandarin',
-              'Russian',
-              'Indonesian',
-              'Urdu',
-              'Tamil'
-          ],
+          // languageData: [
+          //     'Bengali',
+          //     'English',
+          //     'Mandarin',
+          //     'Russian',
+          //     'Indonesian',
+          //     'Urdu',
+          //     'Tamil'
+          // ],
           SourceData: [
               'Rotary Club',
               'Source 1',
@@ -120,10 +121,11 @@ export default {
           Source:'',
           nativeLanguage: '',
           studentData: {},
-          selected: null,
+          selected: {NativeLanguage: ''},
           file: null,
           SourceOption: '',
           // TO-DO: should call API and store languageID:language pairs in vuex store to use globally 
+          languages: [],
           API_nativeLanguage: [
             {"NativeLanguageID":1,"NativeLanguage":"Chinese"},
             {"NativeLanguageID":2,"NativeLanguage":"Tamil"},
@@ -132,7 +134,8 @@ export default {
             {"NativeLanguageID":5,"NativeLanguage":"Thai"},
             {"NativeLanguageID":6,"NativeLanguage":"Hindi"},
             {"NativeLanguageID":7,"NativeLanguage":"Punjabi"},
-            {"NativeLanguageID":8,"NativeLanguage":"Telugu"}
+            {"NativeLanguageID":8,"NativeLanguage":"Telugu"},
+            {"NativeLanguageID":9,"NativeLanguage":"Farsi"}
           ]
           
       }
@@ -145,14 +148,7 @@ export default {
   },
 
   computed: {
-    filteredLanguageDataArray() {
-        return this.languageData.filter((option) => {
-            return option
-              .toString()
-              .toLowerCase()
-              .indexOf(this.nativeLanguage.toLowerCase()) >= 0
-            })
-    },
+  
       filteredSourceDataArray() {
         return this.SourceData.filter((SourceOption) => {
             return SourceOption
@@ -181,7 +177,6 @@ export default {
                 LastName: result.LastName,
                 PhoneNumber: result.PhoneNumber,
                 Source: result.Source,
-                nativeLanguage: this.API_nativeLanguage.find(item => item.NativeLanguageID === result.NativeLanguageID).NativeLanguage,
                 EnglishProficiency: result.EnglishProficiency,
                 Notes: result.Notes,
               }
@@ -189,18 +184,33 @@ export default {
             });
   },
   methods: {
+    selectedLanguage(value) {
+      console.log(value)
+    },
+    filteredLanguageDataArray(language = "") {
+      this.languages = this.API_nativeLanguage.filter((option) => {
+          return option.NativeLanguage
+            .toLowerCase()
+            .includes(language || "".toLowerCase())
+          })
+
+    },
     saveStudent(){
       // HTTP PATCH to update student, changing specific field on backend.
-       const studentSave = {
+        const updateData = {...this.studentData, NativeLanguageID: this.selected.NativeLanguageID}
+        delete updateData.name 
+        const studentSave = {
         method: "PATCH",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-        ...this.studentData, //NativeLanguageID:
-        })
+        body: JSON.stringify(
+          updateData 
+        )
       }
+      console.log(studentSave)
+      console.log(this.studentData)
       fetch("/api/students/1", studentSave)
         .then(response => response.json()) 
       //Pop-up notification that new student has been added
