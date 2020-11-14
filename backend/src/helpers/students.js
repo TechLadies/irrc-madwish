@@ -1,9 +1,22 @@
 const db = require('../models/student')
 // const debug = require('debug')('app:students')
 
-exports.getAllStudents = async function () {
+const defaultOptions = {
+  filters: {}
+}
+exports.getAllStudents = async function (options = defaultOptions) {
+  const filterStatus = options.filters.status
+
+  let query = db.Student.query()
+
+  if (filterStatus) {
+    query = query
+      .withGraphJoined('status')
+      .where('status.Description', filterStatus)
+  }
+
   try {
-    const students = await db.Student.query().select()
+    const students = await query.select()
     return students
   } catch (err) {
     return { err }

@@ -10,7 +10,12 @@ const { NotFoundError } = require('objection')
 
 /* GET students listing. */
 router.get('/', async (req, res) => {
-  const result = await students.getAllStudents()
+  const status = req.query.status
+  const result = await students.getAllStudents({
+    filters: {
+      status
+    }
+  })
 
   // handle error
   if (result.err) {
