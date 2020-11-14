@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <Sidebar :menu="menu" @createNew="createNew">
     <router-view></router-view>
   </Sidebar>
@@ -30,25 +29,6 @@ export default {
     createNew() {
       this.$router.push({ path: 'new' })
     }
-=======
-  <div>
-    <StudentProfile/>
-  </div>
-</template>
-
-<script>
-import StudentProfile from './pages/StudentProfile.vue'
-export default {
-  name: 'App',
-  components: {
-    StudentProfile
->>>>>>> added timeline
   }
 }
 </script>
-<<<<<<< HEAD
-=======
-
-<style>
-</style>
->>>>>>> added background to list items
