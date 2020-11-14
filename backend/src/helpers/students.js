@@ -14,6 +14,7 @@ exports.getStudentById = async function (id) {
   try {
     const student = await db.Student.query()
       .findById(id)
+      .withGraphFetched("[nativeLanguage, status]")
       .throwIfNotFound()
     return student // return student[0] || 'Not found'
   } catch (err) {
