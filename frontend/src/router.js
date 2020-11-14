@@ -13,7 +13,8 @@ const router = new VueRouter({
   mode: "history",
   hash: false,
   routes: [
-    { path: '/', component: HelloWorld  },
+    // TO-CHANGE: swap HelloWorld and EditStudent route after i'm done.
+    { path: '/', component: EditStudent  },
     { path: '/screening', component: Screening  },
     { path: '/matching', component: Matching  },
     { path: '/new', component: NewStudent  },

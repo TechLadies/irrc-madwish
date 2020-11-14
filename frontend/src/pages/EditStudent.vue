@@ -1,93 +1,94 @@
 <template>
-<Page>
-  <div class="container">
-    <div class="Title">
-        <b class="newstudent">Edit Student Details</b>
-      <!-- upload button --> 
-        <b-field class="file is-primary is-right" :class="{'has-name': !!file}">
-            <b-upload v-model="file" class="file-label">
-                <span class="file-cta">
-                    <b-icon class="file-icon" icon="upload"></b-icon>
-                    <span class="file-label">  Bulk upload CSV</span>
-                </span>
-                <span class="file-name" v-if="file">
-                    {{ file.name }}
-                </span>
-            </b-upload>
-        </b-field>   
-    </div>
-    <div class="columns is-multiline is-mobile">
-      <!--start of first column (image) --> 
-      <div class="column is-one-third" align="center">
-        <img src="../assets/student.png" />
+  <Page>
+    <div class="container">
+      <div class="Title">
+          <b class="newstudent">Edit Student</b>
+        <!-- upload button --> 
+          <b-field class="file is-primary is-right" :class="{'has-name': !!file}">
+              <b-upload v-model="file" class="file-label">
+                  <span class="file-cta">
+                      <b-icon class="file-icon" icon="upload"></b-icon>
+                      <span class="file-label">  Bulk upload CSV</span>
+                  </span>
+                  <span class="file-name" v-if="file">
+                      {{ file.name }}
+                  </span>
+              </b-upload>
+          </b-field>   
       </div>
-      <!-- Start of 2nd column (all input fields) --> 
-      <div class="column is-two-thirds">
-        <section>
-            <b-field label="Name" class="half-width">
-                <b-input v-model="name"></b-input>
-            </b-field>
+      <div class="columns is-multiline is-mobile">
+        <!--start of first column (image) --> 
+        <div class="column is-one-third" align="center">
+          <img src="../assets/student.png" />
+        </div>
+        <!-- Start of 2nd column (all input fields) --> 
+        <div class="column is-two-thirds">
+          <form method="POST" action ="/api/students" @submit.prevent="saveStudent">
+          <!--.prevent prevents the default submit behaviour and executes saveStudent instead -->
+            <section>
+                <b-field label="Name" class="half-width">
+                    <b-input v-model="studentData.name" name="Name" ></b-input>
+                </b-field>
 
-            <b-field label="Phone Number" class="half-width">
-                <b-input type="PhoneNumber"
-                    value="">
-                </b-input>
-            </b-field>
+                <b-field label="Phone Number" class="half-width">
+                    <b-input v-model="studentData.PhoneNumber" type="string">
+                    </b-input>
+                </b-field>
 
-            <b-field label="Source" class="half-width">
-                <b-autocomplete
-                    v-model="source"
-                    ref="sourceComplete"
-                    :data="filteredSourceDataArray"
-                    placeholder="Optional"
-                    @select="option => selected = sourceOption">
-                    <template slot="header">
-                        <a @click="showAddSource">
-                            <span> Add new... </span>
-                        </a> 
-                    </template>                    
-                </b-autocomplete>
-            </b-field>
-            <b-field grouped>
+                <b-field label="Source" class="half-width">
+                    <b-autocomplete
+                        v-model="studentData.Source"
+                        ref="SourceComplete"
+                        :data="filteredSourceDataArray"
+                        placeholder="Optional"
+                        @select="option => selected = SourceOption">
+                        <template slot="header">
+                            <a @click="showAddSource">
+                                <span> Add new... </span>
+                            </a> 
+                        </template>                    
+                    </b-autocomplete>
+                </b-field>
+                <b-field grouped>
 
-              <b-field label="Native Language" class="half-width">
-                  <b-autocomplete
-                      v-model="nativeLanguage"
-                      ref="languageComplete"
-                      :languageData="filteredLanguageDataArray"
-                      placeholder="e.g. Bengali"
-                      @select="option => selected = option">
-                      <template slot="header">
-                          <a @click="showAddLanguage">
-                              <span> Add new... </span>
-                          </a> 
-                      </template>
-                  </b-autocomplete>
-              </b-field>
+                  <b-field label="Native Language" class="half-width">
+                      <b-autocomplete
+                          v-model="selected"
+                          ref="languageComplete"
+                          :data="filteredLanguageDataArray"
+                          placeholder="e.g. Bengali"
+                          @select="option => selected = option">
+                          <template slot="header">
+                              <a @click="showAddLanguage">
+                                  <span> Add new... </span>
+                              </a> 
+                          </template>
+                      </b-autocomplete>
+                  </b-field>
 
-      
-              <b-field label="English Proficiency" class="half-width">
-                  <b-select placeholder="Select one" expanded>
-                    <option value = "1">No (Unable to understand at all)</option>
-                    <option value = "2">Little (Able to understand simple words)</option>
-                    <option value = "3">Simple (Able to speak full sentences)</option>
-                    <option value = "4">Intermediate (Able to understand simple words)</option>
-                  </b-select>
-              </b-field>  
+          
+                  <b-field label="English Proficiency" class="half-width">
+                      <b-select v-model="studentData.EnglishProficiency" placeholder="Select one" expanded>
+                        <option value = "No">No (Unable to understand at all)</option>
+                        <option value = "Little">Little (Able to understand simple words)</option>
+                        <option value = "Simple">Simple (Able to speak full sentences)</option>
+                        <option value = "Intermediate">Intermediate (Able to understand simple words)</option>
+                      </b-select>
+                  </b-field>  
+                </b-field>
+        
+                <b-field label="Notes" class="half-width">
+                    <b-input v-model="studentData.Notes" maxlength="200" type="textarea" placeholder="Optional"></b-input>
+                </b-field>
 
-            </b-field>
-            
-    
-            <b-field label="Notes" class="half-width">
-                <b-input maxlength="200" type="textarea" placeholder="Optional"></b-input>
-            </b-field>
-
-        </section>
-        <b-button class="dark-blue" expanded @click="createStudent">Create Student</b-button>
+            </section>
+            <b-button class="dark-blue" input type="submit" expanded @click="saveStudent">Save Student</b-button>
+          </form>
+        </div>
       </div>
-    </div>
-  </div>   
-</Page>   
+    </div>  
+
+  </Page>    
 </template>
 
 
@@ -109,16 +110,31 @@ export default {
               'Urdu',
               'Tamil'
           ],
-          sourceData: [
+          SourceData: [
               'Rotary Club',
               'Source 1',
               'Source 2',
           ],
           name: '',
+          PhoneNumber: '',
+          Source:'',
           nativeLanguage: '',
-          source:'',
+          studentData: {},
           selected: null,
           file: null,
+          SourceOption: '',
+          // TO-DO: should call API and store languageID:language pairs in vuex store to use globally 
+          API_nativeLanguage: [
+            {"NativeLanguageID":1,"NativeLanguage":"Chinese"},
+            {"NativeLanguageID":2,"NativeLanguage":"Tamil"},
+            {"NativeLanguageID":3,"NativeLanguage":"Malay"},
+            {"NativeLanguageID":4,"NativeLanguage":"Bangla"},
+            {"NativeLanguageID":5,"NativeLanguage":"Thai"},
+            {"NativeLanguageID":6,"NativeLanguage":"Hindi"},
+            {"NativeLanguageID":7,"NativeLanguage":"Punjabi"},
+            {"NativeLanguageID":8,"NativeLanguage":"Telugu"}
+          ]
+          
       }
   },
 
@@ -138,20 +154,58 @@ export default {
             })
     },
       filteredSourceDataArray() {
-        return this.sourceData.filter((sourceOption) => {
-            return sourceOption
+        return this.SourceData.filter((SourceOption) => {
+            return SourceOption
               .toString()
               .toLowerCase()
-              .indexOf(this.source.toLowerCase()) >= 0
+              .indexOf(this.Source.toLowerCase()) >= 0
             })
     }  
   },
 
+  //Fetch student data and pre-fill form
+  // How do I deal with fields in the student object? should I define all student properties from the API in data? 
+  async mounted() {
+      // Call API for Native Languages?
+      //await fetch("/api/nativeLanguages")
+      await fetch("/api/students/1")
+        .then(response => response.json())
+            .then(result => {
+              //transform Nativelanguage ID from int to string 
+              this.selected =this.API_nativeLanguage.find(item => item.NativeLanguageID === result.NativeLanguageID)
 
+              const value = {
+                // change name: FullName after backend is updated
+                name: result.FirstName + ' ' + result.LastName,
+                FirstName: result.FirstName,
+                LastName: result.LastName,
+                PhoneNumber: result.PhoneNumber,
+                Source: result.Source,
+                nativeLanguage: this.API_nativeLanguage.find(item => item.NativeLanguageID === result.NativeLanguageID).NativeLanguage,
+                EnglishProficiency: result.EnglishProficiency,
+                Notes: result.Notes,
+              }
+              this.studentData = value;
+            });
+  },
   methods: {
-    createStudent(){
+    saveStudent(){
+      // HTTP PATCH to update student, changing specific field on backend.
+       const studentSave = {
+        method: "PATCH",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        ...this.studentData, //NativeLanguageID:
+        })
+      }
+      fetch("/api/students/1", studentSave)
+        .then(response => response.json()) 
+      //Pop-up notification that new student has been added
       this.$buefy.notification.open({
-        message: 'New student added. <u>View profile</u>!',
+        message: 'Student saved. <u>View profile</u>!',
         duration: 5000,
         type: 'is-success',
         position: 'is-top',
@@ -198,15 +252,15 @@ export default {
     },
     showAddSource() {
         this.$buefy.dialog.prompt({
-          message: `Add new source`,
+          message: `Add new Source`,
           inputAttrs: {
             placeholder: 'e.g. Rotary Club',
             maxlength: 500,
           },
           confirmText: 'Add',
           onConfirm: (value) => {
-            this.sourceData.push(value)
-            this.$refs.sourceComplete.setSelected(value)
+            this.SourceData.push(value)
+            this.$refs.SourceComplete.setSelected(value)
           }
         })
     },    
