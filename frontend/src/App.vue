@@ -32,8 +32,7 @@ export default {
     }
 =======
   <div>
-    <h1>Hello World</h1>
-    <StudentProfile></StudentProfile>
+    <StudentProfile/>
   </div>
 </template>
 
@@ -47,3 +46,9 @@ export default {
   }
 }
 </script>
+<<<<<<< HEAD
+=======
+
+<style>
+</style>
+>>>>>>> added background to list items
