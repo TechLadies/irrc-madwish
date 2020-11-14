@@ -7,6 +7,7 @@
             studentName: studentData.FirstName + ' ' + studentData.LastName,
             studentContact: studentData.PhoneNumber,
             source: studentData.Source,
+            dateJoined: studentData.dateJoined,
             nativeLanguage: studentData.nativeLanguage.NativeLanguage,
             notes: studentData.Notes,
             status: studentData.status.Description,
@@ -56,25 +57,44 @@ export default {
   },
   data: function() {
     return {
-      // Dummy data. Should be empty data once API is integrated
       studentData: {
-        StudentID: 1,
-        PhoneNumber: "87654321",
-        FirstName: "Cat",
-        LastName: "Catt",
-        Source: "Rotary",
+        StudentID: -1,
+        PhoneNumber: "",
+        FirstName: "",
+        LastName: "",
+        Source: "",
         nativeLanguage: {
           NativeLanguageID: 1,
-          NativeLanguage: "Bangla",
+          NativeLanguage: "",
         },
-        EnglishProficiency: "Intermediate",
-        Notes: "Notes",
+        EnglishProficiency: "",
+        Notes: "",
         status: {
-          StatusID: 1,
-          Description: "Screening",
+          StatusID: -1,
+          Description: "",
         },
       },
     };
+  },
+  mounted: function() {
+    fetch("/api/students/1")
+      .then(response => response.json())
+      .then(data => {
+        const studentObject = {
+          StudentID: data.StudentID,
+          PhoneNumber: data.PhoneNumber,
+          FirstName: data.FirstName,
+          LastName: data.LastName,
+          Source: data.Source,
+          nativeLanguage: data.nativeLanguage,
+          status: data.status,
+          Notes: data.Notes,
+          dateJoined: new Date(data.created_at).toDateString(),
+          EnglishProficiency: data.EnglishProficiency,
+        };
+
+        this.studentData = studentObject;
+      });
   },
 };
 </script>
