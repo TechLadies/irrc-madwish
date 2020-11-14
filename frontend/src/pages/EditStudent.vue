@@ -57,8 +57,8 @@
                           ref="languageComplete"
                           :data="languages"
                           placeholder="e.g. Bengali" 
-                          @select="option => selected = option"
-                          @typing="filteredLanguageDataArray">
+                          @typing="filteredLanguageDataArray"
+                          @select="option => selected = option">
                           <template slot="header">
                               <a @click="showAddLanguage">
                                   <span> Add new... </span>
@@ -126,17 +126,7 @@ export default {
           SourceOption: '',
           // TO-DO: should call API and store languageID:language pairs in vuex store to use globally 
           languages: [],
-          API_nativeLanguage: [
-            {"NativeLanguageID":1,"NativeLanguage":"Chinese"},
-            {"NativeLanguageID":2,"NativeLanguage":"Tamil"},
-            {"NativeLanguageID":3,"NativeLanguage":"Malay"},
-            {"NativeLanguageID":4,"NativeLanguage":"Bangla"},
-            {"NativeLanguageID":5,"NativeLanguage":"Thai"},
-            {"NativeLanguageID":6,"NativeLanguage":"Hindi"},
-            {"NativeLanguageID":7,"NativeLanguage":"Punjabi"},
-            {"NativeLanguageID":8,"NativeLanguage":"Telugu"},
-            {"NativeLanguageID":9,"NativeLanguage":"Farsi"}
-          ]
+          API_nativeLanguage: []
           
       }
   },
@@ -148,7 +138,6 @@ export default {
   },
 
   computed: {
-  
       filteredSourceDataArray() {
         return this.SourceData.filter((SourceOption) => {
             return SourceOption
@@ -163,7 +152,10 @@ export default {
   // How do I deal with fields in the student object? should I define all student properties from the API in data? 
   async mounted() {
       // Call API for Native Languages?
-      //await fetch("/api/nativeLanguages")
+      await fetch("/api/nativeLanguages")
+        .then(response => response.json())
+        .then(result => this.API_nativeLanguage = result)
+
       await fetch("/api/students/1")
         .then(response => response.json())
             .then(result => {
@@ -184,20 +176,19 @@ export default {
             });
   },
   methods: {
-    selectedLanguage(value) {
-      console.log(value)
-    },
     filteredLanguageDataArray(language = "") {
       this.languages = this.API_nativeLanguage.filter((option) => {
           return option.NativeLanguage
             .toLowerCase()
             .includes(language || "".toLowerCase())
+          
           })
 
     },
     saveStudent(){
       // HTTP PATCH to update student, changing specific field on backend.
         const updateData = {...this.studentData, NativeLanguageID: this.selected.NativeLanguageID}
+        // Remove this line after FullName is updated in Student Model
         delete updateData.name 
         const studentSave = {
         method: "PATCH",
