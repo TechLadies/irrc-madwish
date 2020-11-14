@@ -5,7 +5,8 @@
   "main": "./src/main.js",
   "scripts": {
     "serve": "vite",
-    "build": "vite build"
+    "build": "vite build  && npm run copy",
+    "copy": "cp -r dist/. ../backend/public/"
   },
   "keywords": [
     "vue",

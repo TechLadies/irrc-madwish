@@ -1,22 +1,33 @@
-require('dotenv').config()
+require("dotenv").config();
 
 module.exports = {
   development: {
-    client: 'pg',
+    client: "pg",
     useNullAsDefault: true,
     connection: {
-      user: process.env.DB_USERNAME || 'postgres',
+      user: process.env.DB_USERNAME || "postgres",
       password: process.env.DB_PASSWORD,
-      database: 'irrc_development',
+      database: "irrc_development",
     },
   },
   test: {
-    client: 'pg',
+    client: "pg",
     useNullAsDefault: true,
     connection: {
-      user: process.env.DB_USERNAME || 'postgres',
+      user: process.env.DB_USERNAME || "postgres",
       password: process.env.DB_PASSWORD,
-      database: 'irrc_test',
+      database: "irrc_test",
     },
   },
-}
+  production: {
+    client: "pg",
+    useNullAsDefault: true,
+    connection: process.env.DATABASE_URL,
+    migrations: {
+      directory: "./migrations",
+    },
+    seeds: {
+      directory: "./seeds",
+    },
+  },
+};
