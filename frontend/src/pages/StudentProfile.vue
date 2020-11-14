@@ -23,12 +23,7 @@
           <StatusCardDroppedOut v-if="studentData.status.StatusID === 4" />
         </section>
         <section class="student-history-section">
-          <StudentHistory
-            v-bind:items="[
-              { date: '2020-01-01', description: 'Joined MadWish', status: 1 },
-              { date: '2020-01-01', description: 'Joined MadWish', status: 3 },
-            ]"
-          />
+          <StudentHistory v-bind:items="studentHistory" />
         </section>
       </div>
     </div>
@@ -74,6 +69,7 @@ export default {
           Description: "",
         },
       },
+      studentHistory: [],
     };
   },
   mounted: function() {
@@ -93,7 +89,16 @@ export default {
           EnglishProficiency: data.EnglishProficiency,
         };
 
+        const studentHistory = data.statusUpdates.map(update => {
+          return {
+            date: new Date(update.created_at).toDateString(),
+            description: update.nextStatus.Description,
+            status: update.nextStatus.StatusID,
+          };
+        });
+
         this.studentData = studentObject;
+        this.studentHistory = studentHistory;
       });
   },
 };
