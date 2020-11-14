@@ -2,7 +2,6 @@
 const express = require('express')
 const router = express.Router()
 // const debug = require('debug')('app:students')
-// const db = require('../models/index')
 const students = require('../helpers/students')
 
 const { UniqueViolationError } = require('objection')
@@ -57,6 +56,9 @@ router.get('/:id', async (req, res) => {
 
 /* POST students listing */
 router.post('/', async (req, res) => {
+  const status = await students.getStatusPromise(req.body)
+  req.body.StatusID = status[0].StatusID
+
   const result = await students.addStudent(req.body)
 
   // handle error

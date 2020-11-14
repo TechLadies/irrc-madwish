@@ -8,6 +8,7 @@ const path = require('path')
 
 const studentsRouter = require('./routes/students')
 const nativeLanguagesRouter = require('./routes/nativeLanguages')
+const statusesRouter = require('./routes/statuses')
 
 const app = express()
 
@@ -17,14 +18,15 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-app.use(express.static(path.resolve(__dirname, "../public")))
+app.use(express.static(path.resolve(__dirname, '../public')))
 
 // Backend routes
 app.use('/api/students', studentsRouter)
 app.use('/api/nativeLanguages', nativeLanguagesRouter)
+app.use('/api/statuses', statusesRouter)
 
-app.get("*", function(req, res) {
-  res.sendFile(path.resolve(__dirname, "../public/index.html"))
+app.get('*', function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../public/index.html'))
 })
 
 module.exports = app

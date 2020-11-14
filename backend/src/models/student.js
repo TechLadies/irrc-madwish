@@ -52,7 +52,7 @@ class Student extends Model {
   static get jsonSchema () {
     return {
       type: 'object',
-      required: ['PhoneNumber', 'FirstName', 'LastName', 'StatusID'],
+      required: ['PhoneNumber', 'FirstName', 'LastName'],
       properties: {
         StudentID: { type: 'integer' },
         PhoneNumber: { type: 'string', minLength: 1, maxLength: 255 }, // ToDo review datatype - string or int?
