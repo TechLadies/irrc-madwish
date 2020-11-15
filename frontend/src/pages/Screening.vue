@@ -11,9 +11,8 @@
             <span>Clear checked</span>
         </button>
 
-        <button class="button field is-blue" @click="isActive = !isActive"
+        <button class="button field is-blue" @click="cardModal()"
             :disabled="!checkedRows.length">
-            <b-icon icon="close"></b-icon>
             <span>Matched selected</span>: {{ checkedRows.length }}
         </button>    
         <b-button class="button field is-blue">
@@ -33,6 +32,7 @@
               :checked-rows.sync="checkedRows" 
               checkable
               :checkbox-position="checkboxPosition"
+              :is-row-checkable="(row) => row.EnglishProficiency !== null"
               >
 
                 <!-- Student ID column --> 
@@ -80,9 +80,44 @@
                 </template>
 
 
+                <!-- Native Language column --> 
+
+                <template v-for="(column, index) in columns" v-if="index == 3">
+                  <b-table-column :key="column.id" v-bind="column" sortable>
+                    <template
+                      v-if="column.searchable"
+                      slot="searchable"
+                      slot-scope="props">
+                        <b-input
+                            v-model="props.filters[props.column.field]"
+                            icon="magnify"
+                            size="is-small" />
+                    </template>
+                    <template v-slot="props">
+                      <span v-if="props.row.NativeLanguageID == 1">
+                          Bangla
+                      </span> 
+
+                      <span v-if="props.row.NativeLanguageID == 2">
+                          Tamil
+                      </span> 
+
+                      <span v-if="props.row.NativeLanguageID == 3">
+                          Hindu
+                      </span> 
+
+                      <span v-if="props.row.NativeLanguageID == 4">
+                          Tegulu
+                      </span> 
+                        <br> 
+                    </template>
+                    </b-table-column>
+                </template>
+
+
               <!-- English Proficiency --> 
 
-                <template v-for="(column, index) in columns" v-if="index == 5">
+                <template v-for="(column, index) in columns" v-if="index == 6">
                   <b-table-column :key="column.id" v-bind="column" sortable>
                     <template
                       v-if="column.searchable"
@@ -95,11 +130,11 @@
                     </template>
                     <template v-slot="props">
                       <b-field>
-                          <b-select placeholder="Select Proficiency" v-on:input="updateCourse">
-                            <option value = "1">No (Unable to understand at all)</option>
-                            <option value = "2">Little (Able to understand simple words)</option>
-                            <option value = "3">Simple (Able to speak full sentences)</option>
-                            <option value = "4">Intermediate (Able to understand simple words)</option>
+                          <b-select placeholder="Select Proficiency" v-model="props.row.EnglishProficiency" v-on:input="updateCourse">
+                            <option
+                              v-for="option in uniqueEnglishVals" :key="option" :value="option">
+                              {{option}}
+                            </option>
                           </b-select>
                       </b-field>
                     </template>
@@ -110,7 +145,7 @@
 
               <!-- phone column --> 
 
-                <template v-for="(column, index) in columns" v-if="index == 4">
+                <template v-for="(column, index) in columns" v-if="index == 5">
                   <b-table-column :key="column.id" v-bind="column" sortable>
                     <template
                       v-if="column.searchable"
@@ -129,7 +164,7 @@
 
               <!-- blank ready to match column --> 
 
-                <template v-for="(column, index) in columns" v-if="index == 6">
+                <template v-for="(column, index) in columns" v-if="index == 7">
                   <b-table-column :key="column.id" v-bind="column" sortable>
                     <template
                       v-if="column.searchable"
@@ -164,17 +199,47 @@ import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
 
 
+
+const ModalForm = {
+    template: `
+        <form action="">
+            <div class="modal-card" style="width: auto">
+                <section class="modal-card-body">
+                    <b-field label="Students ready to be matched?">
+                        Confirming will add these students to the page for them to be matched with teachers.
+                    </b-field>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button" type="button" @click="$emit('close')">Cancel</button>
+                    <button class="button is-blue">Confirm</button>
+                </footer>
+            </div>
+        </form>
+    `
+}
+
+
+
 export default {
         data() {
             return {
                 data: [
+                    { 'StudentID': 12345, 'FullName': 'Jesse', 'created_at': '2020-10-24T06:18:24.738Z', 'StatusID': 1,'PhoneNumber': '91233217', 'EnglishProficiency':null, 'NativeLanguageID':1 },
+                    { 'StudentID': 23456, 'FullName': 'John', 'created_at': '2020-10-25T06:18:24.738Z', 'StatusID': 2, 'PhoneNumber': '91312231', 'EnglishProficiency':null, 'NativeLanguageID':2},
+                    { 'StudentID': 31232, 'FullName': 'Tina', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102', 'EnglishProficiency':'No', 'NativeLanguageID':3},
+                    { 'StudentID': 31232, 'FullName': 'Tina2', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102', 'EnglishProficiency':null, 'NativeLanguageID':4},                    
+                    { 'StudentID': 41231, 'FullName': 'Clarence', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID': 4,  'PhoneNumber': '93141234','EnglishProficiency':'Little', 'NativeLanguageID':1 },
+                    { 'StudentID': 53212, 'FullName': 'Anne', 'created_at': '2020-10-27T06:18:24.738Z', 'StatusID': 1,  'PhoneNumber': '81230532','EnglishProficiency':'Intermediate', 'NativeLanguageID':2 },
+
                  ],
+
                 selected: null,
                 sortIcon: 'arrow-up',
                 sortIconSize: 'is-small',
                 sortDirection: 'asc',
                 checkedRows:[],
                 checkboxPosition: 'right',
+                uniqueEnglishVals: ['No', 'Little', 'Limited', 'Intermediate'],
                 isActive: false,
                 columns: [
                     {
@@ -191,7 +256,12 @@ export default {
                         field: 'FullName',
                         label: 'Student Name',
                         searchable: true,
-                    },                               
+                    },    
+                    {
+                        field: 'NativeLanguageID',
+                        label: 'Native Language',
+                        searchable: true,
+                    },      
                     {
                         field: 'StatusID',
                         label: 'Status',
@@ -208,7 +278,7 @@ export default {
                         searchable: true,
                     },
                     {
-                        field: 'EnglishProficiency',
+                        field: 'Dummy',
                         label: 'Ready to Match:',
                         searchable: true,
                     },
@@ -217,27 +287,74 @@ export default {
                 ]
             }
         },
+
+
+        computed: {
+          tableData(){
+            return this.data.map(student=>{
+
+              let NativeLanguageDesc = "";
+              let SetNullEnglish ="";
+
+              if (student.NativeLanguageID === 1){
+                NativeLanguageDesc = "Bangla"
+              }
+
+              if (student.NativeLanguageID === 2){
+                NativeLanguageDesc = "Hindi"
+              }
+
+              if (student.NativeLanguageID === 3){
+                NativeLanguageDesc = "Tamil"
+              }
+
+              if (student.NativeLanguageID === 4){
+                NativeLanguageDesc = "Telugu"
+              }
+
+              return{
+                StudentID: `${student.StudentID}`,
+                FullName: `${student.FullName}`,
+                StatusID: `${student.StatusID}`,
+                PhoneNumber: `${student.PhoneNumber}`,
+                EnglishProficiency: `${student.EnglishProficiency}`,
+                NativeLanguageID: NativeLanguageDesc
+              }
+            })
+          }
+        },
+
+
+
         components:{
           Page,
           PageHeader
         },
                 
 
-        // Placeholder for API
-        mounted() {
-          fetch(API_URL)
-            .then(response => response.json())
-            .then(result => {
-              this.data = result;
-            });
-        },
+        // FETCH API
+        // mounted() {
+        //   fetch(API_URL)
+        //     .then(response => response.json())
+        //     .then(result => {
+        //       this.data = result;
+        //     });
+        // },
 
         methods: {
-          updateCourse(){
-            console.log("hello")
+          cardModal() {
+              this.$buefy.modal.open({
+                  parent: this,
+                  component: ModalForm,
+                  hasModalCard: true,
+                  customClass: 'custom-class custom-class-2',
+                  trapFocus: true
+              })
           }
         },
-      
+  
+
+
     }   
 </script>
 
@@ -322,6 +439,13 @@ button.button.field.is-blue{
   background:#3C4F76;
   color:white;
 }
+
+
+button.is-blue{
+  background:#3C4F76;
+  color:white;
+}
+
 /* table tr:FIRST-CHILD
 {
     display:none;
