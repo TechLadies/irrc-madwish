@@ -149,31 +149,30 @@ export default {
   },
 
   //Fetch student data and pre-fill form
-  // How do I deal with fields in the student object? should I define all student properties from the API in data? 
   async mounted() {
       // Call API for Native Languages?
       await fetch("/api/nativeLanguages")
         .then(response => response.json())
         .then(result => this.API_nativeLanguage = result)
 
+      // TO-DO: How does it know which student to fetch? API call is currently hardcoded.
       await fetch("/api/students/1")
         .then(response => response.json())
-            .then(result => {
-              //transform Nativelanguage ID from int to string 
-              this.selected =this.API_nativeLanguage.find(item => item.NativeLanguageID === result.NativeLanguageID)
-
-              const value = {
-                // change name: FullName after backend is updated
-                name: result.FirstName + ' ' + result.LastName,
-                FirstName: result.FirstName,
-                LastName: result.LastName,
-                PhoneNumber: result.PhoneNumber,
-                Source: result.Source,
-                EnglishProficiency: result.EnglishProficiency,
-                Notes: result.Notes,
-              }
-              this.studentData = value;
-            });
+        .then(result => {
+          //transform Nativelanguage ID from int to string 
+          this.selected =this.API_nativeLanguage.find(item => item.NativeLanguageID === result.NativeLanguageID)
+          const value = {
+            // change name: FullName after backend is updated
+            name: result.FirstName + ' ' + result.LastName,
+            FirstName: result.FirstName,
+            LastName: result.LastName,
+            PhoneNumber: result.PhoneNumber,
+            Source: result.Source,
+            EnglishProficiency: result.EnglishProficiency,
+            Notes: result.Notes,
+          }
+          this.studentData = value;
+        });
   },
   methods: {
     filteredLanguageDataArray(language = "") {
@@ -188,7 +187,7 @@ export default {
     saveStudent(){
       // HTTP PATCH to update student, changing specific field on backend.
         const updateData = {...this.studentData, NativeLanguageID: this.selected.NativeLanguageID}
-        // Remove this line after FullName is updated in Student Model
+        // Remove line below after FullName is updated in Student Model
         delete updateData.name 
         const studentSave = {
         method: "PATCH",
@@ -200,18 +199,18 @@ export default {
           updateData 
         )
       }
-      console.log(studentSave)
-      console.log(this.studentData)
       fetch("/api/students/1", studentSave)
         .then(response => response.json()) 
       //Pop-up notification that new student has been added
-      this.$buefy.notification.open({
-        message: 'Student saved. <u>View profile</u>!',
-        duration: 5000,
-        type: 'is-success',
-        position: 'is-top',
-        // color: '#57A773',
-      })
+        .then(()=>{
+          this.$buefy.notification.open({
+          message: 'Student saved. <u>View profile</u>!',
+          duration: 5000,
+          type: 'is-success',
+          position: 'is-top',
+          // color: '#57A773',
+          })
+        })
     },
 
     uploadFile(){
