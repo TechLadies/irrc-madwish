@@ -8,7 +8,7 @@
 
         <button class="button field is-white" @click="checkedRows = []"
             :disabled="!checkedRows.length">
-            <span>Clear checked</span>
+            <span>Clear selection</span>
         </button>
 
         <button class="button field is-blue" @click="cardModal()"
