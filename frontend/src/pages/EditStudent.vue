@@ -158,7 +158,6 @@ export default {
 
       // TO-DO: How does it know which student to fetch? API call is currently hardcoded.
         await fetch(`/api/students/${id}`)
-        //await fetch("/api/students/1")
         .then(response => response.json())
         .then(result => {
           //transform Nativelanguage ID from int to string 
@@ -174,6 +173,7 @@ export default {
             Notes: result.Notes,
           }
           this.studentData = value;
+
         });
   },
   methods: {
@@ -206,6 +206,7 @@ export default {
           updateData 
         )
       }
+      const id = this.$route.params.id
       fetch(`/api/students/${id}`, studentSave)
         .then(response => response.json()) 
         //Pop-up notification that new student has been added after successful backend response
