@@ -96,7 +96,7 @@
 <script>
 import Page from '../components/Page.vue'
 export default {
-  name: 'NewStudent',
+  name: 'EditStudent',
   components: {
     Page
   },
@@ -151,15 +151,14 @@ export default {
   //Fetch student data and pre-fill form
   async mounted() {
       const id = this.$route.params.id
-
       // Call API for Native Languages?
       await fetch("/api/nativeLanguages")
         .then(response => response.json())
         .then(result => this.API_nativeLanguage = result)
 
       // TO-DO: How does it know which student to fetch? API call is currently hardcoded.
-      //await fetch("/api/students/${id}")
-        await fetch("/api/students/1")
+        await fetch(`/api/students/${id}`)
+        //await fetch("/api/students/1")
         .then(response => response.json())
         .then(result => {
           //transform Nativelanguage ID from int to string 
@@ -207,7 +206,7 @@ export default {
           updateData 
         )
       }
-      fetch("/api/students/1", studentSave)
+      fetch(`/api/students/${id}`, studentSave)
         .then(response => response.json()) 
         //Pop-up notification that new student has been added after successful backend response
         .then(()=>{

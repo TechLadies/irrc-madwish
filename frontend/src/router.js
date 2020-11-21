@@ -22,7 +22,7 @@ const router = new VueRouter({
     { path: '/students', component: AllStudents  },
     // To check how to resolve routes for /students/:id/edit, somehow isn't working
     { path: "/students/:id", component: StudentProfile},
-    { path: "/edit/:id", component: EditStudent}
+    { path: "/students/:id/edit", component: EditStudent}
   ]
 })
 
