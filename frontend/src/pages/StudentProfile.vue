@@ -59,7 +59,7 @@ export default {
         LastName: "",
         Source: "",
         nativeLanguage: {
-          NativeLanguageID: 1,
+          NativeLanguageID: -1,
           NativeLanguage: "",
         },
         EnglishProficiency: "",
@@ -73,7 +73,8 @@ export default {
     };
   },
   mounted: function() {
-    fetch("/api/students/1")
+    const id = this.$route.params.id
+    fetch(`/api/students/${id}`)
       .then(response => response.json())
       .then(data => {
         const studentObject = {
