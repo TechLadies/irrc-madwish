@@ -119,7 +119,7 @@ export default {
           name: '',
           PhoneNumber: '',
           Source:'',
-          nativeLanguage: '',
+          nativeLanguage: [],
           studentData: {},
           selected: {NativeLanguage: ''},
           file: null,
@@ -201,7 +201,7 @@ export default {
       }
       fetch("/api/students/1", studentSave)
         .then(response => response.json()) 
-      //Pop-up notification that new student has been added
+        //Pop-up notification that new student has been added after successful backend response
         .then(()=>{
           this.$buefy.notification.open({
           message: 'Student saved. <u>View profile</u>!',
@@ -211,6 +211,8 @@ export default {
           // color: '#57A773',
           })
         })
+        .then(()=> studentData = {})
+          
     },
 
     uploadFile(){
