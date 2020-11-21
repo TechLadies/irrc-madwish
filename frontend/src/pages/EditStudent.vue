@@ -186,7 +186,7 @@ export default {
     },
     clearStudent(){
       this.studentData = {},
-      this.selected = ''
+      this.selected.NativeLanguage = ''
     },
    
     saveStudent(){
