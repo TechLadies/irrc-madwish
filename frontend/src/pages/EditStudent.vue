@@ -184,6 +184,11 @@ export default {
           })
 
     },
+    clearStudent(){
+      this.studentData = {},
+      this.selected = ''
+    },
+   
     saveStudent(){
       // HTTP PATCH to update student, changing specific field on backend.
         const updateData = {...this.studentData, NativeLanguageID: this.selected.NativeLanguageID}
@@ -211,7 +216,10 @@ export default {
           // color: '#57A773',
           })
         })
-        .then(()=> studentData = {})
+        .then(()=> this.clearStudent())
+       
+        
+        
           
     },
 
