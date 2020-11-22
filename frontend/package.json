@@ -5,7 +5,7 @@
   "main": "./src/main.js",
   "scripts": {
     "serve": "vite",
-    "build": "vite build",
+    "build": "vite build  && npm run copy",
     "copy": "cp -r dist/. ../backend/public/"
   },
   "keywords": [
@@ -17,16 +17,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "buefy": "^0.9.3",
-    "rollup-plugin-vue": "^6.0.0-beta.10",
-    "vue": "^2.6.11",
-    "vue-router": "^3.4.5",
+    "buefy": "^0.9.4",
+    "vue": "^2.6.12",
+    "vue-router": "^3.4.9",
     "vuex": "^3.5.1"
   },
   "devDependencies": {
-    "@vue/component-compiler-utils": "^3.2.0",
-    "vite": "^1.0.0-rc.4",
-    "vite-plugin-vue2": "0.1.3",
-    "vue-template-compiler": "^2.6.11"
+    "vite": "^1.0.0-rc.9",
+    "vite-plugin-vue2": "0.2.1"
   }
 }

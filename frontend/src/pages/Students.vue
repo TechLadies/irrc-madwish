@@ -1,4 +1,3 @@
-
 <template>
   <Page>
     <div class="container">
@@ -165,9 +164,9 @@
 
 const API_URL = "/api/students";
 
+
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
-
 
 export default {
         data() {
@@ -238,26 +237,17 @@ export default {
 </script>
 
 <style>
-
-
-
 body {
   background-color: #F3F7FA !important;
 }
-
 .container {
   padding: 20px;
   background-color: transparent;
 }
-
-
 .Title{
   padding-bottom:20px;
   vertical-align: bottom !important;
 }
-
-
-
 span.tag {
   font-size: 1em;
   justify-content: left;
@@ -265,8 +255,6 @@ span.tag {
   padding-bottom:25px;
   width: 185px;
 }
-
-
 span.tag.is-info {
   background-color: rgba(159, 207, 255, 0.15);
   color: #00488F;
@@ -275,44 +263,32 @@ span.tag.is-info {
   padding-top: 25px;
   padding-bottom:25px;
 }
-
 span.tag.is-success {
   background-color: rgba(84, 140, 47, 0.15);
   color: #255307;
 }
-
 span.tag.is-danger {
   background-color: rgba(255, 166, 165, 0.15);
   color: #BE0E00;
 }
-
 span.tag.is-warning {
   background-color: rgba(246, 174, 45, 0.08);
   color: #F6AE2D;
 }
-
 span.idStyle {
   font-size: 0.8em;
 }
-
 .table td, .table th {
   color: #59666E;
 }
-
-
 span.nameStyle {
   color: #3C4F76 !important;
 }
-
-
 table td:not([align]), table th:not([align]) {
   vertical-align: middle;
 }
-
 .b-table .table th.is-current-sort
 .b-table .table th.is-sortable:hover {
   border-color: white !important;
 }
-
-
 </style>
