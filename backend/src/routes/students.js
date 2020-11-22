@@ -56,8 +56,17 @@ router.get('/:id', async (req, res) => {
 
 /* POST students listing */
 router.post('/', async (req, res) => {
-  const status = await students.getStatusPromise(req.body)
-  req.body.StatusID = status[0].StatusID
+  // If request does not contain StatusID
+  if (req.body.StatusID == null) {
+    var statusString
+    // If request contains a statusString
+    if (req.body.StatusString != null) {
+      statusString = req.body.StatusString
+      delete req.body.StatusString
+    }
+    const status = await students.getStatusPromise(statusString)
+    req.body.StatusID = status.StatusID
+  }
 
   const result = await students.addStudent(req.body)
 

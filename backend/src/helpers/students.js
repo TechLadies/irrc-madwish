@@ -54,17 +54,12 @@ exports.getStatusByStudentId = async function (studentID) {
   }
 }
 
-exports.getStatusPromise = async function (body) {
-  // Check if request contains StatusID
-  if (body.StatusID == null) {
-    if (body.StatusString != null) {
-      const statusString = body.StatusString
-      delete body.StatusString
-      // If request contains StatusString, return corresponding StatusID
-      return statuses.getStatusByStatusString(statusString)
-    } else {
-      // If StatusID and StatusString are both not provided, default to 'SCREENING' StatusID
-      return statuses.getStatusByStatusString('SCREENING')
-    }
+exports.getStatusPromise = async function (statusString) {
+  if (statusString != null) {
+    // If request contains StatusString, return corresponding StatusID
+    return statuses.getStatusByStatusString(statusString)
+  } else {
+    // If StatusID and StatusString are both not provided, default to 'SCREENING' StatusID
+    return statuses.getStatusByStatusString('SCREENING')
   }
 }
