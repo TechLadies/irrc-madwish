@@ -193,7 +193,8 @@
 <script>
 
 // Placeholder for API //
-const API_URL = "http://localhost:3001/api/students";
+const API_URL = "http://localhost:3001/api/students/?status=Screening";
+
 
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
@@ -224,12 +225,12 @@ export default {
         data() {
             return {
                 data: [
-                    { 'StudentID': 12345, 'FullName': 'Jesse', 'created_at': '2020-10-24T06:18:24.738Z', 'StatusID': 1,'PhoneNumber': '91233217', 'EnglishProficiency':null, 'NativeLanguageID':1 },
-                    { 'StudentID': 23456, 'FullName': 'John', 'created_at': '2020-10-25T06:18:24.738Z', 'StatusID': 2, 'PhoneNumber': '91312231', 'EnglishProficiency':null, 'NativeLanguageID':2},
-                    { 'StudentID': 31232, 'FullName': 'Tina', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102', 'EnglishProficiency':'No', 'NativeLanguageID':3},
-                    { 'StudentID': 31232, 'FullName': 'Tina2', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102', 'EnglishProficiency':null, 'NativeLanguageID':4},                    
-                    { 'StudentID': 41231, 'FullName': 'Clarence', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID': 4,  'PhoneNumber': '93141234','EnglishProficiency':'Little', 'NativeLanguageID':1 },
-                    { 'StudentID': 53212, 'FullName': 'Anne', 'created_at': '2020-10-27T06:18:24.738Z', 'StatusID': 1,  'PhoneNumber': '81230532','EnglishProficiency':'Intermediate', 'NativeLanguageID':2 },
+                    // { 'StudentID': 12345, 'FullName': 'Jesse', 'created_at': '2020-10-24T06:18:24.738Z', 'StatusID': 1,'PhoneNumber': '91233217', 'EnglishProficiency':null, 'NativeLanguageID':1 },
+                    // { 'StudentID': 23456, 'FullName': 'John', 'created_at': '2020-10-25T06:18:24.738Z', 'StatusID': 2, 'PhoneNumber': '91312231', 'EnglishProficiency':null, 'NativeLanguageID':2},
+                    // { 'StudentID': 31232, 'FullName': 'Tina', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102', 'EnglishProficiency':'No', 'NativeLanguageID':3},
+                    // { 'StudentID': 31232, 'FullName': 'Tina2', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102', 'EnglishProficiency':null, 'NativeLanguageID':4},                    
+                    // { 'StudentID': 41231, 'FullName': 'Clarence', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID': 4,  'PhoneNumber': '93141234','EnglishProficiency':'Little', 'NativeLanguageID':1 },
+                    // { 'StudentID': 53212, 'FullName': 'Anne', 'created_at': '2020-10-27T06:18:24.738Z', 'StatusID': 1,  'PhoneNumber': '81230532','EnglishProficiency':'Intermediate', 'NativeLanguageID':2 },
 
                  ],
 
@@ -333,13 +334,13 @@ export default {
                 
 
         // FETCH API
-        // mounted() {
-        //   fetch(API_URL)
-        //     .then(response => response.json())
-        //     .then(result => {
-        //       this.data = result;
-        //     });
-        // },
+        mounted() {
+          fetch(API_URL)
+            .then(response => response.json())
+            .then(result => {
+              this.data = result;
+            });
+        },
 
         methods: {
           cardModal() {
