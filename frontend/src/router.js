@@ -20,7 +20,6 @@ const router = new VueRouter({
     { path: '/matching', component: Matching  },
     { path: '/new', component: NewStudent  },
     { path: '/students', component: AllStudents  },
-    // To check how to resolve routes for /students/:id/edit, somehow isn't working
     { path: "/students/:id", component: StudentProfile},
     { path: "/students/:id/edit", component: EditStudent}
   ]
