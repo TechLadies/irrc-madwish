@@ -102,15 +102,6 @@ export default {
   },
   data() {
       return {
-          // languageData: [
-          //     'Bengali',
-          //     'English',
-          //     'Mandarin',
-          //     'Russian',
-          //     'Indonesian',
-          //     'Urdu',
-          //     'Tamil'
-          // ],
           SourceData: [
               'Rotary Club',
               'Source 1',
@@ -247,22 +238,30 @@ export default {
         // color: '#57A773',
       })
     },
-
-
-
     showAddLanguage() {
-        this.$buefy.dialog.prompt({
-          message: `Add new language`,
-          inputAttrs: {
-            placeholder: 'e.g. Italian',
-            maxlength: 255,
-          },
-          confirmText: 'Add',
-          onConfirm: (value) => {
-            this.languageData.push(value)
-            this.$refs.languageComplete.setSelected(value)
+      this.$buefy.dialog.prompt({
+        message: `Add new language`,
+        inputAttrs: {
+          placeholder: 'e.g. Italian',
+          maxlength: 255,
+        },
+        confirmText: 'Add',
+        onConfirm: (value) => {
+        // POST to /api/nativeLanguages 
+          const addLanguage = {
+            method: "POST",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+              updateData 
+            )
           }
-        })
+          fetch("/api/nativeLanguages", addLanguage)
+            .then(response => response.json()) 
+        }
+      })
     },
     showAddSource() {
         this.$buefy.dialog.prompt({
@@ -278,8 +277,7 @@ export default {
           }
         })
     },    
-  }
-}
+  },
 </script>
 
 <style>
