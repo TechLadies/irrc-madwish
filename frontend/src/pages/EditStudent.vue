@@ -164,7 +164,6 @@ export default {
           Notes: result.Notes,
         }
         this.studentData = value;
-
         });
   },
   methods: {
@@ -210,8 +209,11 @@ export default {
           // color: '#57A773',
           })
         })
+        //.then(()=> this.clearStudent(), this.$router.go(-1))
+        
+        console.log(updateData)
         // Clear form fields and go back to Student Profile
-        .then(()=> this.clearStudent(), this.$router.go(-1))
+        
        
         
         
@@ -262,7 +264,13 @@ export default {
           }
           fetch("/api/nativeLanguages", addLanguage)
             .then(response => response.json()) 
+          // New language becomes the selected value shown in form input
           this.selected.NativeLanguage = value
+          //
+          fetch("/api/nativeLanguages")
+            .then(response => response.json())
+            .then(result => this.API_nativeLanguage = result)
+          console.log(this.API_nativeLanguage)
         }
       })
     },
