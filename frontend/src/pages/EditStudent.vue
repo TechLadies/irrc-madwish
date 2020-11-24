@@ -142,28 +142,28 @@ export default {
   //Fetch student data and pre-fill form
   async mounted() {
       const id = this.$route.params.id
-      // Call API for Native Languages?
+
+      // Call API for Native Languages
       await fetch("/api/nativeLanguages")
         .then(response => response.json())
         .then(result => this.API_nativeLanguage = result)
-
-      // TO-DO: How does it know which student to fetch? API call is currently hardcoded.
-        await fetch(`/api/students/${id}`)
-        .then(response => response.json())
-        .then(result => {
-          //transform Nativelanguage ID from int to string 
-          this.selected =this.API_nativeLanguage.find(item => item.NativeLanguageID === result.NativeLanguageID)
-          const value = {
-            // change name: FullName after backend is updated
-            name: result.FirstName + ' ' + result.LastName,
-            FirstName: result.FirstName,
-            LastName: result.LastName,
-            PhoneNumber: result.PhoneNumber,
-            Source: result.Source,
-            EnglishProficiency: result.EnglishProficiency,
-            Notes: result.Notes,
-          }
-          this.studentData = value;
+      
+      await fetch(`/api/students/${id}`)
+      .then(response => response.json())
+      .then(result => {
+        //transform Nativelanguage ID from int to string 
+        this.selected =this.API_nativeLanguage.find(item => item.NativeLanguageID === result.NativeLanguageID)
+        const value = {
+          // change name: FullName after backend is updated
+          name: result.FirstName + ' ' + result.LastName,
+          FirstName: result.FirstName,
+          LastName: result.LastName,
+          PhoneNumber: result.PhoneNumber,
+          Source: result.Source,
+          EnglishProficiency: result.EnglishProficiency,
+          Notes: result.Notes,
+        }
+        this.studentData = value;
 
         });
   },
@@ -238,6 +238,7 @@ export default {
         // color: '#57A773',
       })
     },
+
     showAddLanguage() {
       this.$buefy.dialog.prompt({
         message: `Add new language`,
@@ -247,7 +248,8 @@ export default {
         },
         confirmText: 'Add',
         onConfirm: (value) => {
-        // POST to /api/nativeLanguages 
+          // POST to /api/nativeLanguages 
+          const newLanguage = {NativeLanguage: value}
           const addLanguage = {
             method: "POST",
             headers: {
@@ -255,14 +257,16 @@ export default {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(
-              updateData 
+              newLanguage
             )
           }
           fetch("/api/nativeLanguages", addLanguage)
             .then(response => response.json()) 
+          this.selected.NativeLanguage = value
         }
       })
     },
+  
     showAddSource() {
         this.$buefy.dialog.prompt({
           message: `Add new Source`,
@@ -277,12 +281,13 @@ export default {
           }
         })
     },    
-  },
+  }
+}
 </script>
 
 <style>
 
-button.button.dark-blue{
+button.button.dark-blue {
   background-color: #3C4F76;
   color: white; 
   border: 1px solid #3C4F76;
@@ -369,7 +374,5 @@ html {
   border-radius: 32px;
   text-align: center;
 }
-
-
 
 </style>
