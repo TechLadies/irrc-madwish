@@ -110,7 +110,6 @@ export default {
           name: '',
           PhoneNumber: '',
           Source:'',
-          nativeLanguage: [],
           studentData: {},
           selected: [
             {NativeLanguageID: ''},
