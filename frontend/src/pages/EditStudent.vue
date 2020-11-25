@@ -112,7 +112,10 @@ export default {
           Source:'',
           nativeLanguage: [],
           studentData: {},
-          selected: {NativeLanguage: ''},
+          selected: [
+            {NativeLanguageID: ''},
+            {NativeLanguage: ''}
+          ],
           file: null,
           SourceOption: '',
           // TO-DO: should call API and store languageID:language pairs in vuex store to use globally 
@@ -266,14 +269,19 @@ export default {
             .then(response => response.json()) 
           // New language becomes the selected value shown in form input
           this.selected.NativeLanguage = value
-          //
+          
+          // Fetch updated data from backend and update API_Native
           await fetch("/api/nativeLanguages")
             .then(response => response.json())
             .then(result => this.API_nativeLanguage = result)
           console.log(this.API_nativeLanguage)
+          this.selected = this.API_nativeLanguage.find(item => item.NativeLanguage === this.selected.NativeLanguage)
+          console.log(this.selected)
+
         }
       })
-    },
+    },         
+
   
     showAddSource() {
         this.$buefy.dialog.prompt({
