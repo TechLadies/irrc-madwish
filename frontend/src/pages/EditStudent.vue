@@ -212,15 +212,9 @@ export default {
           // color: '#57A773',
           })
         })
-        //.then(()=> this.clearStudent(), this.$router.go(-1))
         
-        console.log(updateData)
         // Clear form fields and go back to Student Profile
-        
-       
-        
-        
-          
+        .then(()=> this.clearStudent(), this.$router.go(-1))      
     },
 
     uploadFile(){
@@ -274,10 +268,9 @@ export default {
           await fetch("/api/nativeLanguages")
             .then(response => response.json())
             .then(result => this.API_nativeLanguage = result)
-          console.log(this.API_nativeLanguage)
+          
+          // Finds new NativeLanguageID based on the new NativeLanguage; updates selected (object) 
           this.selected = this.API_nativeLanguage.find(item => item.NativeLanguage === this.selected.NativeLanguage)
-          console.log(this.selected)
-
         }
       })
     },         
