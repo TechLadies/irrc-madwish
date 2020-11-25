@@ -249,7 +249,7 @@ export default {
           maxlength: 255,
         },
         confirmText: 'Add',
-        onConfirm: (value) => {
+        onConfirm: async (value) => {
           // POST to /api/nativeLanguages 
           const newLanguage = {NativeLanguage: value}
           const addLanguage = {
@@ -262,12 +262,12 @@ export default {
               newLanguage
             )
           }
-          fetch("/api/nativeLanguages", addLanguage)
+          await fetch("/api/nativeLanguages", addLanguage)
             .then(response => response.json()) 
           // New language becomes the selected value shown in form input
           this.selected.NativeLanguage = value
           //
-          fetch("/api/nativeLanguages")
+          await fetch("/api/nativeLanguages")
             .then(response => response.json())
             .then(result => this.API_nativeLanguage = result)
           console.log(this.API_nativeLanguage)
