@@ -122,7 +122,6 @@ export default {
           selected: null,
           file: null,
           Notes: '',
-          studentData: {},
           selected: [
             {NativeLanguageID: ''},
             {NativeLanguage: ''}
@@ -137,14 +136,6 @@ export default {
   },
 
   computed: {
-    filteredLanguageDataArray() {
-        return this.languageData.filter((option) => {
-            return option
-              .toString()
-              .toLowerCase()
-              .indexOf(this.nativeLanguage.toLowerCase()) >= 0
-            })
-    },
     filteredSourceDataArray() {
         return this.sourceData.filter((sourceOption) => {
             return sourceOption
@@ -155,19 +146,25 @@ export default {
     },
     
   },
-  async mounted() {
-    const id = this.$route.params.id
-
+  mounted() {
     // Call API for Native Languages and add to array API_nativeLanguage
-    await fetch("/api/nativeLanguages")
+    fetch("/api/nativeLanguages")
       .then(response => response.json())
       .then(result => this.API_nativeLanguage = result)
   },
 
   methods: {
+    filteredLanguageDataArray(language = "") {
+      this.languages = this.API_nativeLanguage.filter((option) => {
+          return option.NativeLanguage
+            .toLowerCase()
+            .includes(language || "".toLowerCase())
+          
+          })
+
+    },
     createStudent(){
-        const // Finds new NativeLanguageID based on the new NativeLanguage; updates selected (object) 
-       const studentCreate = {
+      const studentCreate = {  
         method: "POST",
         headers: {
           'Accept': 'application/json',
@@ -179,10 +176,10 @@ export default {
           FirstName: this.name,
           LastName: 'Hossein', // Placeholder 
           Source: this.source,
-          NativeLanguageID: this.selectedNativeLanguageID = this.API_nativeLanguage.find(item => item.NativeLanguage === this.selected.NativeLanguage),
+          NativeLanguageID: this.selected.NativeLanguageID,
           EnglishProficiency: this.EnglishProficiency,
           Notes: this.Notes,
-          StatusID: 1, //How to avoid hardcoding StatusID? Let the backend handle it?
+          StatusID: 1 // Currently hardcoded. Will change after PR #40 is merged.
         })
       }
       fetch("/api/students", studentCreate)
@@ -243,16 +240,18 @@ export default {
           }
           await fetch("/api/nativeLanguages", addLanguage)
             .then(response => response.json()) 
-          // New language becomes the selected value shown in form input
-          this.selected.NativeLanguage = value
           
           // Fetch updated data from backend and update API_Native
           await fetch("/api/nativeLanguages")
             .then(response => response.json())
             .then(result => this.API_nativeLanguage = result)
           
+          // New language becomes the selected value shown in form input
+          this.selected.NativeLanguage = value
+          console.log(this.selected.NativeLanguage)
           // Finds new NativeLanguageID based on the new NativeLanguage; updates selected (object) 
           this.selected = this.API_nativeLanguage.find(item => item.NativeLanguage === this.selected.NativeLanguage)
+          console.log(this.selected)
         }
       })
     },         
