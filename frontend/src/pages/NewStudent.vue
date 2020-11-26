@@ -53,19 +53,20 @@
                 </b-field>
                 <b-field grouped>
 
-                  <b-field label="Native Language" class="half-width">
-                      <b-autocomplete
-                          v-model="nativeLanguage"
-                          ref="languageComplete"
-                          :languageData="filteredLanguageDataArray"
-                          placeholder="e.g. Bengali"
-                          @select="option => selected = option">
-                          <template slot="header">
-                              <a @click="showAddLanguage">
-                                  <span> Add new... </span>
-                              </a> 
-                          </template>
-                      </b-autocomplete>
+                <b-field label="Native Language" class="half-width">
+                    <b-autocomplete :value="selected.NativeLanguage"
+                        field= "NativeLanguage"
+                        ref="languageComplete"
+                        :data="languages"
+                        placeholder="e.g. Bengali" 
+                        @typing="filteredLanguageDataArray"
+                        @select="option => selected = option">
+                        <template slot="header">
+                            <a @click="showAddLanguage">
+                                <span> Add new... </span>
+                            </a> 
+                        </template>
+                    </b-autocomplete>
                   </b-field>
 
           
@@ -105,15 +106,8 @@ export default {
 
   data() {
       return {
-          languageData: [
-              'Bengali',
-              'English',
-              'Mandarin',
-              'Russian',
-              'Indonesian',
-              'Urdu',
-              'Tamil'
-          ],
+          languages: [],
+          API_nativeLanguage: [],
           sourceData: [
               'Rotary Club',
               'Source 1',
@@ -127,7 +121,12 @@ export default {
           EnglishProficiency: '',
           selected: null,
           file: null,
-          Notes: ''
+          Notes: '',
+          studentData: {},
+          selected: [
+            {NativeLanguageID: ''},
+            {NativeLanguage: ''}
+          ],
       }
   },
 
@@ -156,9 +155,18 @@ export default {
     },
     
   },
+  async mounted() {
+    const id = this.$route.params.id
+
+    // Call API for Native Languages and add to array API_nativeLanguage
+    await fetch("/api/nativeLanguages")
+      .then(response => response.json())
+      .then(result => this.API_nativeLanguage = result)
+  },
 
   methods: {
     createStudent(){
+        const // Finds new NativeLanguageID based on the new NativeLanguage; updates selected (object) 
        const studentCreate = {
         method: "POST",
         headers: {
@@ -167,13 +175,12 @@ export default {
         },
         body: JSON.stringify({
           PhoneNumber: this.PhoneNumber,
-
           // Replace FirstName and LastName with Name when Student Model is changed
           FirstName: this.name,
-          LastName: 'Hossein', // Placeholder as I haven't split Name 
+          LastName: 'Hossein', // Placeholder 
           Source: this.source,
-          NativeLanguageID: 1, // how to avoid hardcoding the languageID? can the backend process text then match to the appropriate ID? 
-          EnglishProficiency: this.EnglishProficiency, // must be No, Little, Simple or Intermediate. form input is int 
+          NativeLanguageID: this.selectedNativeLanguageID = this.API_nativeLanguage.find(item => item.NativeLanguage === this.selected.NativeLanguage),
+          EnglishProficiency: this.EnglishProficiency,
           Notes: this.Notes,
           StatusID: 1, //How to avoid hardcoding StatusID? Let the backend handle it?
         })
@@ -215,18 +222,40 @@ export default {
 
     showAddLanguage() {
         this.$buefy.dialog.prompt({
-          message: `Add new language`,
-          inputAttrs: {
-            placeholder: 'e.g. Italian',
-            maxlength: 255,
-          },
-          confirmText: 'Add',
-          onConfirm: (value) => {
-            this.languageData.push(value)
-            this.$refs.languageComplete.setSelected(value)
+        message: `Add new language`,
+        inputAttrs: {
+          placeholder: 'e.g. Italian',
+          maxlength: 255,
+        },
+        confirmText: 'Add',
+        onConfirm: async (value) => {
+          // POST to /api/nativeLanguages 
+          const newLanguage = {NativeLanguage: value}
+          const addLanguage = {
+            method: "POST",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+              newLanguage
+            )
           }
-        })
-    },
+          await fetch("/api/nativeLanguages", addLanguage)
+            .then(response => response.json()) 
+          // New language becomes the selected value shown in form input
+          this.selected.NativeLanguage = value
+          
+          // Fetch updated data from backend and update API_Native
+          await fetch("/api/nativeLanguages")
+            .then(response => response.json())
+            .then(result => this.API_nativeLanguage = result)
+          
+          // Finds new NativeLanguageID based on the new NativeLanguage; updates selected (object) 
+          this.selected = this.API_nativeLanguage.find(item => item.NativeLanguage === this.selected.NativeLanguage)
+        }
+      })
+    },         
     showAddSource() {
         this.$buefy.dialog.prompt({
           message: `Add new source`,
