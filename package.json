@@ -9,7 +9,7 @@
     "build": "npm run --prefix frontend build",
     "start": "npm run --prefix backend db:migrate && npm run --prefix backend start",
     "postinstall": "npm run clean && concurrently \"npm run install.frontend\" \"npm run install.backend\"",
-    "serve": "concurrently \"npm --prefix frontend serve\"",
+    "serve": "concurrently \"npm run --prefix frontend serve\"",
     "clean": "concurrently \"rm -rf frontend/node_modules\"  \"rm -rf backend/node_modules\""
   },
   "repository": {

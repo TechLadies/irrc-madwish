@@ -17,9 +17,11 @@ const router = new VueRouter({
     { path: "/", component: HelloWorld },
     { path: "/screening", component: Screening },
     { path: "/matching", component: Matching },
-    { path: "/new", component: NewStudent },
+    { path: "/new-student", component: NewStudent },
     { path: "/students", component: AllStudents },
     { path: "/students/:id", component: StudentProfile },
+    /* Placeholder for edit student page which is not done yet 
+    { path: "/edit-student/:id", component: EditStudent },*/
   ],
 });
 
