@@ -138,9 +138,7 @@ export default {
         },
         body: JSON.stringify({
           PhoneNumber: this.PhoneNumber,
-          FirstName: this.name,
-          LastName: "Placeholder",
-          //FullName: this.name,
+          FullName: this.name,
           Source: this.source,
           NativeLanguageID: this.selected.NativeLanguageID, // how to avoid hardcoding the languageID? can the backend process text then match to the appropriate ID? 
           EnglishProficiency: this.EnglishProficiency, // must be No, Little, Simple or Intermediate. form input is int 
@@ -151,14 +149,18 @@ export default {
       fetch("/api/students", studentCreate)
         .then(response => response.json()) 
       //Pop-up notification that new student has been added
-      this.$buefy.notification.open({
-        message: 'New student added. <u>View profile</u>!',
-        duration: 5000,
-        type: 'is-success',
-        position: 'is-top',
-        // color: '#57A773',
-      })
-      setTimeout(() => {this.$router.push({path: `/students`})}, );
+        .then(() => {
+          this.$buefy.notification.open({
+            message: 'New student added. <u>View profile</u>!',
+            duration: 5000,
+            type: 'is-success',
+            position: 'is-top',
+            // color: '#57A773',
+          })
+        })
+        .then(() => {
+          setTimeout(() => {this.$router.push({path: `/students`})} )
+        })
     },
     
     filteredLanguageDataArray(language = "") {
