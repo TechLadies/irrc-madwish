@@ -164,9 +164,7 @@ export default {
         },
         body: JSON.stringify({
           PhoneNumber: this.PhoneNumber,
-          // Replace FirstName and LastName with Name when Student Model is changed
-          FirstName: this.name,
-          LastName: 'Hossein', // Placeholder as I haven't split Name 
+          FullName: this.name,
           Source: this.source,
           NativeLanguageID: this.selected.NativeLanguageID, // how to avoid hardcoding the languageID? can the backend process text then match to the appropriate ID? 
           EnglishProficiency: this.EnglishProficiency, // must be No, Little, Simple or Intermediate. form input is int 
