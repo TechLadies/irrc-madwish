@@ -117,13 +117,12 @@ export default {
           sourceOption: '',
           nativeLanguage: '',
           EnglishProficiency: '',
-          selected: null,
           file: null,
           Notes: '',
-          selected: [
-            {NativeLanguageID: ''},
-            {NativeLanguage: ''}
-          ],
+          selected: {
+            NativeLanguageID: '',
+            NativeLanguage: ''
+          },
           languages: [],
           API_nativeLanguage: []
 
@@ -136,15 +135,14 @@ export default {
     }
   },
 
+ async mounted() {
+    // Call API for Native Languages
+      await fetch("/api/nativeLanguages")
+        .then(response => response.json())
+        .then(result => this.API_nativeLanguage = result)
+  },
+
   computed: {
-    filteredLanguageDataArray() {
-        return this.languageData.filter((option) => {
-            return option
-              .toString()
-              .toLowerCase()
-              .indexOf(this.nativeLanguage.toLowerCase()) >= 0
-            })
-    },
     filteredSourceDataArray() {
         return this.sourceData.filter((sourceOption) => {
             return sourceOption
@@ -166,15 +164,14 @@ export default {
         },
         body: JSON.stringify({
           PhoneNumber: this.PhoneNumber,
-
           // Replace FirstName and LastName with Name when Student Model is changed
           FirstName: this.name,
           LastName: 'Hossein', // Placeholder as I haven't split Name 
           Source: this.source,
-          NativeLanguageID: 1, // how to avoid hardcoding the languageID? can the backend process text then match to the appropriate ID? 
+          NativeLanguageID: this.selected.NativeLanguageID, // how to avoid hardcoding the languageID? can the backend process text then match to the appropriate ID? 
           EnglishProficiency: this.EnglishProficiency, // must be No, Little, Simple or Intermediate. form input is int 
           Notes: this.Notes,
-          StatusID: 1, //How to avoid hardcoding StatusID? Let the backend handle it?
+          StatusString: "SCREENING"
         })
       }
       fetch("/api/students", studentCreate)
@@ -187,8 +184,17 @@ export default {
         position: 'is-top',
         // color: '#57A773',
       })
+      setTimeout(() => {this.$router.push({path: `/students`})}, );
     },
-
+    
+    filteredLanguageDataArray(language = "") {
+      this.languages = this.API_nativeLanguage.filter((option) => {
+          return option.NativeLanguage
+            .toLowerCase()
+            .includes(language || "".toLowerCase())
+          
+      })
+    },
     uploadFile(){
       this.$buefy.notification.open({
         message: 'The file was uploaded successfully!',
@@ -236,7 +242,7 @@ export default {
           await fetch("/api/nativeLanguages", addLanguage)
             .then(response => response.json()) 
           // New language becomes the selected value shown in form input
-          this.selected.NativeLanguage = value
+          //this.selected.NativeLanguage = value
           
           // Fetch updated data from backend and update API_Native
           await fetch("/api/nativeLanguages")
@@ -244,7 +250,8 @@ export default {
             .then(result => this.API_nativeLanguage = result)
           
           // Finds new NativeLanguageID based on the new NativeLanguage; updates selected (object) 
-          this.selected = this.API_nativeLanguage.find(item => item.NativeLanguage === this.selected.NativeLanguage)
+          this.selected = this.API_nativeLanguage.find(item => item.NativeLanguage === value.toUpperCase())
+          console.log(this.selected)
         }
       })
     },         
