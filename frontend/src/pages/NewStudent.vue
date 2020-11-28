@@ -140,12 +140,13 @@ export default {
           PhoneNumber: this.PhoneNumber,
           FullName: this.name,
           Source: this.source,
-          NativeLanguageID: this.selected.NativeLanguageID, // how to avoid hardcoding the languageID? can the backend process text then match to the appropriate ID? 
-          EnglishProficiency: this.EnglishProficiency, // must be No, Little, Simple or Intermediate. form input is int 
+          NativeLanguageID: this.selected.NativeLanguageID, 
+          EnglishProficiency: this.EnglishProficiency, 
           Notes: this.Notes,
           StatusString: "SCREENING"
         })
       }
+      // Somehow notifications are still showing without a successful backend response.
       fetch("/api/students", studentCreate)
         .then(response => response.json()) 
       //Pop-up notification that new student has been added
