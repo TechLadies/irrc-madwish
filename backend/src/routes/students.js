@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 // const debug = require('debug')('app:students')
-const students = require("../helpers/students");
+const students = require('../helpers/students')
+const statuses = require('../helpers/statuses')
 
 const { UniqueViolationError } = require("objection");
 const { NotFoundError } = require("objection");
@@ -142,9 +143,17 @@ router.patch("/:id", async (req, res) => {
       });
     }
   }
-  
+
+  // If request does not contain StatusID and contains a StatusString
+  if (req.body.StatusID == null && req.body.StatusString != null) {
+    var statusString = req.body.StatusString
+    delete req.body.StatusString
+    const status = await statuses.getStatusByStatusString(statusString)
+    req.body.StatusID = status.StatusID
+  }
   
   const result = await students.patchStudent(req.params.id, req.body);
+
   // handle error
   if (result.err) {
     const err = result.err;

@@ -43,7 +43,7 @@ export default {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({StudentID: studentID, StatusID: 4})
+        body: JSON.stringify({StudentID: studentID, StatusString: "DROPPED OUT"})
       }
       
       fetch("/api/students/" + studentID, studentRequestOptions)
@@ -65,8 +65,8 @@ export default {
         },
         body: JSON.stringify({
           StudentID: studentID,
-          PreviousStatusID: 1,
-          NextStatusID: 4,
+          PreviousStatusString: 'SCREENING',
+          NextStatusString: 'DROPPED OUT',
           UpdatedBy: "IRRCAdmin"
         })
       }
