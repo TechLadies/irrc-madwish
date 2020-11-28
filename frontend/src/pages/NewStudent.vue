@@ -38,18 +38,10 @@
                 </b-field>
 
                 <b-field label="Source" class="half-width">
-                    <b-autocomplete
+                    <b-input
                         v-model="source"
-                        ref="sourceComplete"
-                        :data="filteredSourceDataArray"
-                        placeholder="Optional"
-                        @select="option => selected = sourceOption">
-                        <template slot="header">
-                            <a @click="showAddSource">
-                                <span> Add new... </span>
-                            </a> 
-                        </template>                    
-                    </b-autocomplete>
+                        placeholder="Optional">                 
+                    </b-input>
                 </b-field>
                 <b-field grouped>
 
@@ -106,15 +98,9 @@ export default {
 
   data() {
       return {
-          sourceData: [
-              'Rotary Club',
-              'Source 1',
-              'Source 2',
-          ],
           name: '',
           PhoneNumber: '',
           source:'',
-          sourceOption: '',
           nativeLanguage: '',
           EnglishProficiency: '',
           file: null,
@@ -142,18 +128,6 @@ export default {
         .then(result => this.API_nativeLanguage = result)
   },
 
-  computed: {
-    filteredSourceDataArray() {
-        return this.sourceData.filter((sourceOption) => {
-            return sourceOption
-              .toString()
-              .toLowerCase()
-              .indexOf(this.source.toLowerCase()) >= 0
-            })
-    },
-    
-  },
-
   methods: {
     createStudent(){
        const studentCreate = {
@@ -164,7 +138,9 @@ export default {
         },
         body: JSON.stringify({
           PhoneNumber: this.PhoneNumber,
-          FullName: this.name,
+          FirstName: this.name,
+          LastName: "Placeholder",
+          //FullName: this.name,
           Source: this.source,
           NativeLanguageID: this.selected.NativeLanguageID, // how to avoid hardcoding the languageID? can the backend process text then match to the appropriate ID? 
           EnglishProficiency: this.EnglishProficiency, // must be No, Little, Simple or Intermediate. form input is int 
@@ -189,7 +165,7 @@ export default {
       this.languages = this.API_nativeLanguage.filter((option) => {
           return option.NativeLanguage
             .toLowerCase()
-            .includes(language || "".toLowerCase())
+            .includes((language || "").toLowerCase())
           
       })
     },
