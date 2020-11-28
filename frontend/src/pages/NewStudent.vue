@@ -215,19 +215,42 @@ export default {
 
 
     showAddLanguage() {
-        this.$buefy.dialog.prompt({
-          message: `Add new language`,
-          inputAttrs: {
-            placeholder: 'e.g. Italian',
-            maxlength: 255,
-          },
-          confirmText: 'Add',
-          onConfirm: (value) => {
-            this.languageData.push(value)
-            this.$refs.languageComplete.setSelected(value)
+      this.$buefy.dialog.prompt({
+        message: `Add new language`,
+        inputAttrs: {
+          placeholder: 'e.g. Italian',
+          maxlength: 255,
+        },
+        confirmText: 'Add',
+        onConfirm: async (value) => {
+          // POST to /api/nativeLanguages 
+          const newLanguage = {NativeLanguage: value}
+          const addLanguage = {
+            method: "POST",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+              newLanguage
+            )
           }
-        })
-    },
+          await fetch("/api/nativeLanguages", addLanguage)
+            .then(response => response.json()) 
+          // New language becomes the selected value shown in form input
+          this.selected.NativeLanguage = value
+          
+          // Fetch updated data from backend and update API_Native
+          await fetch("/api/nativeLanguages")
+            .then(response => response.json())
+            .then(result => this.API_nativeLanguage = result)
+          
+          // Finds new NativeLanguageID based on the new NativeLanguage; updates selected (object) 
+          this.selected = this.API_nativeLanguage.find(item => item.NativeLanguage === this.selected.NativeLanguage)
+        }
+      })
+    },         
+
     showAddSource() {
         this.$buefy.dialog.prompt({
           message: `Add new source`,
