@@ -39,7 +39,54 @@ export default {
       type: String,
       default: "No Teacher Assigned",
     },
+    studentID: {
+      type: String,
+    }
   },
+  methods: {   
+    matchedToDroppedOut() {
+      const studentID = parseInt(this.studentID)
+
+      // PATCH student
+      const studentRequestOptions = {
+        method: "PATCH",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({StudentID: studentID, StatusID: 4})
+      }
+      
+      fetch("/api/students/" + studentID, studentRequestOptions)
+        .then(
+          function(response) {
+            // If PATCH fails, return
+            if(response.status !== 200) {
+              return;
+            }
+          }
+        )
+
+      // ToDo: Remove the Matched pair from the matching table (not created yet)
+
+      // POST statusUpdate
+      const statusUpdateRequestOptions = {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          StudentID: studentID,
+          PreviousStatusID: 3,
+          NextStatusID: 4,
+          UpdatedBy: "IRRCAdmin"
+        })
+      }
+      fetch("/api/statusUpdates", statusUpdateRequestOptions)
+        .then(response => response.json())
+    }
+  }
 };
 </script>
 

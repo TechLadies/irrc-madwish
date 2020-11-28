@@ -27,6 +27,53 @@ export default {
   components: {
     Button,
   },
+  props: {
+    studentID: {
+      type: String,
+    }
+  },
+  methods: {   
+    unmatchedToDroppedOut() {
+      const studentID = parseInt(this.studentID)
+       
+      // PATCH student
+      const studentRequestOptions = {
+        method: "PATCH",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({StudentID: studentID, StatusID: 4})
+      }
+      
+      fetch("/api/students/" + studentID, studentRequestOptions)
+        .then(
+          function(response) {
+            // If PATCH fails, return
+            if(response.status !== 200) {
+              return;
+            }
+          }
+        )
+
+      // POST statusUpdate
+      const statusUpdateRequestOptions = {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          StudentID: studentID,
+          PreviousStatusID: 2,
+          NextStatusID: 4,
+          UpdatedBy: "IRRCAdmin"
+        })
+      }
+      fetch("/api/statusUpdates", statusUpdateRequestOptions)
+        .then(response => response.json())
+    }
+  }
 };
 </script>
 

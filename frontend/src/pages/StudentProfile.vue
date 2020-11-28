@@ -17,10 +17,10 @@
       </div>
       <div class="student-profile-right">
         <section class="student-status-section">
-          <StatusCardScreening v-if="studentData.status.StatusID === 1" />
-          <StatusCardUnmatched v-if="studentData.status.StatusID === 2" />
-          <StatusCardMatched v-if="studentData.status.StatusID === 3" />
-          <StatusCardDroppedOut v-if="studentData.status.StatusID === 4" />
+          <StatusCardScreening :studentID="studentID" v-if="studentData.status.Description.toUpperCase() === 'SCREENING'" />
+          <StatusCardUnmatched :studentID="studentID" v-if="studentData.status.Description.toUpperCase() === 'UNMATCHED'" />
+          <StatusCardMatched :studentID="studentID" v-if="studentData.status.Description.toUpperCase() === 'MATCHED'" />
+          <StatusCardDroppedOut :studentID="studentID" v-if="studentData.status.Description.toUpperCase() === 'DROPPED OUT'" />
         </section>
         <section class="student-history-section">
           <StudentHistory v-bind:items="studentHistory" />
@@ -70,6 +70,7 @@ export default {
         },
       },
       studentHistory: [],
+       studentID: this.$route.params.id,
     };
   },
   mounted: function() {
