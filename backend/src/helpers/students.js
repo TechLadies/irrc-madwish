@@ -12,7 +12,7 @@ exports.getAllStudents = async function (options = defaultOptions) {
   if (filterStatus) {
     query = query
       .withGraphJoined('status')
-      .where('status.Description', filterStatus)
+      .where('status.Description', 'ilike', filterStatus)
   }
 
   try {
