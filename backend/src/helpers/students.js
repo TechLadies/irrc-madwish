@@ -1,5 +1,6 @@
 const db = require('../models/student')
 // const debug = require('debug')('app:students')
+const statuses = require('./statuses')
 
 exports.getAllStudents = async function () {
   try {
@@ -14,6 +15,7 @@ exports.getStudentById = async function (id) {
   try {
     const student = await db.Student.query()
       .findById(id)
+      .withGraphFetched("[nativeLanguage, status, statusUpdates.nextStatus]")
       .throwIfNotFound()
     return student // return student[0] || 'Not found'
   } catch (err) {
@@ -50,5 +52,15 @@ exports.getStatusByStudentId = async function (studentID) {
     return status
   } catch (err) {
     return { err }
+  }
+}
+
+exports.getStatusPromise = async function (statusString) {
+  if (statusString != null) {
+    // If request contains StatusString, return corresponding StatusID
+    return statuses.getStatusByStatusString(statusString)
+  } else {
+    // If StatusID and StatusString are both not provided, default to 'SCREENING' StatusID
+    return statuses.getStatusByStatusString('SCREENING')
   }
 }

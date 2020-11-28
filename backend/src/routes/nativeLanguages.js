@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
 
 /* POST nativeLanguages listing */
 router.post('/', async (req, res) => {
+  req.body.NativeLanguage = req.body.NativeLanguage.toUpperCase()
   const result = await nativeLanguages.addNativeLanguage(req.body)
 
   // handle error

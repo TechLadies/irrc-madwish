@@ -2,7 +2,6 @@
 const express = require('express')
 const router = express.Router()
 // const debug = require('debug')('app:students')
-// const db = require('../models/index')
 const students = require('../helpers/students')
 
 const { UniqueViolationError } = require('objection')
@@ -57,6 +56,18 @@ router.get('/:id', async (req, res) => {
 
 /* POST students listing */
 router.post('/', async (req, res) => {
+  // If request does not contain StatusID
+  if (req.body.StatusID == null) {
+    var statusString
+    // If request contains a statusString
+    if (req.body.StatusString != null) {
+      statusString = req.body.StatusString
+      delete req.body.StatusString
+    }
+    const status = await students.getStatusPromise(statusString)
+    req.body.StatusID = status.StatusID
+  }
+
   const result = await students.addStudent(req.body)
 
   // handle error
