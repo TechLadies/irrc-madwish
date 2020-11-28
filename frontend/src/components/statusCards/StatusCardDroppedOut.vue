@@ -44,43 +44,16 @@ export default {
   methods: {
     droppedOutToScreening() {
       const studentID = parseInt(this.studentID)
+      const previousStatusString = "DROPPED OUT"
+      const nextStatusString = "SCREENING"
+      const updatedBy = "IRRCAdmin"
 
-      // PATCH student
-      const studentRequestOptions = {
-        method: "PATCH",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({StudentID: studentID, StatusString: "SCREENING"})
-      }
-      
-      fetch("/api/students/" + studentID, studentRequestOptions)
-        .then(
-          function(response) {
-            // If PATCH fails, return
-            if(response.status !== 200) {
-              return;
-            }
-          }
-        )
-
-      // POST statusUpdate
-      const statusUpdateRequestOptions = {
-        method: "POST",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          StudentID: studentID,
-          PreviousStatusString: "DROPPED OUT",
-          NextStatusString: "SCREENING",
-          UpdatedBy: "IRRCAdmin"
-        })
-      }
-      fetch("/api/statusUpdates", statusUpdateRequestOptions)
-        .then(response => response.json())
+      this.$store.dispatch('updateStudentStatus', {
+        studentID: studentID,
+        previousStatusString: previousStatusString,
+        nextStatusString: nextStatusString,
+        updatedBy: updatedBy
+      })
     }
   }
 };

@@ -44,47 +44,19 @@ export default {
     }
   },
   methods: {   
+    // TODO: Remove the Matched pair from the matching table (not created yet)
     matchedToDroppedOut() {
       const studentID = parseInt(this.studentID)
+      const previousStatusString = "MATCHED"
+      const nextStatusString = "DROPPED OUT"
+      const updatedBy = "IRRCAdmin"
 
-      // PATCH student
-      const studentRequestOptions = {
-        method: "PATCH",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({StudentID: studentID, StatusString: "DROPPED OUT"})
-      }
-      
-      fetch("/api/students/" + studentID, studentRequestOptions)
-        .then(
-          function(response) {
-            // If PATCH fails, return
-            if(response.status !== 200) {
-              return;
-            }
-          }
-        )
-
-      // ToDo: Remove the Matched pair from the matching table (not created yet)
-
-      // POST statusUpdate
-      const statusUpdateRequestOptions = {
-        method: "POST",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          StudentID: studentID,
-          PreviousStatusString: 'MATCHED',
-          NextStatusString: 'DROPPED OUT',
-          UpdatedBy: "IRRCAdmin"
-        })
-      }
-      fetch("/api/statusUpdates", statusUpdateRequestOptions)
-        .then(response => response.json())
+      this.$store.dispatch('updateStudentStatus', {
+        studentID: studentID,
+        previousStatusString: previousStatusString,
+        nextStatusString: nextStatusString,
+        updatedBy: updatedBy
+      })
     }
   }
 };

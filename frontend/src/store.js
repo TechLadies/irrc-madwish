@@ -21,12 +21,54 @@ export default new Vuex.Store({
     ...nativeLanguageMutations
   },
   actions: {
+    ...nativeLanguageActions,
+
     async getAllStudents({ commit }) {
       const response = await fetch("/api/students")
       const data = await response.json()
       commit(MUTATIONS.SET_STUDENTS, data)
     },
-    ...nativeLanguageActions
+
+    async updateStudentStatus({ commit }, { studentID, previousStatusString, nextStatusString, updatedBy }) {
+      // PATCH student
+      const studentRequestOptions = {
+        method: "PATCH",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({StudentID: studentID, StatusString: nextStatusString})
+      }
+
+      fetch("/api/students/" + studentID, studentRequestOptions)
+        .then(
+          function(response) {
+            // If PATCH fails, return
+            if(response.status !== 200) {
+              return;
+            }
+          }
+        )
+
+      // POST statusUpdate
+      const statusUpdateRequestOptions = {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          StudentID: studentID,
+          PreviousStatusString: previousStatusString,
+          NextStatusString: nextStatusString,
+          UpdatedBy: updatedBy
+        })
+      }
+      fetch("/api/statusUpdates", statusUpdateRequestOptions)
+        .then(response => response.json())
+
+      // TODO: dispatch('getAllStudents') if both PATCH student and POST statusUpdate succeed
+    }
 
   },
   getters: {
