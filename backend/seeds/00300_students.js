@@ -7,15 +7,17 @@ exports.seed = (knex) => {
     .then(function () {
       return knex(tableStudents).insert([
         {
-          StudentID: 1,
           PhoneNumber: '12345678',
-          FirstName: 'firstname',
-          LastName: 'lastname',
+          FullName: 'fullname',
           Source: 'source',
-          NativeLanguageID: 1, //just edited
+          NativeLanguageID: knex('nativeLanguages').where({
+            NativeLanguage: 'CHINESE'
+          }).select('NativeLanguageID'),
           EnglishProficiency: 'No',
           Notes: 'notes',
-          StatusID: 1,
+          StatusID: knex('statuses').where({
+            Description: 'SCREENING' 
+          }).select('StatusID'),
         },
       ])
     })
