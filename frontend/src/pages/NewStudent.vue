@@ -106,15 +106,6 @@ export default {
 
   data() {
       return {
-          languageData: [
-              'Bengali',
-              'English',
-              'Mandarin',
-              'Russian',
-              'Indonesian',
-              'Urdu',
-              'Tamil'
-          ],
           sourceData: [
               'Rotary Club',
               'Source 1',
@@ -128,7 +119,14 @@ export default {
           EnglishProficiency: '',
           selected: null,
           file: null,
-          Notes: ''
+          Notes: '',
+          selected: [
+            {NativeLanguageID: ''},
+            {NativeLanguage: ''}
+          ],
+          languages: [],
+          API_nativeLanguage: []
+
       }
   },
 
