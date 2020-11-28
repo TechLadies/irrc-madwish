@@ -2,16 +2,16 @@ const { tableStatuses } = require('../src/models/status')
 
 const SEED_STATUSES = [
     {
-      Description: 'Screening',
+      Description: 'SCREENING',
     },
     {
-      Description: 'Unmatched',
+      Description: 'UNMATCHED',
     },
     {
-      Description: 'Matched',
+      Description: 'MATCHED',
     },
     {
-      Description: 'Dropped Out',
+      Description: 'DROPPED OUT',
     }
 ]
   
