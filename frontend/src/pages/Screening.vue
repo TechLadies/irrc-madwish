@@ -193,7 +193,7 @@
 <script>
 
 // Placeholder for API //
-const API_URL = "http://localhost:3001/api/students/?status=Screening";
+const API_URL = "/api/students/?status=Screening";
 
 
 import PageHeader from '../components/PageHeader.vue'
