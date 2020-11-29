@@ -10,10 +10,6 @@ class Student extends Model {
     return ['StudentID']
   }
 
-  fullName () {
-    return `${this.firstName} ${this.lastName}`
-  }
-
   static get relationMappings () {
     const NativeLanguage = require('./nativeLanguage')
     const Status = require('./status')
@@ -52,12 +48,11 @@ class Student extends Model {
   static get jsonSchema () {
     return {
       type: 'object',
-      required: ['PhoneNumber', 'FirstName', 'LastName', 'StatusID'],
+      required: ['PhoneNumber', 'FullName', 'StatusID'],
       properties: {
         StudentID: { type: 'integer' },
         PhoneNumber: { type: 'string', minLength: 1, maxLength: 255 }, // ToDo review datatype - string or int?
-        FirstName: { type: 'string', maxLength: 255 },
-        LastName: { type: 'string', maxLength: 255 },
+        FullName: { type: 'string', maxLength: 500 },
         Source: { type: 'string', maxLength: 500 },
         NativeLanguageID: { type: 'integer' },
         EnglishProficiency: { type: 'string' },
