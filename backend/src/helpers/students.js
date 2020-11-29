@@ -8,7 +8,7 @@ const defaultOptions = {
 exports.getAllStudents = async function (options = defaultOptions) {
   const filterStatus = options.filters.status
 
-  let query = db.Student.query()
+  let query = db.Student.query().withGraphFetched("[nativeLanguage]")
 
   if (filterStatus) {
     query = query
