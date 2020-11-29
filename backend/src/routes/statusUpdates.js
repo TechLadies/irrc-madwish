@@ -3,6 +3,8 @@ const router = express.Router()
 const statusUpdates = require('../helpers/statusUpdates')
 const statuses = require('../helpers/statuses')
 
+const { UniqueViolationError } = require('objection')
+
 router.post('/', async (req, res) => {
 
     // receive the prev status & next status strings, retrieve corresponding ID
