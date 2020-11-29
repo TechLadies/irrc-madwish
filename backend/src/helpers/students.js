@@ -8,7 +8,7 @@ const defaultOptions = {
 exports.getAllStudents = async function (options = defaultOptions) {
   const filterStatus = options.filters.status
 
-  let query = db.Student.query().withGraphFetched("[nativeLanguage]")
+  let query = db.Student.query().withGraphFetched('[nativeLanguage]')
 
   if (filterStatus) {
     query = query
@@ -28,7 +28,7 @@ exports.getStudentById = async function (id) {
   try {
     const student = await db.Student.query()
       .findById(id)
-      .withGraphFetched("[nativeLanguage, status, statusUpdates.nextStatus]")
+      .withGraphFetched('[nativeLanguage, status, statusUpdates.nextStatus]')
       .throwIfNotFound()
     return student // return student[0] || 'Not found'
   } catch (err) {
