@@ -94,22 +94,7 @@
                             size="is-small" />
                     </template>
                     <template v-slot="props">
-                      <span v-if="props.row.NativeLanguageID == 1">
-                          Bangla
-                      </span> 
-
-                      <span v-if="props.row.NativeLanguageID == 2">
-                          Tamil
-                      </span> 
-
-                      <span v-if="props.row.NativeLanguageID == 3">
-                          Hindu
-                      </span> 
-
-                      <span v-if="props.row.NativeLanguageID == 4">
-                          Tegulu
-                      </span> 
-                        <br> 
+                        {{ props.row.nativeLanguage.NativeLanguage }}
                     </template>
                     </b-table-column>
                 </template>
@@ -130,7 +115,7 @@
                     </template>
                     <template v-slot="props">
                       <b-field>
-                          <b-select placeholder="Select Proficiency" v-model="props.row.EnglishProficiency" v-on:input="updateCourse">
+                          <b-select placeholder="Select Proficiency" v-model="props.row.EnglishProficiency">
                             <option
                               v-for="option in uniqueEnglishVals" :key="option" :value="option">
                               {{option}}
@@ -225,13 +210,7 @@ export default {
         data() {
             return {
                 data: [
-                    // { 'StudentID': 12345, 'FullName': 'Jesse', 'created_at': '2020-10-24T06:18:24.738Z', 'StatusID': 1,'PhoneNumber': '91233217', 'EnglishProficiency':null, 'NativeLanguageID':1 },
-                    // { 'StudentID': 23456, 'FullName': 'John', 'created_at': '2020-10-25T06:18:24.738Z', 'StatusID': 2, 'PhoneNumber': '91312231', 'EnglishProficiency':null, 'NativeLanguageID':2},
-                    // { 'StudentID': 31232, 'FullName': 'Tina', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102', 'EnglishProficiency':'No', 'NativeLanguageID':3},
-                    // { 'StudentID': 31232, 'FullName': 'Tina2', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID':  3, 'PhoneNumber': '81234102', 'EnglishProficiency':null, 'NativeLanguageID':4},                    
-                    // { 'StudentID': 41231, 'FullName': 'Clarence', 'created_at': '2020-10-26T06:18:24.738Z', 'StatusID': 4,  'PhoneNumber': '93141234','EnglishProficiency':'Little', 'NativeLanguageID':1 },
-                    // { 'StudentID': 53212, 'FullName': 'Anne', 'created_at': '2020-10-27T06:18:24.738Z', 'StatusID': 1,  'PhoneNumber': '81230532','EnglishProficiency':'Intermediate', 'NativeLanguageID':2 },
-
+  
                  ],
 
                 selected: null,
@@ -254,12 +233,12 @@ export default {
                         searchable: true,
                     },
                     {
-                        field: 'FullName',
+                        field: 'FirstName',
                         label: 'Student Name',
                         searchable: true,
                     },    
                     {
-                        field: 'NativeLanguageID',
+                        field: 'NativeLanguageString',
                         label: 'Native Language',
                         searchable: true,
                     },      
@@ -288,43 +267,6 @@ export default {
                 ]
             }
         },
-
-
-        computed: {
-          tableData(){
-            return this.data.map(student=>{
-
-              let NativeLanguageDesc = "";
-              let SetNullEnglish ="";
-
-              if (student.NativeLanguageID === 1){
-                NativeLanguageDesc = "Bangla"
-              }
-
-              if (student.NativeLanguageID === 2){
-                NativeLanguageDesc = "Hindi"
-              }
-
-              if (student.NativeLanguageID === 3){
-                NativeLanguageDesc = "Tamil"
-              }
-
-              if (student.NativeLanguageID === 4){
-                NativeLanguageDesc = "Telugu"
-              }
-
-              return{
-                StudentID: `${student.StudentID}`,
-                FullName: `${student.FullName}`,
-                StatusID: `${student.StatusID}`,
-                PhoneNumber: `${student.PhoneNumber}`,
-                EnglishProficiency: `${student.EnglishProficiency}`,
-                NativeLanguageID: NativeLanguageDesc
-              }
-            })
-          }
-        },
-
 
 
         components:{
