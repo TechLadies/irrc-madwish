@@ -106,7 +106,6 @@ export default {
           file: null,
           Notes: '',
           selected: {
-            NativeLanguageID: '',
             NativeLanguage: ''
           },
           languages: [],
@@ -140,7 +139,7 @@ export default {
           PhoneNumber: this.PhoneNumber,
           FullName: this.name,
           Source: this.source,
-          NativeLanguageID: this.selected.NativeLanguageID, 
+          NativeLanguageString: this.selected.NativeLanguage, 
           EnglishProficiency: this.EnglishProficiency, 
           Notes: this.Notes,
           StatusString: "SCREENING"
@@ -204,31 +203,8 @@ export default {
         },
         confirmText: 'Add',
         onConfirm: async (value) => {
-          // POST to /api/nativeLanguages 
-          const newLanguage = {NativeLanguage: value}
-          const addLanguage = {
-            method: "POST",
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(
-              newLanguage
-            )
-          }
-          await fetch("/api/nativeLanguages", addLanguage)
-            .then(response => response.json()) 
-          // New language becomes the selected value shown in form input
-          //this.selected.NativeLanguage = value
-          
-          // Fetch updated data from backend and update API_Native
-          await fetch("/api/nativeLanguages")
-            .then(response => response.json())
-            .then(result => this.API_nativeLanguage = result)
-          
-          // Finds new NativeLanguageID based on the new NativeLanguage; updates selected (object) 
-          this.selected = this.API_nativeLanguage.find(item => item.NativeLanguage === value.toUpperCase())
-          console.log(this.selected)
+          // New language will be POSTed to backend in createStudent.
+          this.selected.NativeLanguage = value
         }
       })
     },         
