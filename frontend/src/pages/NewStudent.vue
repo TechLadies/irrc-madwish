@@ -121,7 +121,9 @@ export default {
     // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
     formIsInvalid(){
       const formFields = ["name", "PhoneNumber"].map(item => this[item])
-      if (this.selected === null) {}
+      if (this.selected === null) {
+        return true
+      }
       if (formFields.includes('') || (this.selected?.NativeLanguage === '')) {
         return true
       }
