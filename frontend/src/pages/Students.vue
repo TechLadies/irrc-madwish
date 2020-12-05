@@ -172,8 +172,6 @@ import Page from '../components/Page.vue'
 export default {
         data() {
             return {
-                data: [
-                ],
                 selected: null,
                 sortIcon: 'arrow-up',
                 sortIconSize: 'is-small',
@@ -209,7 +207,7 @@ export default {
         },
         computed:{
           tableData(){
-            return this.data.map(student => {
+            return this.$store.getters.students.map(student => {
               return {
                 StudentID: `${student.StudentID}`,
                 FullName: `${student.FirstName} ${student.LastName}`,
@@ -227,11 +225,7 @@ export default {
 
         // Placeholder for API
         mounted() {
-          fetch(API_URL)
-            .then(response => response.json())
-            .then(result => {
-              this.data = result;
-            });
+          this.$store.dispatch('getAllStudents')
         }
       
     }   
