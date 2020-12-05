@@ -36,7 +36,6 @@ export default {
     },
   },
   methods: {
-    // TODO: decide if clicking "Ready to Match" writes to database.
     screeningToDroppedOut() {
       const studentID = parseInt(this.studentID)
       const previousStatusString = "SCREENING"

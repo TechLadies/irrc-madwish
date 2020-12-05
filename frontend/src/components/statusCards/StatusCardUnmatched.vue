@@ -12,7 +12,7 @@
       <div class="content">
         <div class="content-title">ACTION</div>
         <div class="buttons">
-          <Button label="Drop Out" />
+          <Button @click.native="unmatchedToDroppedOut" label="Drop Out" />
           <Button label="Select Match" solid />
         </div>
       </div>

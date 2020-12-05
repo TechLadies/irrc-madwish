@@ -4,7 +4,7 @@
       <div class="student-profile-left">
         <StudentProfileCard
           v-bind:studentInfo="{
-            studentName: studentData.FirstName + ' ' + studentData.LastName,
+            studentName: studentData.FullName,
             studentContact: studentData.PhoneNumber,
             source: studentData.Source,
             dateJoined: studentData.dateJoined,
@@ -57,8 +57,7 @@ export default {
       studentData: {
         StudentID: -1,
         PhoneNumber: "",
-        FirstName: "",
-        LastName: "",
+        FullName: "",
         Source: "",
         nativeLanguage: {
           NativeLanguageID: -1,
@@ -82,8 +81,7 @@ export default {
     const studentObject = {
           StudentID: data.StudentID,
           PhoneNumber: data.PhoneNumber,
-          FirstName: data.FirstName,
-          LastName: data.LastName,
+          FullName: data.FullName,
           Source: data.Source,
           nativeLanguage: data.nativeLanguage,
           status: data.status,

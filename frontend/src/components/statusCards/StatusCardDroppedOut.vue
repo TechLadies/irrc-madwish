@@ -18,7 +18,7 @@
       <div class="content">
         <div class="content-title">ACTION</div>
         <div class="buttons">
-          <Button label="Reactivate for Matching" />
+          <Button @click.native="droppedOutToScreening" label="Reactivate for Screening" />
         </div>
       </div>
     </div>

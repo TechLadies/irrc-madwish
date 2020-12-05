@@ -24,7 +24,7 @@
         </div>
         <div>
           <b-select
-            v-if="studentInfo.status === 'Screening' && studentInfo.proficiencyLevel == null"
+            v-if="studentInfo.status.toUpperCase() === 'SCREENING' && studentInfo.proficiencyLevel == null"
             placeholder="Select Proficiency"
             @change.native="selectedEnglishProficiency"
           >
