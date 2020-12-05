@@ -46,7 +46,7 @@
                 <b-field grouped>
 
                   <b-field label="Native Language" class="half-width">
-                     <b-autocomplete :value="selected.NativeLanguage"
+                     <b-autocomplete :value="nativeLanguage"
                         field= "NativeLanguage"
                         ref="languageComplete"
                         :data="languages"
@@ -77,7 +77,7 @@
                 </b-field>
 
             </section>
-            <b-button class="dark-blue" input type="submit" expanded @click="createStudent">Create Student</b-button>
+            <b-button class="dark-blue" input type="submit" expanded @click="createStudent" :disabled="formIsInvalid">Create Student</b-button>
           </form>
         </div>
       </div>
@@ -101,7 +101,6 @@ export default {
           name: '',
           PhoneNumber: '',
           source:'',
-          nativeLanguage: '',
           EnglishProficiency: '',
           file: null,
           Notes: '',
@@ -113,7 +112,24 @@ export default {
 
       }
   },
-
+  computed: {
+    // If NativeLanguage is changed, we assign it this value 
+    nativeLanguage(){
+      return this.selected ? this.selected.NativeLanguage: ''
+    },
+    
+    // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
+    formIsInvalid(){
+      const formFields = ["name", "PhoneNumber"].map(item => this[item])
+      if (this.selected === null) {
+        return true
+      }
+      if (formFields.includes('') || (this.selected?.NativeLanguage === '')) {
+        return true
+      }
+      return false
+    }
+  },
   watch: {
     file: function(val){
       this.uploadFile();
@@ -145,10 +161,9 @@ export default {
           StatusString: "SCREENING"
         })
       }
-      // Somehow notifications are still showing without a successful backend response.
       fetch("/api/students", studentCreate)
         .then(response => response.json()) 
-      //Pop-up notification that new student has been added
+      //Pop-up notification that new student has been added after successful backend response 
         .then(() => {
           this.$buefy.notification.open({
             message: 'New student added. <u>View profile</u>!',
