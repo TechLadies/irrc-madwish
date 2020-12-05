@@ -13,11 +13,12 @@
             status: studentData.status.Description,
             proficiencyLevel: studentData.EnglishProficiency,
           }"
+          v-on:englishProficiencyIsSelected="englishProficiency = $event"
         />
       </div>
       <div class="student-profile-right">
         <section class="student-status-section">
-          <StatusCardScreening :studentID="studentID" v-if="studentData.status.Description.toUpperCase() === 'SCREENING'" />
+          <StatusCardScreening :studentID="studentID" :englishProficiency="englishProficiency" v-if="studentData.status.Description.toUpperCase() === 'SCREENING'" />
           <StatusCardUnmatched :studentID="studentID" v-if="studentData.status.Description.toUpperCase() === 'UNMATCHED'" />
           <StatusCardMatched :studentID="studentID" v-if="studentData.status.Description.toUpperCase() === 'MATCHED'" />
           <StatusCardDroppedOut :studentID="studentID" v-if="studentData.status.Description.toUpperCase() === 'DROPPED OUT'" />
@@ -52,6 +53,7 @@ export default {
   },
   data: function() {
     return {
+      englishProficiency: "",
       studentData: {
         StudentID: -1,
         PhoneNumber: "",

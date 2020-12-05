@@ -29,6 +29,7 @@ export default new Vuex.Store({
       commit(MUTATIONS.SET_STUDENTS, data)
     },
 
+    // Update student status
     async updateStudentStatus({ commit }, { studentID, previousStatusString, nextStatusString, updatedBy }) {
       // PATCH student
       const studentRequestOptions = {
@@ -68,7 +69,34 @@ export default new Vuex.Store({
         .then(response => response.json())
 
       // TODO: dispatch('getAllStudents') if both PATCH student and POST statusUpdate succeed
-    }
+      // TODO: commit MUTATIONS
+    },
+
+    // Update student English proficiency
+    async updateStudentEnglishProficiency({ commit }, { studentID, englishProficiency }) {
+      // PATCH student
+      const studentRequestOptions = {
+        method: "PATCH",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({StudentID: studentID, EnglishProficiency: englishProficiency})
+      }
+
+      fetch("/api/students/" + studentID, studentRequestOptions)
+        .then(
+          function(response) {
+            // If PATCH fails, return
+            if(response.status !== 200) {
+              return;
+            }
+          }
+        )
+
+      // TODO: dispatch('getAllStudents') if both PATCH student and POST statusUpdate succeed
+      // TODO: commit MUTATIONS
+    },
 
   },
   getters: {

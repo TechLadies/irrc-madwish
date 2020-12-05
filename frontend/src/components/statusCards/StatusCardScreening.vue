@@ -12,8 +12,8 @@
       <div class="content">
         <div class="content-title">ACTION</div>
         <div class="buttons">
-          <Button label="Drop Out" />
-          <Button label="Ready to Match" />
+          <Button @click.native="screeningToDroppedOut" label="Drop Out" />
+          <Button @click.native="screeningToUnmatched" label="Ready to Match" />
         </div>
       </div>
     </div>
@@ -30,7 +30,10 @@ export default {
   props: {
     studentID: {
       type: String,
-    }
+    },
+    englishProficiency: {
+      type: String,
+    },
   },
   methods: {
     // TODO: decide if clicking "Ready to Match" writes to database.
@@ -45,6 +48,27 @@ export default {
         previousStatusString: previousStatusString,
         nextStatusString: nextStatusString,
         updatedBy: updatedBy
+      })
+    },
+
+    screeningToUnmatched() {
+      // Update student status
+      const studentID = parseInt(this.studentID)
+      const previousStatusString = "SCREENING"
+      const nextStatusString = "UNMATCHED"
+      const updatedBy = "IRRCAdmin"
+
+      this.$store.dispatch('updateStudentStatus', {
+        studentID: studentID,
+        previousStatusString: previousStatusString,
+        nextStatusString: nextStatusString,
+        updatedBy: updatedBy
+      })
+
+      // Update English proficiency
+      this.$store.dispatch('updateStudentEnglishProficiency', {
+        studentID: studentID,
+        englishProficiency: this.englishProficiency
       })
     }
   }
