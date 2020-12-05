@@ -77,10 +77,9 @@ export default {
   },
   mounted: function() {
     const id = this.$route.params.id
-    fetch(`/api/students/${id}`)
-      .then(response => response.json())
-      .then(data => {
-        const studentObject = {
+    const data = this.$store.getters.getStudentByStudentId(id)
+
+    const studentObject = {
           StudentID: data.StudentID,
           PhoneNumber: data.PhoneNumber,
           FirstName: data.FirstName,
@@ -93,17 +92,16 @@ export default {
           EnglishProficiency: data.EnglishProficiency,
         };
 
-        const studentHistory = data.statusUpdates.map(update => {
-          return {
-            date: new Date(update.created_at).toDateString(),
-            description: update.nextStatus.Description,
-            status: update.nextStatus.StatusID,
-          };
-        });
+    const studentHistory = data.statusUpdates.map(update => {
+      return {
+        date: new Date(update.created_at).toDateString(),
+        description: update.nextStatus.Description,
+        status: update.nextStatus.StatusID,
+      };
+    });
 
-        this.studentData = studentObject;
-        this.studentHistory = studentHistory;
-      });
+    this.studentData = studentObject;
+    this.studentHistory = studentHistory;
   },
 };
 </script>

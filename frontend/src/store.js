@@ -30,7 +30,9 @@ export default new Vuex.Store({
     },
 
     // Update student status
-    async updateStudentStatus({ commit }, { studentID, previousStatusString, nextStatusString, updatedBy }) {
+    async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy }) {
+      var success = true;
+
       // PATCH student
       const studentRequestOptions = {
         method: "PATCH",
@@ -46,6 +48,7 @@ export default new Vuex.Store({
           function(response) {
             // If PATCH fails, return
             if(response.status !== 200) {
+              success = false;
               return;
             }
           }
@@ -66,14 +69,24 @@ export default new Vuex.Store({
         })
       }
       fetch("/api/statusUpdates", statusUpdateRequestOptions)
-        .then(response => response.json())
+        .then(
+          function(response) {
+            // If PATCH fails, return
+            if(response.status !== 200) {
+              success = false;
+              return;
+            }
+          }
+        )
 
-      // TODO: dispatch('getAllStudents') if both PATCH student and POST statusUpdate succeed
-      // TODO: commit MUTATIONS
+      // Check if both PATCH student and POST statusUpdate succeed
+      if (success) { dispatch('getAllStudents') }
     },
 
     // Update student English proficiency
-    async updateStudentEnglishProficiency({ commit }, { studentID, englishProficiency }) {
+    async updateStudentEnglishProficiency({ commit, dispatch }, { studentID, englishProficiency }) {
+      var success = true;
+
       // PATCH student
       const studentRequestOptions = {
         method: "PATCH",
@@ -89,18 +102,19 @@ export default new Vuex.Store({
           function(response) {
             // If PATCH fails, return
             if(response.status !== 200) {
+              success = false;
               return;
             }
           }
         )
 
-      // TODO: dispatch('getAllStudents') if both PATCH student and POST statusUpdate succeed
-      // TODO: commit MUTATIONS
+      // Check if both PATCH student and POST statusUpdate succeed
+      if (success) { dispatch('getAllStudents') }
     },
-
   },
   getters: {
     students: (state) => state.students,
-    ...nativeLanguageGetters
+    ...nativeLanguageGetters,
+    getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id)
   },
 })

@@ -24,7 +24,7 @@
         </div>
         <div>
           <b-select
-            v-if="studentInfo.status === 'Screening'"
+            v-if="studentInfo.status === 'Screening' && studentInfo.proficiencyLevel == null"
             placeholder="Select Proficiency"
             @change.native="selectedEnglishProficiency"
           >

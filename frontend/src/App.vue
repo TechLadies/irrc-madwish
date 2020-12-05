@@ -25,6 +25,9 @@ export default {
       menu: { status, profiles } 
     }
   },
+  mounted() {
+    this.$store.dispatch('getAllStudents');
+  },
   methods: {
     createNew() {
       this.$router.push({ path: 'new-student' })
