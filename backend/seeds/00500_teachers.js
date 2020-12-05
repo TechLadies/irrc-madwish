@@ -21,7 +21,7 @@ exports.seed = (knex) => {
           LanguageProficiency: 'Intermediate',
           Notes: 'notes',
           StatusID: knex('statuses').where({
-            Description: 'SCREENING' 
+            Description: 'UNMATCHED' 
           }).select('StatusID'),
         },
       ])
