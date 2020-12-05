@@ -72,7 +72,7 @@
                     </template>
                     <template v-slot="props">
                         <span :class="['nameStyle']">
-                            {{ props.row.FullName }}
+                            {{ props.row.FirstName }} {{ props.row.LastName }}
                         </span> 
                         <br> 
                     </template>
@@ -219,7 +219,7 @@ export default {
                 sortDirection: 'asc',
                 checkedRows:[],
                 checkboxPosition: 'right',
-                uniqueEnglishVals: ['No', 'Little', 'Limited', 'Intermediate'],
+                uniqueEnglishVals: ['No', 'Little', 'Simple', 'Intermediate'],
                 isActive: false,
                 columns: [
                     {
