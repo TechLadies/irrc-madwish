@@ -86,7 +86,7 @@ exports.getNativeLanguagePromise = async function (nativeLanguageString) {
       return nativeLanguageResponse;
     } else if (!nativeLanguageResponse) {
       const newNativeLanguage = await nativeLanguages.addNativeLanguage({
-        NativeLanguage: nativeLanguageString,
+        NativeLanguage: nativeLanguageString.toUpperCase(),
       });
       return newNativeLanguage;
     } else {
