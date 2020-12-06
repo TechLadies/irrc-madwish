@@ -162,10 +162,6 @@ export default {
         })
       }
       fetch("/api/students", studentCreate)
-        .then(response => { 
-          response.json()
-          return response 
-          }) 
         .then(response => {
           if (response.status < 400) {
             this.$buefy.notification.open({
