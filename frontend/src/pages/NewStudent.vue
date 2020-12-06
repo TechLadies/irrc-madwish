@@ -162,18 +162,28 @@ export default {
         })
       }
       fetch("/api/students", studentCreate)
-        .then(response => response.json()) 
-        .then(() => {
-          this.$buefy.notification.open({
-            message: 'New student added. <u>View profile</u>!',
-            duration: 5000,
-            type: 'is-success',
-            position: 'is-top',
-          })
-        })
-        .then(() => {
-          setTimeout(() => {this.$router.push({path: `/students`})} )
-        })
+        .then(response => { 
+          response.json()
+          return response 
+          }) 
+        .then(response => {
+          if (response.status < 400) {
+            this.$buefy.notification.open({
+              message: 'New student added. <u>View profile</u>!',
+              duration: 3000,
+              type: 'is-success',
+              position: 'is-top',
+            })
+            setTimeout(() => {this.$router.push({path: `/students`})}, 5000)} 
+          else {
+            this.$buefy.notification.open({ 
+              message: 'Something went wrong. Please try again.',
+              duration: 3000, 
+              type: 'is-warning',
+              position: 'is-top'
+            })
+          }
+       })
     },
     
     filteredLanguageDataArray(language = "") {
