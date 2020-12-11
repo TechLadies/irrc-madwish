@@ -8,10 +8,16 @@ exports.seed = function(knex) {
       // Inserts seed entries
       return knex(tableStatusUpdates).insert([
         {
-          StatusUpdateID: 1,
-          StudentID: 1,
-          PreviousStatusID: 2,        
-          NextStatusID: 1, 
+          StudentID: knex('students').where({
+            FullName: 'fullname',
+            PhoneNumber: '12345678' 
+          }).select('StudentID'),
+          PreviousStatusID: knex('statuses').where({
+            Description: 'UNMATCHED' 
+          }).select('StatusID'),        
+          NextStatusID: knex('statuses').where({
+            Description: 'SCREENING' 
+          }).select('StatusID'), 
           UpdatedBy: 'updatedbyXX', 
         },
       ]);

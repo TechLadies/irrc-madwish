@@ -7,6 +7,7 @@
             studentName: studentData.FirstName + ' ' + studentData.LastName,
             studentContact: studentData.PhoneNumber,
             source: studentData.Source,
+            dateJoined: studentData.dateJoined,
             nativeLanguage: studentData.nativeLanguage.NativeLanguage,
             notes: studentData.Notes,
             status: studentData.status.Description,
@@ -22,12 +23,7 @@
           <StatusCardDroppedOut v-if="studentData.status.StatusID === 4" />
         </section>
         <section class="student-history-section">
-          <StudentHistory
-            v-bind:items="[
-              { date: '2020-01-01', description: 'Joined MadWish', status: 1 },
-              { date: '2020-01-01', description: 'Joined MadWish', status: 3 },
-            ]"
-          />
+          <StudentHistory v-bind:items="studentHistory" />
         </section>
       </div>
     </div>
@@ -56,25 +52,55 @@ export default {
   },
   data: function() {
     return {
-      // Dummy data. Should be empty data once API is integrated
       studentData: {
-        StudentID: 1,
-        PhoneNumber: "87654321",
-        FirstName: "Cat",
-        LastName: "Catt",
-        Source: "Rotary",
+        StudentID: -1,
+        PhoneNumber: "",
+        FirstName: "",
+        LastName: "",
+        Source: "",
         nativeLanguage: {
-          NativeLanguageID: 1,
-          NativeLanguage: "Bangla",
+          NativeLanguageID: -1,
+          NativeLanguage: "",
         },
-        EnglishProficiency: "Intermediate",
-        Notes: "Notes",
+        EnglishProficiency: "",
+        Notes: "",
         status: {
-          StatusID: 1,
-          Description: "Screening",
+          StatusID: -1,
+          Description: "",
         },
       },
+      studentHistory: [],
     };
+  },
+  mounted: function() {
+    const id = this.$route.params.id
+    fetch(`/api/students/${id}`)
+      .then(response => response.json())
+      .then(data => {
+        const studentObject = {
+          StudentID: data.StudentID,
+          PhoneNumber: data.PhoneNumber,
+          FirstName: data.FirstName,
+          LastName: data.LastName,
+          Source: data.Source,
+          nativeLanguage: data.nativeLanguage,
+          status: data.status,
+          Notes: data.Notes,
+          dateJoined: new Date(data.created_at).toDateString(),
+          EnglishProficiency: data.EnglishProficiency,
+        };
+
+        const studentHistory = data.statusUpdates.map(update => {
+          return {
+            date: new Date(update.created_at).toDateString(),
+            description: update.nextStatus.Description,
+            status: update.nextStatus.StatusID,
+          };
+        });
+
+        this.studentData = studentObject;
+        this.studentHistory = studentHistory;
+      });
   },
 };
 </script>

@@ -1,22 +1,21 @@
-
 const express = require('express')
 const router = express.Router()
-// const debug = require('debug')('app:nativeLanguages')
-const db = require('../models/index')
-const nativeLanguages = require('../helpers/nativeLanguages')
+const statusUpdates = require('../helpers/statusUpdates')
+const statuses = require('../helpers/statuses')
 
 const { UniqueViolationError } = require('objection')
 
-/* GET nativeLanguages listing. */
-router.get('/', async (req, res) => {
-  const nativeLanguages = await db.NativeLanguage.query().select('NativeLanguageID', 'NativeLanguage')
-  res.json(nativeLanguages)
-})
-
-/* POST nativeLanguages listing */
 router.post('/', async (req, res) => {
-  req.body.NativeLanguage = req.body.NativeLanguage.toUpperCase()
-  const result = await nativeLanguages.addNativeLanguage(req.body)
+  // receive the prev status & next status strings, retrieve corresponding ID
+  const prevStatus = await statuses.getStatusByStatusString(req.body.PrevStatusString)
+  const nextStatus = await statuses.getStatusByStatusString(req.body.NextStatusString)
+
+  req.body.PreviousStatusID = prevStatus.StatusID
+  req.body.NextStatusID = nextStatus.StatusID
+  delete req.body.PrevStatusString
+  delete req.body.NextStatusString
+
+  const result = await statusUpdates.addStatusUpdate(req.body)
 
   // handle error
   if (result.err) {

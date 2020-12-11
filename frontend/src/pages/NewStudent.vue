@@ -1,5 +1,6 @@
 <template>
   <Page>
+    
     <div class="container">
       <div class="Title">
           <b class="newstudent">New Student</b>
@@ -23,39 +24,34 @@
         </div>
         <!-- Start of 2nd column (all input fields) --> 
         <div class="column is-two-thirds">
-          <section>
-              <b-field label="Name" class="half-width">
-                  <b-input v-model="name"></b-input>
-              </b-field>
+          <form method="POST" action ="/api/students" @submit.prevent="createStudent">
+          <!--.prevent prevents the default submit behaviour and executes createStudent instead -->
+            <section>
+                <b-field label="Name" class="half-width">
+                    <b-input v-model="name" name="Name"></b-input>
+                </b-field>
 
-              <b-field label="Phone Number" class="half-width">
-                  <b-input type="PhoneNumber"
-                      value="">
-                  </b-input>
-              </b-field>
+                <b-field label="Phone Number" class="half-width">
+                    <b-input v-model="PhoneNumber" type="string"
+                        value="">
+                    </b-input>
+                </b-field>
 
-              <b-field label="Source" class="half-width">
-                  <b-autocomplete
-                      v-model="source"
-                      ref="sourceComplete"
-                      :data="filteredSourceDataArray"
-                      placeholder="Optional"
-                      @select="option => selected = sourceOption">
-                      <template slot="header">
-                          <a @click="showAddSource">
-                              <span> Add new... </span>
-                          </a> 
-                      </template>                    
-                  </b-autocomplete>
-              </b-field>
-              <b-field grouped>
+                <b-field label="Source" class="half-width">
+                    <b-input
+                        v-model="source"
+                        placeholder="Optional">                 
+                    </b-input>
+                </b-field>
+                <b-field grouped>
 
-                <b-field label="Native Language" class="half-width">
-                    <b-autocomplete
-                        v-model="nativeLanguage"
+                  <b-field label="Native Language" class="half-width">
+                     <b-autocomplete :value="nativeLanguage"
+                        field= "NativeLanguage"
                         ref="languageComplete"
-                        :languageData="filteredLanguageDataArray"
-                        placeholder="e.g. Bengali"
+                        :data="languages"
+                        placeholder="e.g. Bengali" 
+                        @typing="filteredLanguageDataArray"
                         @select="option => selected = option">
                         <template slot="header">
                             <a @click="showAddLanguage">
@@ -63,30 +59,30 @@
                             </a> 
                         </template>
                     </b-autocomplete>
+                  </b-field>
+
+          
+                  <b-field label="English Proficiency" class="half-width">
+                      <b-select v-model="EnglishProficiency" placeholder="Select one" expanded>
+                        <option value = "No">No (Unable to understand at all)</option>
+                        <option value = "Little">Little (Able to understand simple words)</option>
+                        <option value = "Simple">Simple (Able to speak full sentences)</option>
+                        <option value = "Intermediate">Intermediate (Able to understand simple words)</option>
+                      </b-select>
+                  </b-field>  
+                </b-field>
+        
+                <b-field label="Notes" class="half-width">
+                    <b-input v-model="Notes" maxlength="200" type="textarea" placeholder="Optional"></b-input>
                 </b-field>
 
-        
-                <b-field label="English Proficiency" class="half-width">
-                    <b-select placeholder="Select one" expanded>
-                      <option value = "1">No (Unable to understand at all)</option>
-                      <option value = "2">Little (Able to understand simple words)</option>
-                      <option value = "3">Simple (Able to speak full sentences)</option>
-                      <option value = "4">Intermediate (Able to understand simple words)</option>
-                    </b-select>
-                </b-field>  
-
-              </b-field>
-              
-      
-              <b-field label="Notes" class="half-width">
-                  <b-input maxlength="200" type="textarea" placeholder="Optional"></b-input>
-              </b-field>
-
-          </section>
-          <b-button class="dark-blue" expanded @click="createStudent">Create Student</b-button>
+            </section>
+            <b-button class="dark-blue" input type="submit" expanded @click="createStudent" :disabled="formIsInvalid">Create Student</b-button>
+          </form>
         </div>
       </div>
     </div>  
+
   </Page>    
 </template>
 
@@ -94,82 +90,112 @@
 <script>
 
 import Page from '../components/Page.vue'
-
 export default {
   name: 'NewStudent',
     components: {
     Page,
   },
-  
 
   data() {
       return {
-          languageData: [
-              'Bengali',
-              'English',
-              'Mandarin',
-              'Russian',
-              'Indonesian',
-              'Urdu',
-              'Tamil'
-          ],
-          sourceData: [
-              'Rotary Club',
-              'Source 1',
-              'Source 2',
-          ],
           name: '',
-          nativeLanguage: '',
+          PhoneNumber: '',
           source:'',
-          selected: null,
+          EnglishProficiency: '',
           file: null,
+          Notes: '',
+          selected: {
+            NativeLanguage: ''
+          },
+          languages: [],
+          API_nativeLanguage: []
+
       }
   },
-
+  computed: {
+    // If NativeLanguage is changed, we assign it this value 
+    nativeLanguage(){
+      return this.selected ? this.selected.NativeLanguage: ''
+    },
+    
+    // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
+    formIsInvalid(){
+      const formFields = ["name", "PhoneNumber"].map(item => this[item])
+      if (this.selected === null) {
+        return true
+      }
+      if (formFields.includes('') || (this.selected?.NativeLanguage === '')) {
+        return true
+      }
+      return false
+    }
+  },
   watch: {
-    file: function(val){
-      this.uploadFile();
+    file (val){
+      this.uploadFile() 
     }
   },
 
-  computed: {
-    filteredLanguageDataArray() {
-        return this.languageData.filter((option) => {
-            return option
-              .toString()
-              .toLowerCase()
-              .indexOf(this.nativeLanguage.toLowerCase()) >= 0
-            })
-    },
-      filteredSourceDataArray() {
-        return this.sourceData.filter((sourceOption) => {
-            return sourceOption
-              .toString()
-              .toLowerCase()
-              .indexOf(this.source.toLowerCase()) >= 0
-            })
-    }  
+ async mounted() {
+    // Call API for Native Languages
+      await fetch("/api/nativeLanguages")
+        .then(response => response.json())
+        .then(result => this.API_nativeLanguage = result)
   },
-
 
   methods: {
     createStudent(){
-      this.$buefy.notification.open({
-        message: 'New student added. <u>View profile</u>!',
-        duration: 5000,
-        type: 'is-success',
-        position: 'is-top',
-        // color: '#57A773',
+       const studentCreate = {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          PhoneNumber: this.PhoneNumber,
+          FullName: this.name,
+          Source: this.source,
+          NativeLanguageString: this.selected.NativeLanguage, 
+          EnglishProficiency: this.EnglishProficiency, 
+          Notes: this.Notes,
+          StatusString: "SCREENING"
+        })
+      }
+      fetch("/api/students", studentCreate)
+        .then(response => {
+          if (response.status < 400) {
+            this.$buefy.notification.open({
+              message: 'New student added. <u>View profile</u>!',
+              duration: 3000,
+              type: 'is-success',
+              position: 'is-top',
+            })
+            setTimeout(() => {this.$router.push({path: `/students`})}, 5000)} 
+          else {
+            this.$buefy.notification.open({ 
+              message: 'Something went wrong. Please try again.',
+              duration: 3000, 
+              type: 'is-warning',
+              position: 'is-top'
+            })
+          }
+       })
+    },
+    
+    filteredLanguageDataArray(language = "") {
+      this.languages = this.API_nativeLanguage.filter((option) => {
+          return option.NativeLanguage
+            .toLowerCase()
+            .includes((language || "").toLowerCase())
+          
       })
     },
-
     uploadFile(){
       this.$buefy.notification.open({
         message: 'The file was uploaded successfully!',
         duration: 5000,
         type: 'is-success',
         position: 'is-top',
-        // color: '#57A773',
       })
     },
 
@@ -180,26 +206,25 @@ export default {
         duration: 5000,
         type: 'is-danger',
         position: 'is-top',
-        // color: '#57A773',
       })
     },
 
 
 
     showAddLanguage() {
-        this.$buefy.dialog.prompt({
-          message: `Add new language`,
-          inputAttrs: {
-            placeholder: 'e.g. Italian',
-            maxlength: 255,
-          },
-          confirmText: 'Add',
-          onConfirm: (value) => {
-            this.languageData.push(value)
-            this.$refs.languageComplete.setSelected(value)
-          }
-        })
-    },
+      this.$buefy.dialog.prompt({
+        message: `Add new language`,
+        inputAttrs: {
+          placeholder: 'e.g. Italian',
+          maxlength: 255,
+        },
+        confirmText: 'Add',
+        onConfirm: async (value) => {
+          this.selected.NativeLanguage = value
+        }
+      })
+    },         
+
     showAddSource() {
         this.$buefy.dialog.prompt({
           message: `Add new source`,

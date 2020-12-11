@@ -8,6 +8,8 @@ const path = require('path')
 
 const studentsRouter = require('./routes/students')
 const nativeLanguagesRouter = require('./routes/nativeLanguages')
+const statusesRouter = require('./routes/statuses')
+const statusUpdatesRouter = require('./routes/statusUpdates')
 
 const app = express()
 
@@ -22,6 +24,8 @@ app.use(express.static(path.resolve(__dirname, '../public')))
 // Backend routes
 app.use('/api/students', studentsRouter)
 app.use('/api/nativeLanguages', nativeLanguagesRouter)
+app.use('/api/statuses', statusesRouter)
+app.use('/api/statusUpdates', statusUpdatesRouter)
 
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../public/index.html'))
