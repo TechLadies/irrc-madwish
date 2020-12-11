@@ -9,6 +9,7 @@ const Matching = () => import("./pages/Matching.vue");
 const NewStudent = () => import("./pages/NewStudent.vue");
 const AllStudents = () => import("./pages/Students.vue");
 const StudentProfile = () => import("./pages/StudentProfile.vue");
+const EditStudent = () => import("./pages/EditStudent.vue")
 
 const router = new VueRouter({
   mode: "history",
