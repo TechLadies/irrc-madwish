@@ -1,8 +1,9 @@
 <template>
   <Page>
+    
     <div class="container">
       <div class="Title">
-          <b class="newstudent">Edit Student</b>
+          <b class="editstudent">Edit Student</b>
         <!-- upload button --> 
           <b-field class="file is-primary is-right" :class="{'has-name': !!file}">
               <b-upload v-model="file" class="file-label">
@@ -23,48 +24,41 @@
         </div>
         <!-- Start of 2nd column (all input fields) --> 
         <div class="column is-two-thirds">
-          <form method="POST" action ="/api/students" @submit.prevent="saveStudent">
-          <!--.prevent prevents the default submit behaviour and executes saveStudent instead -->
+          <form method="POST" action ="/api/students" @submit.prevent="createStudent">
+          <!--.prevent prevents the default submit behaviour and executes createStudent instead -->
             <section>
                 <b-field label="Name" class="half-width">
-                    <b-input v-model="studentData.name" name="Name" ></b-input>
+                    <b-input v-model="studentData.FullName" name="Name"></b-input>
                 </b-field>
 
                 <b-field label="Phone Number" class="half-width">
-                    <b-input v-model="studentData.PhoneNumber" type="string">
+                    <b-input v-model="studentData.PhoneNumber" type="string"
+                        value="">
                     </b-input>
                 </b-field>
 
                 <b-field label="Source" class="half-width">
-                    <b-autocomplete
+                    <b-input
                         v-model="studentData.Source"
-                        ref="SourceComplete"
-                        :data="filteredSourceDataArray"
-                        placeholder="Optional"
-                        @select="option => selected = SourceOption">
-                        <template slot="header">
-                            <a @click="showAddSource">
-                                <span> Add new... </span>
-                            </a> 
-                        </template>                    
-                    </b-autocomplete>
+                        placeholder="Optional">                 
+                    </b-input>
                 </b-field>
                 <b-field grouped>
 
                   <b-field label="Native Language" class="half-width">
-                      <b-autocomplete :value="selected.NativeLanguage"
-                          field= "NativeLanguage"
-                          ref="languageComplete"
-                          :data="languages"
-                          placeholder="e.g. Bengali" 
-                          @typing="filteredLanguageDataArray"
-                          @select="option => selected = option">
-                          <template slot="header">
-                              <a @click="showAddLanguage">
-                                  <span> Add new... </span>
-                              </a> 
-                          </template>
-                      </b-autocomplete>
+                     <b-autocomplete v-model="studentData.NativeLanguageString"
+                        field= "NativeLanguage"
+                        ref="languageComplete"
+                        :data="languages"
+                        placeholder="e.g. Bengali" 
+                        @typing="filteredLanguageDataArray"
+                        @select="option => selected = option">
+                        <template slot="header">
+                            <a @click="showAddLanguage">
+                                <span> Add new... </span>
+                            </a> 
+                        </template>
+                    </b-autocomplete>
                   </b-field>
 
           
@@ -94,100 +88,73 @@
 
 
 <script>
+
 import Page from '../components/Page.vue'
 export default {
   name: 'EditStudent',
-  components: {
-    Page
-  },
-  data() {
-      return {
-          SourceData: [
-              'Rotary Club',
-              'Source 1',
-              'Source 2',
-          ],
-          name: '',
-          PhoneNumber: '',
-          Source:'',
-          studentData: {},
-          selected: [
-            {NativeLanguageID: ''},
-            {NativeLanguage: ''}
-          ],
-          file: null,
-          SourceOption: '',
-          // TO-DO: should call API and store languageID:language pairs in vuex store to use globally 
-          languages: [],
-          API_nativeLanguage: []
-          
-      }
+    components: {
+    Page,
   },
 
+  data() {
+      return {
+          name: '',
+          PhoneNumber: '',
+          source:'',
+          EnglishProficiency: '',
+          file: null,
+          Notes: '',
+          selected: {
+            NativeLanguage: ''
+          },
+          studentData: {},
+          languages: [],
+          API_nativeLanguage: []
+
+      }
+  },
+  computed: {
+    // If NativeLanguage is changed, we assign it this value 
+    nativeLanguage(){
+      return this.selected ? this.selected.NativeLanguage: ''
+    }
+  },
   watch: {
-    file: function(val){
-      this.uploadFile();
+    file (val){
+      this.uploadFile() 
     }
   },
 
-  computed: {
-      filteredSourceDataArray() {
-        return this.SourceData.filter((SourceOption) => {
-            return SourceOption
-              .toString()
-              .toLowerCase()
-              .indexOf(this.Source.toLowerCase()) >= 0
-            })
-    }  
-  },
-
-  //Fetch student data and pre-fill form
-  async mounted() {
-      const id = this.$route.params.id
-
-      // Call API for Native Languages
+ async mounted() {
+    // Call API for Native Languages
       await fetch("/api/nativeLanguages")
         .then(response => response.json())
         .then(result => this.API_nativeLanguage = result)
       
+    // Call API for Student data
+      const id = this.$route.params.id
       await fetch(`/api/students/${id}`)
       .then(response => response.json())
       .then(result => {
         //transform Nativelanguage ID from int to string 
-        this.selected =this.API_nativeLanguage.find(item => item.NativeLanguageID === result.NativeLanguageID)
         const value = {
-          // change name: FullName after backend is updated
-          name: result.FirstName + ' ' + result.LastName,
-          FirstName: result.FirstName,
-          LastName: result.LastName,
+          FullName: result.FullName,
           PhoneNumber: result.PhoneNumber,
           Source: result.Source,
           EnglishProficiency: result.EnglishProficiency,
           Notes: result.Notes,
+          NativeLanguageString: result.nativeLanguage.NativeLanguage
         }
+  
+
         this.studentData = value;
         });
   },
-  methods: {
-    filteredLanguageDataArray(language = "") {
-      this.languages = this.API_nativeLanguage.filter((option) => {
-          return option.NativeLanguage
-            .toLowerCase()
-            .includes(language || "".toLowerCase())
-          
-          })
 
-    },
-    clearStudent(){
-      this.studentData = {},
-      this.selected.NativeLanguage = ''
-    },
-   
+  methods: {
     saveStudent(){
       // HTTP PATCH to update student, changing specific field on backend.
-        const updateData = {...this.studentData, NativeLanguageID: this.selected.NativeLanguageID}
-        // Remove line below after FullName is updated in Student Model
-        delete updateData.name 
+        const updateData = {...this.studentData}
         const studentSave = {
         method: "PATCH",
         headers: {
@@ -200,29 +167,41 @@ export default {
       }
       const id = this.$route.params.id
       fetch(`/api/students/${id}`, studentSave)
-        .then(response => response.json()) 
-        //Pop-up notification that new student has been added after successful backend response
-        .then(()=>{
-          this.$buefy.notification.open({
-          message: 'Student saved. <u>View profile</u>!',
-          duration: 5000,
-          type: 'is-success',
-          position: 'is-top',
-          // color: '#57A773',
-          })
-        })
-        
-        // Clear form fields and go back to Student Profile
-        .then(()=> this.clearStudent(), this.$router.go(-1))      
+        .then(response => {
+          if (response.status < 400) {
+            this.$buefy.notification.open({
+              message: 'Student saved. <u>View profile</u>!',
+              duration: 3000,
+              type: 'is-success',
+              position: 'is-top',
+            })
+            setTimeout(() => {this.$router.push({path: `/students/${id}`})}, 5000)} 
+          else {
+            this.$buefy.notification.open({ 
+              message: 'Something went wrong. Please try again.',
+              duration: 3000, 
+              type: 'is-warning',
+              position: 'is-top'
+            })
+          }
+       })
     },
 
+       
+    filteredLanguageDataArray(language = "") {
+      this.languages = this.API_nativeLanguage.filter((option) => {
+          return option.NativeLanguage
+            .toLowerCase()
+            .includes((language || "").toLowerCase())
+          
+      })
+    },
     uploadFile(){
       this.$buefy.notification.open({
         message: 'The file was uploaded successfully!',
         duration: 5000,
         type: 'is-success',
         position: 'is-top',
-        // color: '#57A773',
       })
     },
 
@@ -233,9 +212,10 @@ export default {
         duration: 5000,
         type: 'is-danger',
         position: 'is-top',
-        // color: '#57A773',
       })
     },
+
+
 
     showAddLanguage() {
       this.$buefy.dialog.prompt({
@@ -246,46 +226,22 @@ export default {
         },
         confirmText: 'Add',
         onConfirm: async (value) => {
-          // POST to /api/nativeLanguages 
-          const newLanguage = {NativeLanguage: value}
-          const addLanguage = {
-            method: "POST",
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(
-              newLanguage
-            )
-          }
-          await fetch("/api/nativeLanguages", addLanguage)
-            .then(response => response.json()) 
-          // New language becomes the selected value shown in form input
-          this.selected.NativeLanguage = value
-          
-          // Fetch updated data from backend and update API_Native
-          await fetch("/api/nativeLanguages")
-            .then(response => response.json())
-            .then(result => this.API_nativeLanguage = result)
-          
-          // Finds new NativeLanguageID based on the new NativeLanguage; updates selected (object) 
-          this.selected = this.API_nativeLanguage.find(item => item.NativeLanguage === this.selected.NativeLanguage)
+          this.studentData.NativeLanguage = value
         }
       })
     },         
 
-  
     showAddSource() {
         this.$buefy.dialog.prompt({
-          message: `Add new Source`,
+          message: `Add new source`,
           inputAttrs: {
             placeholder: 'e.g. Rotary Club',
             maxlength: 500,
           },
           confirmText: 'Add',
           onConfirm: (value) => {
-            this.SourceData.push(value)
-            this.$refs.SourceComplete.setSelected(value)
+            this.sourceData.push(value)
+            this.$refs.sourceComplete.setSelected(value)
           }
         })
     },    
@@ -295,7 +251,7 @@ export default {
 
 <style>
 
-button.button.dark-blue {
+button.button.dark-blue{
   background-color: #3C4F76;
   color: white; 
   border: 1px solid #3C4F76;
@@ -308,7 +264,7 @@ button.button.dark-blue {
   color: #59666E !important;
 }
 
-b.newstudent {
+b.editstudent {
   font-size: 30px;
   padding-left: 20px;
 }
@@ -366,7 +322,7 @@ html {
 .notification.is-success {
   background-color: #57A773 !important;
   font: #fff;
-  margin-left: 300px;
+  margin-left: 100px;
   padding: 15px;
   border-radius: 32px;
   text-align: center;
@@ -377,10 +333,12 @@ html {
 .notification.is-danger {
   background-color: #C33715 !important;
   font: #fff;
-  margin-left: 300px;
+  margin-left: 100px;
   padding: 15px;
   border-radius: 32px;
   text-align: center;
 }
+
+
 
 </style>
