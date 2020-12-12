@@ -16,25 +16,25 @@ router.post('/', async (req, res) => {
   delete req.body.PrevStatusString
   delete req.body.NextStatusString
 
-  if (prevStatus.StatusID == nextStatus.StatusID) {
+  if (req.body.PreviousStatusID == req.body.NextStatusID) {
     return res.status(422).send({
       message: 'Previous Status and Next Status should not be the same.',
       type: 'StatusError',
       data: {
-        previousStatus: prevStatus.StatusID,
-        nextStatus: nextStatus.StatusID
+        previousStatus: req.body.PreviousStatusID,
+        nextStatus: req.body.NextStatusID
       }
     })
   }
 
   const student = await students.getStudentById(req.body.StudentID)
 
-  if (student.StatusID !== prevStatus.StatusID) {
+  if (student.StatusID !== req.body.PreviousStatusID) {
     return res.status(409).send({
       message: 'Previous status must match current student status.',
       type: 'StatusMismatch',
       data: {
-        submittedStatus: prevStatus.StatusID,
+        submittedStatus: req.body.PreviousStatusID,
         actualStatus: student.StatusID
       }
     })
