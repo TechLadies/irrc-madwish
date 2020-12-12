@@ -108,23 +108,29 @@
                 />
               </template>
               <template v-slot="props">
-                <span v-if="props.row.StatusID == 1" :class="['tag is-info']">
+                <span
+                  v-if="props.row.Status.toUpperCase() == 'SCREENING'"
+                  :class="['tag is-info']"
+                >
                   <li>Screening</li>
                 </span>
 
                 <span
-                  v-if="props.row.StatusID == 2"
+                  v-if="props.row.Status.toUpperCase() == 'MATCHED'"
                   :class="['tag is-success']"
                 >
                   <li>Matched</li>
                 </span>
 
-                <span v-if="props.row.StatusID == 3" :class="['tag is-danger']">
+                <span
+                  v-if="props.row.Status.toUpperCase() == 'DROPPED OUT'"
+                  :class="['tag is-danger']"
+                >
                   <li>Dropped Out</li>
                 </span>
 
                 <span
-                  v-if="props.row.StatusID == 4"
+                  v-if="props.row.Status.toUpperCase() == 'UNMATCHED'"
                   :class="['tag is-warning']"
                 >
                   <li>Unmatched</li>
@@ -189,7 +195,7 @@ export default {
           searchable: true,
         },
         {
-          field: "StatusID",
+          field: "Status",
           label: "Status",
           searchable: true,
         },
@@ -208,7 +214,7 @@ export default {
           StudentID: `${student.StudentID}`,
           FullName: `${student.FullName}`,
           CreatedAt: `${student.created_at}`,
-          StatusID: `${student.StatusID}`,
+          Status: `${student.status.Description}`,
           PhoneNumber: `${student.PhoneNumber}`,
         };
       });
