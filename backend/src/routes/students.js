@@ -126,9 +126,24 @@ router.post("/", async (req, res) => {
 /* PATCH student listing */
 // on Postman: http://localhost:3001/students/1
 router.patch("/:id", async (req, res) => {
-  // debug('Hello World!')
-  // console.log('hello world')
-  // console.log(req.body)
+  if (req.body.NativeLanguageString) {
+    try {
+      const nativeLanguage = await students.getNativeLanguagePromise(
+        req.body.NativeLanguageString
+      );
+      req.body.NativeLanguageID = nativeLanguage.NativeLanguageID;
+      delete req.body.NativeLanguageString;
+    }
+    catch (err) {
+      return res.status(500).send({
+        message: err.message,
+        type: "UnknownError with NativeLanguage",
+        data: {},
+      });
+    }
+  }
+  
+  
   const result = await students.patchStudent(req.params.id, req.body);
   // handle error
   if (result.err) {
