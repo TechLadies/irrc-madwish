@@ -162,9 +162,12 @@
 
 <script>
 
+
 const API_URL = "/api/students";
+
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
+
 
 export default {
         data() {
@@ -209,7 +212,7 @@ export default {
             return this.data.map(student => {
               return {
                 StudentID: `${student.StudentID}`,
-                FullName: `${student.FullName}`,
+                FullName: `${student.FirstName} ${student.LastName}`,
                 CreatedAt: `${student.created_at}`,
                 StatusID: `${student.StatusID}`,
                 PhoneNumber: `${student.PhoneNumber}`  
