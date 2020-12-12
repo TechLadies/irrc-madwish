@@ -90,6 +90,8 @@
 <script>
 
 import Page from '../components/Page.vue'
+import {mapGetters, mapActions} from 'vuex'
+
 export default {
   name: 'NewStudent',
     components: {
@@ -103,16 +105,17 @@ export default {
           source:'',
           EnglishProficiency: '',
           file: null,
-          Notes: '',
+          Notes: '', 
           selected: {
             NativeLanguage: ''
           },
           languages: [],
-          API_nativeLanguage: []
+          //API_nativeLanguage: []
 
       }
   },
   computed: {
+    ...mapGetters(['API_nativeLanguage']),
     // If NativeLanguage is changed, we assign it this value 
     nativeLanguage(){
       return this.selected ? this.selected.NativeLanguage: ''
@@ -137,13 +140,13 @@ export default {
   },
 
  async mounted() {
-    // Call API for Native Languages
-      await fetch("/api/nativeLanguages")
-        .then(response => response.json())
-        .then(result => this.API_nativeLanguage = result)
+   this.getNativeLanguages()
   },
 
   methods: {
+    // Copies actions from store, allows you to use it as a native method in the component.
+    ...mapActions(['getNativeLanguages']),
+
     createStudent(){
        const studentCreate = {
         method: "POST",
@@ -170,6 +173,8 @@ export default {
               type: 'is-success',
               position: 'is-top',
             })
+            // refreshes state
+            this.getNativeLanguages()
             setTimeout(() => {this.$router.push({path: `/students`})}, 5000)} 
           else {
             this.$buefy.notification.open({ 
