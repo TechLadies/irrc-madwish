@@ -33,4 +33,12 @@ export default new Vuex.Store({
     students: (state) => state.students,
     ...nativeLanguageGetters
   },
+    screeningStudents: (state) => state.students.filter((student) => {
+      if (student.status.Description == "SCREENING") {
+        return true;
+      } else {
+        return false;
+      }
+    })
+  }
 })
