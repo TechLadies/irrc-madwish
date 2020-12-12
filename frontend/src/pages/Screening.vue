@@ -23,6 +23,7 @@
     </PageHeader>  
 
       <!--start of table -->
+<<<<<<< HEAD
       <section>      
             <b-table 
               :data="data"
@@ -167,6 +168,73 @@
             <b>Students ready to be matched?</b><br>
             Confirming will add these students to the page for them to be matched with teachers.<br>
             <button class="button field is-white">Cancel</button><button class="button field is-blue">Confirm</button>
+=======
+      <section>
+        <b-table
+          :data="tableData"
+          :sort-icon="sortIcon"
+          :sort-icon-size="sortIconSize"
+          :sortDirection="sortDirection"
+          :checked-rows.sync="checkedRows"
+          checkable
+          :checkbox-position="checkboxPosition"
+          :is-row-checkable="(row) => row.EnglishProficiency !== null"
+        >
+          <!-- Student ID column -->
+
+          <template v-for="column in columns">
+            <b-table-column :key="column.field" v-bind="column" sortable>
+              <template
+                v-if="column.searchable"
+                slot="searchable"
+                slot-scope="props"
+              >
+                <b-input
+                  v-model="props.filters[props.column.field]"
+                  icon="magnify"
+                  size="is-small"
+                />
+              </template>
+              <template v-slot="props" v-if="column.select">
+                <b-field>
+                  <b-select
+                    :placeholder="column.select.placeholder"
+                    v-model="props.row[props.column.field]"
+                  >
+                    <option
+                      v-for="option in column.select.options"
+                      :key="option"
+                      :value="option"
+                    >
+                      {{ option }}
+                    </option>
+                  </b-select>
+                </b-field>
+              </template>
+              <template v-slot="props" v-else>
+                <span>
+                  {{ props.row[props.column.field] }}
+                </span>
+                <br />
+                <span v-if="column.subtitle">
+                  {{ props.row[column.subtitle] }}
+                </span>
+              </template>
+            </b-table-column>
+          </template>
+        </b-table>
+
+        <!-- notification -->
+        <b-notification
+          v-model="isActive"
+          aria-close-label="Close notification"
+        >
+          <b>Students ready to be matched?</b><br />
+          Confirming will add these students to the page for them to be matched
+          with teachers.<br />
+          <button class="button field is-white">Cancel</button
+          ><button class="button field is-blue">Confirm</button>
+>>>>>>> made further updates to screening table as v-if and v-for not recommended to be used together
         </b-notification>
 
       </section>
@@ -207,98 +275,74 @@ const ModalForm = {
 
 
 export default {
-        data() {
-            return {
-                data: [
-  
-                 ],
-
-                selected: null,
-                sortIcon: 'arrow-up',
-                sortIconSize: 'is-small',
-                sortDirection: 'asc',
-                checkedRows:[],
-                checkboxPosition: 'right',
-                uniqueEnglishVals: ['No', 'Little', 'Simple', 'Intermediate'],
-                isActive: false,
-                columns: [
-                    {
-                        field: 'created_at',
-                        label: 'Date Joined',
-                        searchable: true,
-                    },
-                    {
-                        field: 'StudentID',
-                        label: 'Student ID',
-                        searchable: true,
-                    },
-                    {
-                        field: 'FirstName',
-                        label: 'Student Name',
-                        searchable: true,
-                    },    
-                    {
-                        field: 'NativeLanguageString',
-                        label: 'Native Language',
-                        searchable: true,
-                    },      
-                    {
-                        field: 'StatusID',
-                        label: 'Status',
-                        searchable: true,
-                    },
-                    {
-                        field: 'PhoneNumber',
-                        label: 'Phone Number',
-                        searchable: true,
-                    },
-                    {
-                        field: 'EnglishProficiency',
-                        label: 'English Proficiency',
-                        searchable: true,
-                    },
-                    {
-                        field: 'Dummy',
-                        label: 'Ready to Match:',
-                        searchable: true,
-                    },
-
-
-                ]
-            }
+  data() {
+    return {
+      selected: null,
+      sortIcon: "arrow-up",
+      sortIconSize: "is-small",
+      sortDirection: "asc",
+      checkedRows: [],
+      checkboxPosition: "right",
+      isActive: false,
+      columns: [
+        {
+          field: "FullName",
+          label: "Name / Student ID",
+          subtitle: "StudentID",
+          searchable: true,
         },
-
-
-        components:{
-          Page,
-          PageHeader
+        {
+          field: "NativeLanguage",
+          label: "Native Language",
+          searchable: true,
         },
-                
-
-        // FETCH API
-        mounted() {
-          fetch(API_URL)
-            .then(response => response.json())
-            .then(result => {
-              this.data = result;
-            });
+        {
+          field: "EnglishProficiency",
+          label: "English Proficiency",
+          searchable: true,
+          select: {
+            placeholder: "Select Proficiency",
+            options: ["No", "Little", "Simple", "Intermediate"],
+          },
         },
-
-        methods: {
-          cardModal() {
-              this.$buefy.modal.open({
-                  parent: this,
-                  component: ModalForm,
-                  hasModalCard: true,
-                  customClass: 'custom-class custom-class-2',
-                  trapFocus: true
-              })
-          }
+        {
+          field: "Dummy",
+          label: "Ready to Match:",
         },
-  
-
-
-    }   
+      ],
+    };
+  },
+  components: {
+    Page,
+    PageHeader,
+  },
+  // retrieves students with Screening status, and manipulates table data for rendering in screening table
+  computed: {
+    ...mapGetters(["screeningStudents"]),
+    tableData() {
+      return this.screeningStudents.map((student) => {
+        return {
+          StudentID: `${student.StudentID}`,
+          NativeLanguage: `${student.nativeLanguage.NativeLanguage}`,
+          EnglishProficiency: `${student.EnglishProficiency}`,
+          PhoneNumber: `${student.PhoneNumber}`,
+          FullName: `${student.FullName}`,
+        };
+      });
+    },
+  },
+  methods: {
+    cardModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ModalForm,
+        hasModalCard: true,
+        customClass: "custom-class custom-class-2",
+        trapFocus: true,
+      });
+    },
+  },
+};
 </script>
 
 <style>
