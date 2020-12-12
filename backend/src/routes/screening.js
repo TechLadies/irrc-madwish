@@ -13,14 +13,14 @@ const { NotFoundError } = require("objection");
 router.post("/", async (req, res) => {
     if(Array.isArray(req.body)){
         // process each item asynchronously 
-        await Promise.all(req.body.map(async item => {
+        const result = await Promise.all(req.body.map(async item => {
             const status = await statuses.getStatusByStatusString(item.StatusString)
             item.StatusID = status.StatusID
             delete item.StatusString
-            await students.patchStudent(item.StudentID, item)
+            return students.patchStudent(item.StudentID, item)
             }
         ))
-        return res.status(200).json(req.body);
+        return res.status(200).json(result);
     }
     return res.status(500).json({})
   });
