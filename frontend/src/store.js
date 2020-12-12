@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {nativeLanguageActions, nativeLanguageGetters, nativeLanguageMutations, nativeLanguageState} from './store/nativeLanguages.js'
 
 Vue.use(Vuex)
 
@@ -10,22 +11,26 @@ const MUTATIONS = Object.freeze({
 
 export default new Vuex.Store({
   state: {
-    students: []
+    students: [],
+    ...nativeLanguageState
   },
   mutations: {
     [MUTATIONS.SET_STUDENTS](state, students) {
       state.students = students
-    }
+    },
+    ...nativeLanguageMutations
   },
   actions: {
     async getAllStudents({ commit }) {
       const response = await fetch("/api/students")
       const data = await response.json()
       commit(MUTATIONS.SET_STUDENTS, data)
-    }
+    },
+    ...nativeLanguageActions
 
   },
   getters: {
-    students: (state) => state.students
-  }
+    students: (state) => state.students,
+    ...nativeLanguageGetters
+  },
 })
