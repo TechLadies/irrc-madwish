@@ -167,7 +167,6 @@ router.patch("/:id", async (req, res) => {
 
   res.status(200).json(result);
 });
-
 /* GET status by StudentID */
 router.get("/:id/status", async (req, res) => {
   const result = await students.getStatusByStudentId(req.params.id);

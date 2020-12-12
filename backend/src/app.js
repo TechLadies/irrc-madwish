@@ -10,6 +10,7 @@ const studentsRouter = require('./routes/students')
 const nativeLanguagesRouter = require('./routes/nativeLanguages')
 const statusesRouter = require('./routes/statuses')
 const statusUpdatesRouter = require('./routes/statusUpdates')
+const screeningRouter = require('./routes/screening')
 
 const app = express()
 
@@ -26,6 +27,8 @@ app.use('/api/students', studentsRouter)
 app.use('/api/nativeLanguages', nativeLanguagesRouter)
 app.use('/api/statuses', statusesRouter)
 app.use('/api/statusUpdates', statusUpdatesRouter)
+app.use('/api/screening', screeningRouter)
+
 
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../public/index.html'))
