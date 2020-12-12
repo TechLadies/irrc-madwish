@@ -20,7 +20,7 @@
       <div class="columns is-multiline is-mobile">
         <!--start of first column (image) --> 
         <div class="column is-one-third" align="center">
-          <img src="../assets/student.png" />
+          <img src="../assets/teacher.png" />
         </div>
         <!-- Start of 2nd column (all input fields) --> 
         <div class="column is-two-thirds">
@@ -71,6 +71,38 @@
                       </b-select>
                   </b-field>  
                 </b-field>
+
+
+                <b-field grouped>
+
+                  <b-field label="Second Language" class="half-width">
+                     <b-autocomplete :value="nativeLanguage"
+                        field= "NativeLanguage"
+                        ref="languageComplete"
+                        :data="languages"
+                        placeholder="e.g. Tamil" 
+                        @typing="filteredLanguageDataArray"
+                        @select="option => selected = option">
+                        <template slot="header">
+                            <a @click="showAddLanguage">
+                                <span> Add new... </span>
+                            </a> 
+                        </template>
+                    </b-autocomplete>
+                  </b-field>
+
+          
+                  <b-field label="Language Proficiency" class="half-width">
+                      <b-select v-model="SecondLanguageProficiency" placeholder="Select one" expanded>
+                        <option value = "No">No (Unable to understand at all)</option>
+                        <option value = "Little">Little (Able to understand simple words)</option>
+                        <option value = "Simple">Simple (Able to speak full sentences)</option>
+                        <option value = "Intermediate">Intermediate (Able to understand simple words)</option>
+                      </b-select>
+                  </b-field>  
+                </b-field>
+
+
         
                 <b-field label="Notes" class="half-width">
                     <b-input v-model="Notes" maxlength="200" type="textarea" placeholder="Optional"></b-input>
