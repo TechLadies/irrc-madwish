@@ -13,6 +13,7 @@ class StatusUpdate extends Model {
   static get relationMappings () {
     const Student = require('./student')
     const Status = require('./status')
+    const Reason = require('./reason')
 
     return {
       student: {
@@ -40,7 +41,17 @@ class StatusUpdate extends Model {
           from: 'statusUpdates.NextStatusID',
           to: 'statuses.StatusID'
         }
+      },
+
+      reason: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Reason.model,
+        join: {
+          from: 'statusUpdates.ReasonID',
+          to: 'reasons.ReasonID'
+        }
       }
+
     }
   }
 
@@ -53,7 +64,8 @@ class StatusUpdate extends Model {
         StudentID: { type: 'integer' },
         PreviousStatusID: { type: 'integer' },
         NextStatusID: { type: 'integer' },
-        UpdatedBy: { type: 'string', minLength: 1, maxLength: 255 }
+        UpdatedBy: { type: 'string', minLength: 1, maxLength: 255 },
+        Reason: { type: 'string', minLength: 1, maxLength: 255 }
       }
     }
   }
