@@ -76,8 +76,8 @@
                 <b-field grouped>
 
                   <b-field label="Second Language" class="half-width">
-                     <b-autocomplete :value="nativeLanguage"
-                        field= "NativeLanguage"
+                     <b-autocomplete :value="Language"
+                        field= "SecondLanguage"
                         ref="languageComplete"
                         :data="languages"
                         placeholder="e.g. Tamil" 
@@ -136,6 +136,8 @@ export default {
           PhoneNumber: '',
           source:'',
           EnglishProficiency: '',
+          SecondLanguage: '',
+          SecondLanguageProficiency:'',
           file: null,
           Notes: '', 
           selected: {
@@ -156,12 +158,12 @@ export default {
     // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
     formIsInvalid(){
       const formFields = ["name", "PhoneNumber"].map(item => this[item])
-      if (this.selected === null) {
+      if (this.selected === null || formFields.includes('') || (this.selected?.NativeLanguage === '')) {
         return true
       }
-      if (formFields.includes('') || (this.selected?.NativeLanguage === '')) {
-        return true
-      }
+      // if (formFields.includes('') || (this.selected?.NativeLanguage === '')) {
+      //   return true
+      // }
       return false
     }
   },
@@ -207,7 +209,7 @@ export default {
             })
             // refreshes state
             this.getNativeLanguages()
-            setTimeout(() => {this.$router.push({path: `/students`})}, 5000)} 
+            setTimeout(() => {this.$router.push({path: `/teachers`})}, 5000)} 
           else {
             this.$buefy.notification.open({ 
               message: 'Something went wrong. Please try again.',
