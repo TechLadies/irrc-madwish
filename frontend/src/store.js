@@ -44,8 +44,7 @@ export default new Vuex.Store({
       }
 
       fetch("/api/students/" + studentID, studentRequestOptions)
-        .then(
-          function(response) {
+        .then(response => {
             // If PATCH fails, return
             if(response.status !== 200) {
               success = false;
@@ -69,8 +68,7 @@ export default new Vuex.Store({
         })
       }
       fetch("/api/statusUpdates", statusUpdateRequestOptions)
-        .then(
-          function(response) {
+        .then(response => {
             // If PATCH fails, return
             if(response.status !== 200) {
               success = false;
@@ -98,8 +96,7 @@ export default new Vuex.Store({
       }
 
       fetch("/api/students/" + studentID, studentRequestOptions)
-        .then(
-          function(response) {
+        .then(response => {
             // If PATCH fails, return
             if(response.status !== 200) {
               success = false;
@@ -108,7 +105,7 @@ export default new Vuex.Store({
           }
         )
 
-      // Check if both PATCH student and POST statusUpdate succeed
+      // Check if PATCH student succeeds
       if (success) { dispatch('getAllStudents') }
     },
   },

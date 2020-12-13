@@ -27,6 +27,7 @@
 
 <script>
 import Button from "./Button.vue";
+import { mapActions } from 'vuex'
 export default {
   name: "StatusCardDroppedOut",
   components: {
@@ -42,13 +43,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions([ 'updateStudentStatus' ]),
     droppedOutToScreening() {
       const studentID = parseInt(this.studentID)
       const previousStatusString = "DROPPED OUT"
       const nextStatusString = "SCREENING"
       const updatedBy = "IRRCAdmin"
 
-      this.$store.dispatch('updateStudentStatus', {
+      this.updateStudentStatus({
         studentID: studentID,
         previousStatusString: previousStatusString,
         nextStatusString: nextStatusString,

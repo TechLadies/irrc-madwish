@@ -39,6 +39,7 @@ import StatusCardMatched from "../components/statusCards/StatusCardMatched.vue";
 import StatusCardDroppedOut from "../components/statusCards/StatusCardDroppedOut.vue";
 import StatusCardScreening from "../components/statusCards/StatusCardScreening.vue";
 import StatusCardUnmatched from "../components/statusCards/StatusCardUnmatched.vue";
+import { mapGetters } from 'vuex'
 
 export default {
   name: "StudentProfile",
@@ -74,9 +75,12 @@ export default {
        studentID: this.$route.params.id,
     };
   },
+  computed: {
+    ...mapGetters([ 'getStudentByStudentId' ])
+  },
   mounted: function() {
     const id = this.$route.params.id
-    const data = this.$store.getters.getStudentByStudentId(id)
+    const data = this.getStudentByStudentId(id)
 
     const studentObject = {
           StudentID: data.StudentID,

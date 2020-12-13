@@ -63,7 +63,7 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   // If request does not contain StatusID
   if (req.body.StatusID == null) {
-    var statusString;
+    let statusString;
     // If request contains a statusString
     if (req.body.StatusString != null) {
       statusString = req.body.StatusString;
@@ -146,7 +146,7 @@ router.patch("/:id", async (req, res) => {
 
   // If request does not contain StatusID and contains a StatusString
   if (req.body.StatusID == null && req.body.StatusString != null) {
-    var statusString = req.body.StatusString
+    let statusString = req.body.StatusString
     delete req.body.StatusString
     const status = await statuses.getStatusByStatusString(statusString)
     req.body.StatusID = status.StatusID

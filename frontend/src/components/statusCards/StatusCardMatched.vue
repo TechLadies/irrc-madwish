@@ -29,6 +29,7 @@
 
 <script>
 import Button from "./Button.vue";
+import { mapActions } from 'vuex'
 export default {
   name: "StatusCardUnmatched",
   components: {
@@ -44,6 +45,7 @@ export default {
     }
   },
   methods: {   
+    ...mapActions([ 'updateStudentStatus' ]),
     // TODO: Remove the Matched pair from the matching table (not created yet)
     matchedToDroppedOut() {
       const studentID = parseInt(this.studentID)
@@ -51,7 +53,7 @@ export default {
       const nextStatusString = "DROPPED OUT"
       const updatedBy = "IRRCAdmin"
 
-      this.$store.dispatch('updateStudentStatus', {
+      this.updateStudentStatus({
         studentID: studentID,
         previousStatusString: previousStatusString,
         nextStatusString: nextStatusString,

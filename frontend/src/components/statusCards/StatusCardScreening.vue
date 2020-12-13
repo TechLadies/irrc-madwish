@@ -22,6 +22,7 @@
 
 <script>
 import Button from "./Button.vue";
+import { mapActions } from 'vuex'
 export default {
   name: "StatusCardScreening",
   components: {
@@ -36,13 +37,14 @@ export default {
     },
   },
   methods: {
+    ...mapActions([ 'updateStudentStatus' , 'updateStudentEnglishProficiency' ]),
     screeningToDroppedOut() {
       const studentID = parseInt(this.studentID)
       const previousStatusString = "SCREENING"
       const nextStatusString = "DROPPED OUT"
       const updatedBy = "IRRCAdmin"
 
-      this.$store.dispatch('updateStudentStatus', {
+      this.updateStudentStatus({
         studentID: studentID,
         previousStatusString: previousStatusString,
         nextStatusString: nextStatusString,
@@ -57,7 +59,7 @@ export default {
       const nextStatusString = "UNMATCHED"
       const updatedBy = "IRRCAdmin"
 
-      this.$store.dispatch('updateStudentStatus', {
+      this.updateStudentStatus({
         studentID: studentID,
         previousStatusString: previousStatusString,
         nextStatusString: nextStatusString,
@@ -65,7 +67,7 @@ export default {
       })
 
       // Update English proficiency
-      this.$store.dispatch('updateStudentEnglishProficiency', {
+      this.updateStudentEnglishProficiency({
         studentID: studentID,
         englishProficiency: this.englishProficiency
       })
