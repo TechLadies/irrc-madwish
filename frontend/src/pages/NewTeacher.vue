@@ -24,8 +24,8 @@
         </div>
         <!-- Start of 2nd column (all input fields) --> 
         <div class="column is-two-thirds">
-          <form method="POST" action ="/api/students" @submit.prevent="createStudent">
-          <!--.prevent prevents the default submit behaviour and executes createStudent instead -->
+          <form method="POST" action ="/api/students" @submit.prevent="createTeacher">
+          <!--.prevent prevents the default submit behaviour and executes createTeacher instead -->
             <section>
                 <b-field label="Name" class="half-width">
                     <b-input v-model="name" name="Name"></b-input>
@@ -73,18 +73,21 @@
                 </b-field>
 
 
+
+
+
                 <b-field grouped>
 
                   <b-field label="Second Language" class="half-width">
-                     <b-autocomplete :value="Language"
+                     <b-autocomplete :value="SecondLanguage"
                         field= "SecondLanguage"
-                        ref="languageComplete"
+                        ref="secondlanguagevalue"
                         :data="languages"
                         placeholder="e.g. Tamil" 
-                        @typing="filteredLanguageDataArray"
+                        @typing="filteredSecondLanguageDataArray"
                         @select="option => selected = option">
                         <template slot="header">
-                            <a @click="showAddLanguage">
+                            <a @click="showAddSecondLanguage">
                                 <span> Add new... </span>
                             </a> 
                         </template>
@@ -109,7 +112,7 @@
                 </b-field>
 
             </section>
-            <b-button class="dark-blue" input type="submit" expanded @click="createStudent" :disabled="formIsInvalid">Create Student</b-button>
+            <b-button class="dark-blue" input type="submit" expanded @click="createTeacher" :disabled="formIsInvalid">Create Student</b-button>
           </form>
         </div>
       </div>
@@ -125,7 +128,7 @@ import Page from '../components/Page.vue'
 import {mapGetters, mapActions} from 'vuex'
 
 export default {
-  name: 'NewStudent',
+  name: 'NewTeacher',
     components: {
     Page,
   },
@@ -133,15 +136,17 @@ export default {
   data() {
       return {
           name: '',
+          name1:'',
           PhoneNumber: '',
           source:'',
           EnglishProficiency: '',
-          SecondLanguage: '',
           SecondLanguageProficiency:'',
+          SecondLanguage:'',
           file: null,
           Notes: '', 
           selected: {
-            NativeLanguage: ''
+            NativeLanguage: '',
+            SecondLanguage:'',
           },
           languages: [],
           //API_nativeLanguage: []
@@ -154,16 +159,16 @@ export default {
     nativeLanguage(){
       return this.selected ? this.selected.NativeLanguage: ''
     },
-    
+
+
+
+
     // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
     formIsInvalid(){
       const formFields = ["name", "PhoneNumber"].map(item => this[item])
       if (this.selected === null || formFields.includes('') || (this.selected?.NativeLanguage === '')) {
         return true
       }
-      // if (formFields.includes('') || (this.selected?.NativeLanguage === '')) {
-      //   return true
-      // }
       return false
     }
   },
@@ -181,8 +186,8 @@ export default {
     // Copies actions from store, allows you to use it as a native method in the component.
     ...mapActions(['getNativeLanguages']),
 
-    createStudent(){
-       const studentCreate = {
+    createTeacher(){
+       const teacherCreate = {
         method: "POST",
         headers: {
           'Accept': 'application/json',
@@ -198,11 +203,11 @@ export default {
           StatusString: "SCREENING"
         })
       }
-      fetch("/api/students", studentCreate)
+      fetch("/api/teachers", teacherCreate)
         .then(response => {
           if (response.status < 400) {
             this.$buefy.notification.open({
-              message: 'New student added. <u>View profile</u>!',
+              message: 'New teacher added. <u>View profile</u>!',
               duration: 3000,
               type: 'is-success',
               position: 'is-top',
@@ -229,6 +234,19 @@ export default {
           
       })
     },
+
+    // Auto complete for second langauge not working 
+
+    filteredSecondLanguageDataArray(language = "") {
+      this.languages = this.API_nativeLanguage.filter((option) => {
+          return option.SecondLanguage
+            .toLowerCase()
+            .includes((language || "").toLowerCase())
+          
+      })
+    },
+
+
     uploadFile(){
       this.$buefy.notification.open({
         message: 'The file was uploaded successfully!',
@@ -249,7 +267,6 @@ export default {
     },
 
 
-
     showAddLanguage() {
       this.$buefy.dialog.prompt({
         message: `Add new language`,
@@ -262,7 +279,26 @@ export default {
           this.selected.NativeLanguage = value
         }
       })
-    },         
+    },
+    
+    
+
+    showAddSecondLanguage() {
+      this.$buefy.dialog.prompt({
+        message: `Add new language`,
+        inputAttrs: {
+          placeholder: 'e.g. Italian',
+          maxlength: 255,
+        },
+        confirmText: 'Add',
+        onConfirm: (value) => {
+          this.$refs.secondlanguagevalue.setSelected(value)
+        }
+      })
+    },      
+
+
+
 
     showAddSource() {
         this.$buefy.dialog.prompt({
