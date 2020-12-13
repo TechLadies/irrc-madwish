@@ -20,21 +20,12 @@
       <div class="columns is-multiline is-mobile">
         <!--start of first column (image) --> 
         <div class="column is-one-third" align="center">
-<<<<<<< HEAD
           <img src="../assets/teacher.png" />
         </div>
         <!-- Start of 2nd column (all input fields) --> 
         <div class="column is-two-thirds">
           <form method="POST" action ="/api/students" @submit.prevent="createTeacher">
           <!--.prevent prevents the default submit behaviour and executes createTeacher instead -->
-=======
-          <img src="../assets/student.png" />
-        </div>
-        <!-- Start of 2nd column (all input fields) --> 
-        <div class="column is-two-thirds">
-          <form method="POST" action ="/api/students" @submit.prevent="createStudent">
-          <!--.prevent prevents the default submit behaviour and executes createStudent instead -->
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
             <section>
                 <b-field label="Name" class="half-width">
                     <b-input v-model="name" name="Name"></b-input>
@@ -80,7 +71,6 @@
                       </b-select>
                   </b-field>  
                 </b-field>
-<<<<<<< HEAD
 
 
 
@@ -92,7 +82,7 @@
                      <b-autocomplete :value="SecondLanguage"
                         field= "SecondLanguage"
                         ref="secondlanguagevalue"
-                        :data="languages"
+                        :data="secondlanguages"
                         placeholder="e.g. Tamil" 
                         @typing="filteredSecondLanguageDataArray"
                         @select="option => selected = option">
@@ -116,19 +106,13 @@
                 </b-field>
 
 
-=======
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
         
                 <b-field label="Notes" class="half-width">
                     <b-input v-model="Notes" maxlength="200" type="textarea" placeholder="Optional"></b-input>
                 </b-field>
 
             </section>
-<<<<<<< HEAD
             <b-button class="dark-blue" input type="submit" expanded @click="createTeacher" :disabled="formIsInvalid">Create Student</b-button>
-=======
-            <b-button class="dark-blue" input type="submit" expanded @click="createStudent" :disabled="formIsInvalid">Create Student</b-button>
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
           </form>
         </div>
       </div>
@@ -144,11 +128,7 @@ import Page from '../components/Page.vue'
 import {mapGetters, mapActions} from 'vuex'
 
 export default {
-<<<<<<< HEAD
   name: 'NewTeacher',
-=======
-  name: 'NewStudent',
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
     components: {
     Page,
   },
@@ -156,8 +136,6 @@ export default {
   data() {
       return {
           name: '',
-<<<<<<< HEAD
-          name1:'',
           PhoneNumber: '',
           source:'',
           EnglishProficiency: '',
@@ -168,17 +146,9 @@ export default {
           selected: {
             NativeLanguage: '',
             SecondLanguage:'',
-=======
-          PhoneNumber: '',
-          source:'',
-          EnglishProficiency: '',
-          file: null,
-          Notes: '', 
-          selected: {
-            NativeLanguage: ''
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
           },
           languages: [],
+          secondlanguages:[],
           //API_nativeLanguage: []
 
       }
@@ -189,7 +159,6 @@ export default {
     nativeLanguage(){
       return this.selected ? this.selected.NativeLanguage: ''
     },
-<<<<<<< HEAD
 
 
 
@@ -198,16 +167,6 @@ export default {
     formIsInvalid(){
       const formFields = ["name", "PhoneNumber"].map(item => this[item])
       if (this.selected === null || formFields.includes('') || (this.selected?.NativeLanguage === '')) {
-=======
-    
-    // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
-    formIsInvalid(){
-      const formFields = ["name", "PhoneNumber"].map(item => this[item])
-      if (this.selected === null) {
-        return true
-      }
-      if (formFields.includes('') || (this.selected?.NativeLanguage === '')) {
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
         return true
       }
       return false
@@ -227,13 +186,8 @@ export default {
     // Copies actions from store, allows you to use it as a native method in the component.
     ...mapActions(['getNativeLanguages']),
 
-<<<<<<< HEAD
     createTeacher(){
        const teacherCreate = {
-=======
-    createStudent(){
-       const studentCreate = {
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
         method: "POST",
         headers: {
           'Accept': 'application/json',
@@ -249,30 +203,18 @@ export default {
           StatusString: "SCREENING"
         })
       }
-<<<<<<< HEAD
       fetch("/api/teachers", teacherCreate)
         .then(response => {
           if (response.status < 400) {
             this.$buefy.notification.open({
               message: 'New teacher added. <u>View profile</u>!',
-=======
-      fetch("/api/students", studentCreate)
-        .then(response => {
-          if (response.status < 400) {
-            this.$buefy.notification.open({
-              message: 'New student added. <u>View profile</u>!',
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
               duration: 3000,
               type: 'is-success',
               position: 'is-top',
             })
             // refreshes state
             this.getNativeLanguages()
-<<<<<<< HEAD
             setTimeout(() => {this.$router.push({path: `/teachers`})}, 5000)} 
-=======
-            setTimeout(() => {this.$router.push({path: `/students`})}, 5000)} 
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
           else {
             this.$buefy.notification.open({ 
               message: 'Something went wrong. Please try again.',
@@ -292,7 +234,6 @@ export default {
           
       })
     },
-<<<<<<< HEAD
 
     // Auto complete for second langauge not working 
 
@@ -306,8 +247,6 @@ export default {
     },
 
 
-=======
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
     uploadFile(){
       this.$buefy.notification.open({
         message: 'The file was uploaded successfully!',
@@ -328,10 +267,6 @@ export default {
     },
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
     showAddLanguage() {
       this.$buefy.dialog.prompt({
         message: `Add new language`,
@@ -344,7 +279,6 @@ export default {
           this.selected.NativeLanguage = value
         }
       })
-<<<<<<< HEAD
     },
     
     
@@ -365,9 +299,6 @@ export default {
 
 
 
-=======
-    },         
->>>>>>> 9019ad2baeb0fb10692712f54b54b772d377425d
 
     showAddSource() {
         this.$buefy.dialog.prompt({
