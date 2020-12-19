@@ -37,6 +37,14 @@
                     </b-input>
                 </b-field>
 
+
+                <b-field label="Email Address" class="half-width">
+                    <b-input v-model="Email" type="string"
+                        value="">
+                    </b-input>
+                </b-field>
+
+
                 <b-field label="Source" class="half-width">
                     <b-input
                         v-model="source"
@@ -137,6 +145,7 @@ export default {
       return {
           name: '',
           PhoneNumber: '',
+          Email:'',
           source:'',
           EnglishProficiency: '',
           SecondLanguageProficiency:'',
@@ -153,13 +162,6 @@ export default {
   },
   computed: {
     ...mapGetters(['API_nativeLanguage']),
-
-
-    // If NativeLanguage is changed, we assign it this value 
-    // nativeLanguage(){
-    //   return this.selected ? this.selected.NativeLanguage: ''
-    // },
-
 
 
     // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
@@ -201,6 +203,7 @@ export default {
           PhoneNumber: this.PhoneNumber,
           FullName: this.name,
           Source: this.source,
+          Email: this.Email,
           NativeLanguageString: this.selected.NativeLanguage,
           SecondLanguageString: this.selected.SecondLanguage,
           EnglishProficiency: this.EnglishProficiency,
@@ -209,9 +212,8 @@ export default {
           StatusString: "SCREENING"
         })
       }
-      console.log(teacherCreate);
 
-      fetch("/api/teachers", teacherCreate)
+      fetch("http://localhost:3001/api/teachers", teacherCreate)
         .then(response => {
           if (response.status < 400) {
             this.$buefy.notification.open({
