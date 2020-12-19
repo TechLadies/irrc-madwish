@@ -213,7 +213,7 @@ export default {
         })
       }
 
-      fetch("http://localhost:3001/api/teachers", teacherCreate)
+      fetch("/api/teachers", teacherCreate)
         .then(response => {
           if (response.status < 400) {
             this.$buefy.notification.open({
