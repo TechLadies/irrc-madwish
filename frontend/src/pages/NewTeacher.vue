@@ -46,13 +46,14 @@
                 <b-field grouped>
 
                   <b-field label="Native Language" class="half-width">
-                     <b-autocomplete :value="nativeLanguage"
+                     <b-autocomplete 
+                        v-model="nativeLanguage"
                         field= "NativeLanguage"
                         ref="languageComplete"
                         :data="languages"
                         placeholder="e.g. Bengali" 
                         @typing="filteredLanguageDataArray"
-                        @select="option => selected = option">
+                        @select="option => selected.NativeLanguage = option.NativeLanguage">
                         <template slot="header">
                             <a @click="showAddLanguage">
                                 <span> Add new... </span>
@@ -73,19 +74,17 @@
                 </b-field>
 
 
-
-
-
                 <b-field grouped>
 
                   <b-field label="Second Language" class="half-width">
-                     <b-autocomplete :value="SecondLanguage"
-                        field= "SecondLanguage"
+                     <b-autocomplete 
+                        v-model="SecondLanguage"
+                        field= "NativeLanguage"
                         ref="secondlanguagevalue"
-                        :data="secondlanguages"
+                        :data="languages"
                         placeholder="e.g. Tamil" 
-                        @typing="filteredSecondLanguageDataArray"
-                        @select="option => selected = option">
+                        @typing="filteredLanguageDataArray"
+                        @select="option => selected.SecondLanguage = option.NativeLanguage">
                         <template slot="header">
                             <a @click="showAddSecondLanguage">
                                 <span> Add new... </span>
@@ -93,6 +92,7 @@
                         </template>
                     </b-autocomplete>
                   </b-field>
+
 
           
                   <b-field label="Language Proficiency" class="half-width">
@@ -145,21 +145,20 @@ export default {
           Notes: '', 
           selected: {
             NativeLanguage: '',
-            SecondLanguage:'',
+            SecondLanguage: '',
           },
           languages: [],
-          secondlanguages:[],
-          //API_nativeLanguage: []
-
+          nativeLanguage: '',
       }
   },
   computed: {
     ...mapGetters(['API_nativeLanguage']),
-    // If NativeLanguage is changed, we assign it this value 
-    nativeLanguage(){
-      return this.selected ? this.selected.NativeLanguage: ''
-    },
 
+
+    // If NativeLanguage is changed, we assign it this value 
+    // nativeLanguage(){
+    //   return this.selected ? this.selected.NativeLanguage: ''
+    // },
 
 
 
@@ -170,7 +169,9 @@ export default {
         return true
       }
       return false
-    }
+    },
+
+    
   },
   watch: {
     file (val){
@@ -181,6 +182,9 @@ export default {
  async mounted() {
    this.getNativeLanguages()
   },
+
+
+
 
   methods: {
     // Copies actions from store, allows you to use it as a native method in the component.
@@ -197,12 +201,16 @@ export default {
           PhoneNumber: this.PhoneNumber,
           FullName: this.name,
           Source: this.source,
-          NativeLanguageString: this.selected.NativeLanguage, 
-          EnglishProficiency: this.EnglishProficiency, 
+          NativeLanguageString: this.selected.NativeLanguage,
+          SecondLanguageString: this.selected.SecondLanguage,
+          EnglishProficiency: this.EnglishProficiency,
+          LanguageProficiency: this.SecondLanguageProficiency,
           Notes: this.Notes,
           StatusString: "SCREENING"
         })
       }
+      console.log(teacherCreate);
+
       fetch("/api/teachers", teacherCreate)
         .then(response => {
           if (response.status < 400) {
@@ -229,17 +237,6 @@ export default {
     filteredLanguageDataArray(language = "") {
       this.languages = this.API_nativeLanguage.filter((option) => {
           return option.NativeLanguage
-            .toLowerCase()
-            .includes((language || "").toLowerCase())
-          
-      })
-    },
-
-    // Auto complete for second langauge not working 
-
-    filteredSecondLanguageDataArray(language = "") {
-      this.languages = this.API_nativeLanguage.filter((option) => {
-          return option.SecondLanguage
             .toLowerCase()
             .includes((language || "").toLowerCase())
           
@@ -273,10 +270,13 @@ export default {
         inputAttrs: {
           placeholder: 'e.g. Italian',
           maxlength: 255,
+          value: this.nativeLanguage,
         },
         confirmText: 'Add',
-        onConfirm: async (value) => {
-          this.selected.NativeLanguage = value
+        onConfirm: (value) => {
+          this.$refs.languageComplete.setSelected({
+            NativeLanguage:value
+          })
         }
       })
     },
@@ -289,10 +289,13 @@ export default {
         inputAttrs: {
           placeholder: 'e.g. Italian',
           maxlength: 255,
+          value: this.SecondLanguage, 
         },
         confirmText: 'Add',
         onConfirm: (value) => {
-          this.$refs.secondlanguagevalue.setSelected(value)
+          this.$refs.secondlanguagevalue.setSelected({
+            NativeLanguage:value
+          })
         }
       })
     },      
@@ -313,7 +316,18 @@ export default {
             this.$refs.sourceComplete.setSelected(value)
           }
         })
-    },    
+    },
+    
+    
+
+
+
+
+
+
+
+
+
   }
 }
 </script>
