@@ -12,6 +12,8 @@ const { NotFoundError } = require("objection");
 // on Postman: http://localhost:3001/students/1
 router.post("/", async (req, res) => {
     if(Array.isArray(req.body)){
+        // handle errors: Check if required fields are present 
+        
         // process each item asynchronously 
         const result = await Promise.all(req.body.map(async item => {
             const status = await statuses.getStatusByStatusString(item.StatusString)
