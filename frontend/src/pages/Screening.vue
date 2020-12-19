@@ -265,7 +265,6 @@ export default {
           screeningSuccess(){
             if (this.screeningSuccess){
               this.fetchScreeningStudents()
-              console.log("hello")
             }
           }
         },
