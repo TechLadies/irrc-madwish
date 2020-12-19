@@ -170,6 +170,8 @@ const API_URL = "/api/students";
 
 import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -208,8 +210,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["students"]),
     tableData() {
-      return this.$store.getters.students.map((student) => {
+      return this.students.map((student) => {
         return {
           StudentID: `${student.StudentID}`,
           FullName: `${student.FullName}`,
@@ -224,10 +227,11 @@ export default {
     Page,
     PageHeader,
   },
-
-  // Placeholder for API
+  methods: {
+    ...mapActions(["getAllStudents"]),
+  },
   mounted() {
-    this.$store.dispatch("getAllStudents");
+    this.getAllStudents();
   },
 };
 </script>
