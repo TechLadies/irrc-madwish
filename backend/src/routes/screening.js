@@ -13,12 +13,11 @@ const { NotFoundError } = require("objection");
 router.post("/", async (req, res) => {
     if(Array.isArray(req.body)){
         // handle errors: Check if required fields are present 
-        
+        // All students have Status set to UNMATCHED
+        const status = await statuses.getStatusByStatusString("UNMATCHED")
         // process each item asynchronously 
         const result = await Promise.all(req.body.map(async item => {
-            const status = await statuses.getStatusByStatusString(item.StatusString)
             item.StatusID = status.StatusID
-            delete item.StatusString
             return students.patchStudent(item.StudentID, item)
             }
         ))

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {nativeLanguageActions, nativeLanguageGetters, nativeLanguageMutations, nativeLanguageState} from './store/nativeLanguages.js'
+import {screeningActions, screeningState, screeningMutations} from './store/screening.js'
 
 Vue.use(Vuex)
 
@@ -12,13 +13,15 @@ const MUTATIONS = Object.freeze({
 export default new Vuex.Store({
   state: {
     students: [],
-    ...nativeLanguageState
+    ...nativeLanguageState,
+    ...screeningState
   },
   mutations: {
     [MUTATIONS.SET_STUDENTS](state, students) {
       state.students = students
     },
-    ...nativeLanguageMutations
+    ...nativeLanguageMutations,
+    ...screeningMutations
   },
   actions: {
     async getAllStudents({ commit }) {
@@ -26,7 +29,8 @@ export default new Vuex.Store({
       const data = await response.json()
       commit(MUTATIONS.SET_STUDENTS, data)
     },
-    ...nativeLanguageActions
+    ...nativeLanguageActions,
+    ...screeningActions
 
   },
   getters: {
