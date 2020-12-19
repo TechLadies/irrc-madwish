@@ -1,36 +1,50 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import {nativeLanguageActions, nativeLanguageGetters, nativeLanguageMutations, nativeLanguageState} from './store/nativeLanguages.js'
+import Vue from "vue";
+import Vuex from "vuex";
+import {
+  nativeLanguageActions,
+  nativeLanguageGetters,
+  nativeLanguageMutations,
+  nativeLanguageState,
+} from "./store/nativeLanguages.js";
+import {
+  teacherActions,
+  teacherMutations,
+  teacherGetters,
+  teacherState,
+} from "./store/teachers.js";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 // Create enum style variables (to reduce typo errors)
 const MUTATIONS = Object.freeze({
-  SET_STUDENTS: 'SET_STUDENTS'
-})
+  SET_STUDENTS: "SET_STUDENTS",
+});
 
 export default new Vuex.Store({
   state: {
     students: [],
-    ...nativeLanguageState
+    ...nativeLanguageState,
+    ...teacherState,
   },
   mutations: {
     [MUTATIONS.SET_STUDENTS](state, students) {
-      state.students = students
+      state.students = students;
     },
-    ...nativeLanguageMutations
+    ...nativeLanguageMutations,
+    ...teacherMutations,
   },
   actions: {
     async getAllStudents({ commit }) {
-      const response = await fetch("/api/students")
-      const data = await response.json()
-      commit(MUTATIONS.SET_STUDENTS, data)
+      const response = await fetch("/api/students");
+      const data = await response.json();
+      commit(MUTATIONS.SET_STUDENTS, data);
     },
-    ...nativeLanguageActions
-
+    ...nativeLanguageActions,
+    ...teacherActions,
   },
   getters: {
     students: (state) => state.students,
-    ...nativeLanguageGetters
+    ...nativeLanguageGetters,
+    ...teacherGetters,
   },
-})
+});
