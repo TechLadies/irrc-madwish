@@ -5,6 +5,8 @@ const students = require("../helpers/students");
 const statuses = require("../helpers/statuses.js")
 const { UniqueViolationError } = require("objection");
 const { NotFoundError } = require("objection");
+const { response } = require("express");
+const { restart } = require("nodemon");
 
 // TODO: Handle errors 
 
@@ -13,6 +15,7 @@ const { NotFoundError } = require("objection");
 router.post("/", async (req, res) => {
     if(Array.isArray(req.body)){
         // handle errors: Check if required fields are present 
+        
         // All students have Status set to UNMATCHED
         const status = await statuses.getStatusByStatusString("UNMATCHED")
         // process each item asynchronously 
@@ -21,9 +24,28 @@ router.post("/", async (req, res) => {
             return students.patchStudent(item.StudentID, item)
             }
         ))
+        // Error handling
+        if (result.err) {
+            const err = result.err 
+            if (err instanceof NotFoundError) {
+               return res.status(404).send({
+                   message: err.message, 
+                   type: 'NotFound'
+               })
+           }
+           else {
+            return res.status(500).send({
+                message: err.message,
+                type: 'UnknownError',
+              })
+           }
+        }
         return res.status(200).json(result);
     }
-    return res.status(500).json({})
+    return res.status(500).send({
+        message: 'Request should be an array',
+        type: 'UnknownError',
+      })
   });
   
 module.exports = router
