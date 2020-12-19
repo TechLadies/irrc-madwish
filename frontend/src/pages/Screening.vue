@@ -104,6 +104,7 @@ const API_URL = "api/students/?status=Screening";
 
 import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
+import { mapGetters } from "vuex";
 
 const ModalForm = {
   template: `
