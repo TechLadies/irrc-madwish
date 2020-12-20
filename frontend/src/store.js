@@ -31,8 +31,6 @@ export default new Vuex.Store({
 
     // Update student status
     async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy }) {
-      var success = true;
-
       // PATCH student
       const studentRequestOptions = {
         method: "PATCH",
@@ -42,16 +40,6 @@ export default new Vuex.Store({
         },
         body: JSON.stringify({StudentID: studentID, StatusString: nextStatusString})
       }
-
-      fetch("/api/students/" + studentID, studentRequestOptions)
-        .then(response => {
-            // If PATCH fails, return
-            if(response.status !== 200) {
-              success = false;
-              return;
-            }
-          }
-        )
 
       // POST statusUpdate
       const statusUpdateRequestOptions = {
@@ -67,23 +55,34 @@ export default new Vuex.Store({
           UpdatedBy: updatedBy
         })
       }
-      fetch("/api/statusUpdates", statusUpdateRequestOptions)
-        .then(response => {
-            // If PATCH fails, return
-            if(response.status !== 200) {
-              success = false;
-              return;
-            }
-          }
-        )
 
-      // Check if both PATCH student and POST statusUpdate succeed
-      if (success) { dispatch('getAllStudents') }
+      const patchStudent = fetch("/api/students/" + studentID, studentRequestOptions)
+      const postStatusUpdate = fetch("/api/statusUpdates", statusUpdateRequestOptions)
+
+      Promise.all([
+        patchStudent,
+        postStatusUpdate
+      ])
+      .then(([responsePatch, responsePost]) => {
+          // If PATCH and/or POST fail, return
+          if(responsePatch.status !== 200) {
+            console.log('responsePatch', responsePatch)
+            return;
+          }
+          if(responsePost.status !== 200) {
+            console.log('responsePost', responsePost)
+            return;
+          }
+          dispatch('getAllStudents')
+      }).catch((err) => {
+        console.error(err);
+      });
     },
 
     // Update student English proficiency
     async updateStudentEnglishProficiency({ commit, dispatch }, { studentID, englishProficiency }) {
-      var success = true;
+
+      if (!englishProficiency) return;
 
       // PATCH student
       const studentRequestOptions = {
@@ -99,14 +98,12 @@ export default new Vuex.Store({
         .then(response => {
             // If PATCH fails, return
             if(response.status !== 200) {
-              success = false;
+              console.log(response);
               return;
             }
+            dispatch('getAllStudents')
           }
         )
-
-      // Check if PATCH student succeeds
-      if (success) { dispatch('getAllStudents') }
     },
   },
   getters: {
