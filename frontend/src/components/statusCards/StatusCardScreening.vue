@@ -12,7 +12,7 @@
       <div class="content">
         <div class="content-title">ACTION</div>
         <div class="buttons">
-          <Button @click.native="screeningToDroppedOut" label="Drop Out" />
+          <Button label="Drop Out" @click.native="screeningToDroppedOut()"/>
           <Button @click.native="screeningToUnmatched" label="Ready to Match" />
         </div>
       </div>
@@ -22,11 +22,14 @@
 
 <script>
 import Button from "./Button.vue";
+import ModalDroppedOut from "./../modals/ModalDroppedOut.vue"
 import { mapActions } from 'vuex'
+
 export default {
   name: "StatusCardScreening",
   components: {
     Button,
+    ModalDroppedOut,
   },
   props: {
     studentID: {
@@ -38,20 +41,6 @@ export default {
   },
   methods: {
     ...mapActions([ 'updateStudentStatus' , 'updateStudentEnglishProficiency' ]),
-    screeningToDroppedOut() {
-      const studentID = parseInt(this.studentID)
-      const previousStatusString = "SCREENING"
-      const nextStatusString = "DROPPED OUT"
-      const updatedBy = "IRRCAdmin"
-
-      this.updateStudentStatus({
-        studentID: studentID,
-        previousStatusString: previousStatusString,
-        nextStatusString: nextStatusString,
-        updatedBy: updatedBy
-      })
-    },
-
     screeningToUnmatched() {
       // Update student status
       const studentID = parseInt(this.studentID)
@@ -71,7 +60,21 @@ export default {
         studentID: studentID,
         englishProficiency: this.englishProficiency
       })
-    }
+    },
+    screeningToDroppedOut() {
+      const previousStatusString = "SCREENING"
+      this.$buefy.modal.open({
+        parent: this,
+        component: ModalDroppedOut,
+        props: {
+          "studentID": this.studentID,
+          "previousStatusString": previousStatusString,
+        },
+        hasModalCard: true,
+        customClass: 'custom-class custom-class-2',
+        trapFocus: true
+      })
+    },
   }
 };
 </script>
