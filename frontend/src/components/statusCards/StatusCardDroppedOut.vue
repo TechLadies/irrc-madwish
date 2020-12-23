@@ -18,7 +18,7 @@
       <div class="content">
         <div class="content-title">ACTION</div>
         <div class="buttons">
-          <Button label="Reactivate for Matching" />
+          <Button @click.native="droppedOutToScreening" label="Reactivate for Screening" />
         </div>
       </div>
     </div>
@@ -27,6 +27,7 @@
 
 <script>
 import Button from "./Button.vue";
+import { mapActions } from 'vuex'
 export default {
   name: "StatusCardDroppedOut",
   components: {
@@ -37,7 +38,26 @@ export default {
       type: String,
       default: "No Reason Stated",
     },
+    studentID: {
+      type: String,
+    }
   },
+  methods: {
+    ...mapActions([ 'updateStudentStatus' ]),
+    droppedOutToScreening() {
+      const studentID = parseInt(this.studentID)
+      const previousStatusString = "DROPPED OUT"
+      const nextStatusString = "SCREENING"
+      const updatedBy = "IRRCAdmin"
+
+      this.updateStudentStatus({
+        studentID: studentID,
+        previousStatusString: previousStatusString,
+        nextStatusString: nextStatusString,
+        updatedBy: updatedBy
+      })
+    }
+  }
 };
 </script>
 
