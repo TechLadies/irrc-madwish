@@ -9,11 +9,10 @@ const defaultOptions = {
 exports.getAllStudents = async function (options = defaultOptions) {
   const filterStatus = options.filters.status
 
-  let query = db.Student.query().withGraphFetched('[nativeLanguage]')
+  let query = db.Student.query().withGraphJoined('[nativeLanguage, status, statusUpdates.nextStatus]')
 
   if (filterStatus) {
     query = query
-      .withGraphJoined('status')
       .where('status.Description', 'ilike', filterStatus)
   }
 
