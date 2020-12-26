@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const reasons = require('../helpers/reasons')
 const statusUpdates = require('../helpers/statusUpdates')
 const statuses = require('../helpers/statuses')
 const students = require('../helpers/students')
@@ -45,6 +46,23 @@ router.post('/', async (req, res) => {
     })
   }
   
+  // If request does not contain ReasonID
+  if (req.body.ReasonString) {
+    try {
+      const reason = await reasons.getReasonPromise(
+        req.body.ReasonString
+      )
+      req.body.ReasonID = reason.ReasonID
+      delete req.body.ReasonString
+    } catch (err) {
+      return res.status(500).send({
+        message: err.message,
+        type: 'UnknownError with Reason',
+        data: {}
+      })
+    }
+  }
+
   const result = await statusUpdates.addStatusUpdate(req.body)
 
   // handle error
