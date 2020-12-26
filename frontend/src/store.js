@@ -60,7 +60,7 @@ export default new Vuex.Store({
     ...reasonActions,
 
     // Update student status
-    async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy }) {
+    async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy, reason }) {
       // PATCH student
       const studentRequestOptions = {
         method: "PATCH",
@@ -82,7 +82,8 @@ export default new Vuex.Store({
           StudentID: studentID,
           PreviousStatusString: previousStatusString,
           NextStatusString: nextStatusString,
-          UpdatedBy: updatedBy
+          UpdatedBy: updatedBy,
+          ReasonString: reason
         })
       }
 

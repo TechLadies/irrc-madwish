@@ -25,8 +25,55 @@ export const reasonActions = {
             };
           });
         commit(MUTATIONS.SET_UNMATCHED_REASONS, parsedReasonData)        
-    }
+    },
+    async addDroppedReason({ commit, dispatch }, reason) {
+      // POST new DROPPED_ reason
+      const reasonRequestOptions = {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          Reason: "DROPPED_".concat(reason.toString()),
+        })
+      }
 
+      fetch("/api/reasons/", reasonRequestOptions)
+        .then(response => {
+            // If PATCH fails, return
+            if(response.status !== 200) {
+              console.log(response);
+              return;
+            }
+            dispatch('getDroppedReasons')
+          }
+        )
+    },
+    async addUnmatchedReason({ commit, dispatch }, reason) {
+        // POST new UNMATCHED_ reason
+        const reasonRequestOptions = {
+          method: "POST",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            Reason: "UNMATCHED_".concat(reason.toString()),
+          })
+        }
+
+        fetch("/api/reasons/", reasonRequestOptions)
+          .then(response => {
+              // If PATCH fails, return
+              if(response.status !== 200) {
+                console.log(response);
+                return;
+              }
+              dispatch('getUnmatchedReasons')
+            }
+          )
+      }
 } 
 export const reasonMutations = {
     [MUTATIONS.SET_DROPPED_REASONS](state, reasonData){

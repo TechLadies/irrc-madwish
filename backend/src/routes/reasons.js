@@ -28,7 +28,6 @@ router.get('/:prefix', async (req, res) => {
 
 /* POST reasons listing */
 router.post('/', async (req, res) => {
-  req.body.Reason = req.body.Reason.toUpperCase()
   const result = await reasons.addReason(req.body)
 
   // handle error

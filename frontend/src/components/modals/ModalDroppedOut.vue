@@ -51,7 +51,6 @@ export default {
             selected: {
                 Reason: ''
             },
-            clearable: false
         }
     },
     computed: {
@@ -71,22 +70,19 @@ export default {
         this.getDroppedReasons()
     },
     methods: {
-        ...mapActions(['updateStudentStatus', 'getDroppedReasons']),
+        ...mapActions(['updateStudentStatus', 'getDroppedReasons', 'addDroppedReason']),
         toDroppedOut() {
             const studentID = parseInt(this.studentID)
             const previousStatusString = this.previousStatusString
             const nextStatusString = "DROPPED OUT"
             const updatedBy = "IRRCAdmin"
 
-            // TODO: refresh state when new reason is added
-            this.getDroppedReasons()
-
             this.updateStudentStatus({
                 studentID: studentID,
                 previousStatusString: previousStatusString,
                 nextStatusString: nextStatusString,
                 updatedBy: updatedBy,
-                reason: this.reason,
+                reason: "DROPPED_" + this.reason,
             })
         },
 
@@ -94,12 +90,22 @@ export default {
             this.$buefy.dialog.prompt({
                 message: `Add new reason`,
                 inputAttrs: {
-                placeholder: 'e.g. Course was too challenging',
-                maxlength: 255,
+                    placeholder: 'e.g. Course was too challenging',
+                    value: this.selected.Reason,
+                    maxlength: 255,
                 },
                 confirmText: 'Add',
                 onConfirm: async (value) => {
-                    console.log('onConfirm')
+                    this.addDroppedReason(this.selected.Reason)
+                    // // TODO: notification on successful dispatch
+                    // .then(() => {
+                    //     this.$buefy.notification.open({
+                    //         message: 'New reason added.',
+                    //         duration: 3000,
+                    //         type: 'is-success',
+                    //         position: 'is-top',
+                    //     })
+                    // })
                 }
             })
         }, 
