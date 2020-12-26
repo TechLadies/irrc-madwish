@@ -21,7 +21,7 @@
                     </template>
                 </b-autocomplete>
                 <br>
-                <br>
+                Select "Others" if you do not wish to specify a reason.
                 <br>               
             </section>
             <footer class="modal-card-foot">
