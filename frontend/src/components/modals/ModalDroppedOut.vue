@@ -6,13 +6,19 @@
                     Confirming will change the student's status to dropped out.
                 </b-field>
                 <b-autocomplete
-                    v-model="reason"
+                    v-model="selected.Reason"
+                    :value="selected.Reason"
+                    field="Reason"
+                    ref="reasonComplete"
+                    :data="filteredReasonDataArray"
                     placeholder="Select reason"
-                    :open-on-focus="true"
-                    :data="filteredDataObj"
-                    field="reason"
                     @select="option => (selected = option)"
-                >
+                    :open-on-focus="true">
+                    <template slot="header">
+                        <a @click="showAddReason">
+                            <span> Add new... </span>
+                        </a>
+                    </template>
                 </b-autocomplete>
                 <br>
                 <br>
@@ -28,15 +34,7 @@
 
 <script>
 
-// TODO: get list of reasons from database
-const data = 
-    [
-        {"reason": "Not available"},
-        {"reason": "Not interested"},
-        {"reason": "Others"},
-    ]
-
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
     name: "ModalDroppedOut",
     props: {
@@ -49,45 +47,54 @@ export default {
     },
     data() {
         return {
-            data,
-            reason: '',
-            selected: null,
+            reasons: [],
+            selected: {
+                Reason: ''
+            },
             clearable: false
         }
     },
     computed: {
-        filteredDataObj() {
-            return this.data.filter(option => {
-                return (
-                    option.reason
-                        .toString()
-                        .toLowerCase()
-                        .indexOf(this.reason.toLowerCase()) >= 0
-                )
+        ...mapGetters(['API_droppedReason']),
+        reason(){
+            return this.selected ? this.selected.Reason: ''
+        },
+        filteredReasonDataArray() {
+            return this.API_droppedReason.filter((option) => {
+                return option.Reason
+                    .toLowerCase()
+                    .includes(this.selected.Reason.toString().toLowerCase())
             })
-        }
+        },
+    },
+    async mounted() {
+        this.getDroppedReasons()
     },
     methods: {
-        ...mapActions(['updateStudentStatus']),
+        ...mapActions(['updateStudentStatus', 'getDroppedReasons']),
         toDroppedOut() {
             const studentID = parseInt(this.studentID)
             const previousStatusString = this.previousStatusString
             const nextStatusString = "DROPPED OUT"
             const updatedBy = "IRRCAdmin"
 
+            // TODO: refresh state when new reason is added
+            this.getDroppedReasons()
+
             this.updateStudentStatus({
                 studentID: studentID,
                 previousStatusString: previousStatusString,
                 nextStatusString: nextStatusString,
-                updatedBy: updatedBy
+                updatedBy: updatedBy,
+                reason: this.reason,
             })
         },
 
-        showAddLanguage() {
+        showAddReason() {
             this.$buefy.dialog.prompt({
-                message: `Add new language`,
+                message: `Add new reason`,
                 inputAttrs: {
-                placeholder: 'e.g. Italian',
+                placeholder: 'e.g. Course was too challenging',
                 maxlength: 255,
                 },
                 confirmText: 'Add',

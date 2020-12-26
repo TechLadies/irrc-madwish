@@ -23,6 +23,12 @@ import {
   studentMutations,
   studentState
 } from "./store/students.js";
+import {
+  reasonActions,
+  reasonGetters,
+  reasonMutations,
+  reasonState
+} from "./store/reasons.js";
 
 Vue.use(Vuex);
 
@@ -36,19 +42,23 @@ export default new Vuex.Store({
     ...studentState,
     ...nativeLanguageState,
     ...teacherState,
-    ...screeningState
+    ...screeningState,
+    ...reasonState
   },
   mutations: {
     ...studentMutations,
     ...nativeLanguageMutations,
     ...teacherMutations,
-    ...screeningMutations
+    ...screeningMutations,
+    ...reasonMutations
   },
   actions: {
     ...studentActions,
     ...nativeLanguageActions,
     ...teacherActions,
     ...screeningActions,
+    ...reasonActions,
+
     // Update student status
     async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy }) {
       // PATCH student
@@ -130,6 +140,7 @@ export default new Vuex.Store({
     ...studentGetters,
     ...nativeLanguageGetters,
     ...teacherGetters,
+    ...reasonGetters,
     screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING"),
     getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id)
   },
