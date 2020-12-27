@@ -162,9 +162,8 @@ router.patch('/:id', async (req, res) => {
 
     return
   }
-
-  res.status(200).json(result)
-})
+  res.status(200).json(result);
+});
 
 /* GET status by StudentID */
 router.get('/:id/status', async (req, res) => {
