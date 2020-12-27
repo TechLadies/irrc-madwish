@@ -72,7 +72,7 @@
                     </template>
                     <template v-slot="props">
                         <span :class="['nameStyle']">
-                            {{ props.row.FirstName }} {{ props.row.LastName }}
+                            {{ props.row.FullName }}
                         </span> 
                         <br> 
                     </template>
