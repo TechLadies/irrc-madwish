@@ -32,7 +32,7 @@ export default new Vuex.Store({
       commit(MUTATIONS.SET_STUDENTS, data)
     },
     ...nativeLanguageActions,
-    ...screeningActions
+    ...screeningActions,
 
 
     // Update student status
