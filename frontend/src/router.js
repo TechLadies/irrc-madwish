@@ -9,6 +9,8 @@ const Matching = () => import("./pages/Matching.vue");
 const NewStudent = () => import("./pages/NewStudent.vue");
 const AllStudents = () => import("./pages/Students.vue");
 const StudentProfile = () => import("./pages/StudentProfile.vue");
+const NewTeacher = () => import("./pages/NewTeacher.vue");
+
 
 const router = new VueRouter({
   mode: "history",
@@ -18,6 +20,7 @@ const router = new VueRouter({
     { path: "/screening", component: Screening },
     { path: "/matching", component: Matching },
     { path: "/new-student", component: NewStudent },
+    { path: "/new-teacher", component: NewTeacher },
     { path: "/students", component: AllStudents },
     { path: "/students/:id", component: StudentProfile },
     /* Placeholder for edit student page which is not done yet 

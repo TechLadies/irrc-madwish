@@ -6,6 +6,8 @@
 
 <script>
 import Sidebar from './components/Sidebar.vue'
+import { mapActions } from 'vuex'
+
 const status = [
   { id: 1, label: 'Screening', to: '/screening', active: false },
   { id: 2, label: 'Matching', to: '/matching', active: false },
@@ -25,7 +27,11 @@ export default {
       menu: { status, profiles } 
     }
   },
+  mounted() {
+    this.getAllStudents();
+  },
   methods: {
+    ...mapActions([ 'getAllStudents' ]),
     createNew() {
       this.$router.push({ path: 'new-student' })
     }

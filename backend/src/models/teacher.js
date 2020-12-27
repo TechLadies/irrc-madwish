@@ -61,13 +61,13 @@ class Teacher extends Model {
       properties: {
         TeacherID: { type: 'integer' },
         PhoneNumber: { type: 'string', minLength: 1, maxLength: 255 }, // ToDo review datatype - string or int?
-        Email: {type:'string', maxLength: 500},
+        Email: { type: 'string', maxLength: 500 },
         FullName: { type: 'string', maxLength: 500 },
         Source: { type: 'string', maxLength: 500 },
         NativeLanguageID: { type: 'integer' },
-        SecondLanguageID: {type: 'integer'},
+        SecondLanguageID: { type: 'integer' },
         EnglishProficiency: { type: 'string' },
-        LanguageProficiency: { type: 'string'},
+        LanguageProficiency: { type: 'string' },
         Notes: { type: 'string', maxLength: 500 },
         StatusID: { type: 'integer' }
       }
