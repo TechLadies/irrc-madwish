@@ -6,14 +6,19 @@ const statuses = require('../helpers/statuses')
 const { UniqueViolationError } = require('objection')
 
 router.post('/', async (req, res) => {
-  // receive the prev status & next status strings, retrieve corresponding ID
-  const prevStatus = await statuses.getStatusByStatusString(req.body.PrevStatusString)
-  const nextStatus = await statuses.getStatusByStatusString(req.body.NextStatusString)
+  // If request does not contain PreviousStatusID and contains a PreviousStatusString
+  if (req.body.PreviousStatusID == null && req.body.PreviousStatusString != null) {
+    const prevStatus = await statuses.getStatusByStatusString(req.body.PreviousStatusString)
+    req.body.PreviousStatusID = prevStatus.StatusID
+    delete req.body.PreviousStatusString
+  }
 
-  req.body.PreviousStatusID = prevStatus.StatusID
-  req.body.NextStatusID = nextStatus.StatusID
-  delete req.body.PrevStatusString
-  delete req.body.NextStatusString
+  // If request does not contain NextStatusID and contains a NextStatusString
+  if (req.body.NextStatusID == null && req.body.NextStatusString != null) {
+    const nextStatus = await statuses.getStatusByStatusString(req.body.NextStatusString)
+    req.body.NextStatusID = nextStatus.StatusID
+    delete req.body.NextStatusString
+  }
 
   const result = await statusUpdates.addStatusUpdate(req.body)
 
