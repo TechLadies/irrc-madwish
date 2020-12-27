@@ -17,11 +17,12 @@
 import PageHeader from '../components/PageHeader.vue'
 import Page from '../components/Page.vue'
 
+
 export default {
   name: 'HelloWorld',
   components: {
     Page,
-    PageHeader
+    PageHeader,
   }
 }
 </script>
