@@ -24,16 +24,13 @@ export default new Vuex.Store({
     ...screeningMutations
   },
   actions: {
-    ...nativeLanguageActions,
-
     async getAllStudents({ commit }) {
       const response = await fetch("/api/students")
       const data = await response.json()
       commit(MUTATIONS.SET_STUDENTS, data)
     },
     ...nativeLanguageActions,
-    ...screeningActions
-
+    ...screeningActions,
 
     // Update student status
     async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy }) {
