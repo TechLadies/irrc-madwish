@@ -104,25 +104,7 @@ const API_URL = "api/students/?status=Screening";
 
 import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
-import { mapGetters } from "vuex";
-
-const ModalForm = {
-  template: `
-        <form action="">
-            <div class="modal-card" style="width: auto">
-                <section class="modal-card-body">
-                    <b-field label="Students ready to be matched?">
-                        Confirming will add these students to the page for them to be matched with teachers.
-                    </b-field>
-                </section>
-                <footer class="modal-card-foot">
-                    <button class="button" type="button" @click="$emit('close')">Cancel</button>
-                    <button class="button is-blue">Confirm</button>
-                </footer>
-            </div>
-        </form>
-    `,
-};
+import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {
   data() {
@@ -166,9 +148,9 @@ export default {
     Page,
     PageHeader,
   },
-  // retrieves students with Screening status, and manipulates table data for rendering in screening table
   computed: {
     ...mapGetters(["screeningStudents"]),
+    ...mapState(['screeningSuccess']),
     tableData() {
       return this.screeningStudents.map((student) => {
         return {
@@ -181,17 +163,31 @@ export default {
       });
     },
   },
-  methods: {
-    cardModal() {
-      this.$buefy.modal.open({
-        parent: this,
-        component: ModalForm,
-        hasModalCard: true,
-        customClass: "custom-class custom-class-2",
-        trapFocus: true,
-      });
-    },
+  watch: {
+    screeningSuccess() {
+      if (this.screeningSuccess) {
+        this.getAllStudents()
+      }
+    }
   },
+  methods: {
+    ...mapActions(['patchScreeningStudents', 'getAllStudents']),
+    cardModal() {
+      this.$buefy.dialog.confirm({
+        type: 'is-blue',
+        message: '<b> Students ready to be matched?</b> <br> Confirming will add these students to the page for them to be matched with teachers.',
+        onConfirm: () => {
+          const patchStudentsData = this.checkedRows.map(item => {
+            return {
+              StudentID: item.StudentID,
+              EnglishProficiency: item.EnglishProficiency
+            }
+          })
+          this.patchScreeningStudents(patchStudentsData)
+        }
+      }) 
+    }
+  }
 };
 </script>
 

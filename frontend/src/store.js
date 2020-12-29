@@ -112,6 +112,7 @@ export default new Vuex.Store({
   getters: {
     students: (state) => state.students,
     ...nativeLanguageGetters,
-    screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING")
-  }
+    screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING"),
+    getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id)
+  },
 })
