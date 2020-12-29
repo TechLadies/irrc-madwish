@@ -271,7 +271,7 @@ button.button.field.is-blue {
 
 button.is-blue {
   background: #3c4f76;
-  color: white;
+  color: white !important;
 }
 
 /* table tr:FIRST-CHILD
