@@ -12,8 +12,8 @@
       <div class="content">
         <div class="content-title">ACTION</div>
         <div class="buttons">
-          <Button label="Drop Out" />
-          <Button label="Ready to Match" />
+          <Button @click.native="screeningToDroppedOut" label="Drop Out" />
+          <Button @click.native="screeningToUnmatched" label="Ready to Match" />
         </div>
       </div>
     </div>
@@ -22,11 +22,57 @@
 
 <script>
 import Button from "./Button.vue";
+import { mapActions } from 'vuex'
 export default {
   name: "StatusCardScreening",
   components: {
     Button,
   },
+  props: {
+    studentID: {
+      type: String,
+    },
+    englishProficiency: {
+      type: String,
+    },
+  },
+  methods: {
+    ...mapActions([ 'updateStudentStatus' , 'updateStudentEnglishProficiency' ]),
+    screeningToDroppedOut() {
+      const studentID = parseInt(this.studentID)
+      const previousStatusString = "SCREENING"
+      const nextStatusString = "DROPPED OUT"
+      const updatedBy = "IRRCAdmin"
+
+      this.updateStudentStatus({
+        studentID: studentID,
+        previousStatusString: previousStatusString,
+        nextStatusString: nextStatusString,
+        updatedBy: updatedBy
+      })
+    },
+
+    screeningToUnmatched() {
+      // Update student status
+      const studentID = parseInt(this.studentID)
+      const previousStatusString = "SCREENING"
+      const nextStatusString = "UNMATCHED"
+      const updatedBy = "IRRCAdmin"
+
+      this.updateStudentStatus({
+        studentID: studentID,
+        previousStatusString: previousStatusString,
+        nextStatusString: nextStatusString,
+        updatedBy: updatedBy
+      })
+
+      // Update English proficiency
+      this.updateStudentEnglishProficiency({
+        studentID: studentID,
+        englishProficiency: this.englishProficiency
+      })
+    }
+  }
 };
 </script>
 

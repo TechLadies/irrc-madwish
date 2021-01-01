@@ -12,7 +12,7 @@
       <div class="content">
         <div class="content-title">ACTION</div>
         <div class="buttons">
-          <Button label="Drop Out" />
+          <Button @click.native="unmatchedToDroppedOut" label="Drop Out" />
           <Button label="Select Match" solid />
         </div>
       </div>
@@ -22,11 +22,34 @@
 
 <script>
 import Button from "./Button.vue";
+import { mapActions } from 'vuex'
 export default {
   name: "StatusCardUnmatched",
   components: {
     Button,
   },
+  props: {
+    studentID: {
+      type: String,
+    }
+  },
+  methods: {   
+    ...mapActions([ 'updateStudentStatus' ]),
+    // TODO: Remove the Matched pair from the matching table (not created yet)
+    unmatchedToDroppedOut() {
+      const studentID = parseInt(this.studentID)
+      const previousStatusString = "UNMATCHED"
+      const nextStatusString = "DROPPED OUT"
+      const updatedBy = "IRRCAdmin"
+
+      this.updateStudentStatus({
+        studentID: studentID,
+        previousStatusString: previousStatusString,
+        nextStatusString: nextStatusString,
+        updatedBy: updatedBy
+      })
+    }
+  }
 };
 </script>
 

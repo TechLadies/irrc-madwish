@@ -30,6 +30,9 @@ export default {
   mounted() {
     this.getAllStudents();
   },
+  mounted() {
+    this.getAllStudents();
+  },
   methods: {
     ...mapActions(["getAllStudents"]),
     createNew() {

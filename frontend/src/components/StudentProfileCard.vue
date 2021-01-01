@@ -24,8 +24,9 @@
         </div>
         <div>
           <b-select
-            v-if="studentInfo.status === 'Screening'"
+            v-if="studentInfo.status.toUpperCase() === 'SCREENING' && studentInfo.proficiencyLevel == null"
             placeholder="Select Proficiency"
+            @change.native="selectedEnglishProficiency"
           >
             <option value="No">No - Unable to understand at all</option>
             <option value="Little"
@@ -73,6 +74,12 @@ export default {
       },
     },
   },
+  methods: {
+    selectedEnglishProficiency(event) {
+      const englishProficiency = event.target.value
+      this.$emit('englishProficiencyIsSelected', englishProficiency)
+    },
+  }
 };
 </script>
 
