@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {nativeLanguageActions, nativeLanguageGetters, nativeLanguageMutations, nativeLanguageState} from './store/nativeLanguages.js'
-import {studentActions, studentGetters, studentMutations, studentState} from './store/Students.js'
+import {studentActions, studentGetters, studentMutations, studentState} from './store/students.js'
 import {screeningActions, screeningState, screeningMutations} from './store/screening.js'
 
 Vue.use(Vuex)
