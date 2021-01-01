@@ -14,6 +14,6 @@ exports.getNativeLanguageByString = async function (nativeLanguageString) {
     const response = await db.NativeLanguage.query().findOne('NativeLanguage', 'ilike', nativeLanguageString)
     return response
   } catch (err) {
-    return {err}
+    return { err }
   }
 }

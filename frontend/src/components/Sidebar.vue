@@ -11,7 +11,7 @@
         :fullheight="fullheight">
         <div class="p-1">
           <div class="block">
-            <img src="/src/assets/icons/irrc-logo.svg" />
+            <img src="../assets/icons/irrc-logo.svg" />
             <div class="spacer"></div>
 
             <b-menu class="is-custom-mobile">
