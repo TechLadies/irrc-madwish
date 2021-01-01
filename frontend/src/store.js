@@ -17,6 +17,12 @@ import {
   screeningState,
   screeningMutations
 } from "./store/screening.js";
+import {
+  studentActions,
+  studentGetters,
+  studentMutations,
+  studentState
+} from "./store/Students.js";
 
 Vue.use(Vuex);
 
@@ -27,25 +33,19 @@ const MUTATIONS = Object.freeze({
 
 export default new Vuex.Store({
   state: {
-    students: [],
+    ...studentState,
     ...nativeLanguageState,
     ...teacherState,
     ...screeningState
   },
   mutations: {
-    [MUTATIONS.SET_STUDENTS](state, students) {
-      state.students = students;
-    },
+    ...studentMutations,
     ...nativeLanguageMutations,
     ...teacherMutations,
     ...screeningMutations
   },
   actions: {
-    async getAllStudents({ commit }) {
-      const response = await fetch("/api/students");
-      const data = await response.json();
-      commit(MUTATIONS.SET_STUDENTS, data);
-    },
+    ...studentActions,
     ...nativeLanguageActions,
     ...teacherActions,
     ...screeningActions,
@@ -127,7 +127,7 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    students: (state) => state.students,
+    ...studentGetters,
     ...nativeLanguageGetters,
     ...teacherGetters,
     screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING"),
