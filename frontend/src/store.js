@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {nativeLanguageActions, nativeLanguageGetters, nativeLanguageMutations, nativeLanguageState} from './store/nativeLanguages.js'
+import {studentActions, studentGetters, studentMutations, studentState} from './store/Students.js'
 import {screeningActions, screeningState, screeningMutations} from './store/screening.js'
 
 Vue.use(Vuex)
@@ -12,23 +13,17 @@ const MUTATIONS = Object.freeze({
 
 export default new Vuex.Store({
   state: {
-    students: [],
+    ...studentState,
     ...nativeLanguageState,
     ...screeningState
   },
   mutations: {
-    [MUTATIONS.SET_STUDENTS](state, students) {
-      state.students = students
-    },
+    ...studentMutations,
     ...nativeLanguageMutations,
     ...screeningMutations
   },
   actions: {
-    async getAllStudents({ commit }) {
-      const response = await fetch("/api/students")
-      const data = await response.json()
-      commit(MUTATIONS.SET_STUDENTS, data)
-    },
+    ...studentActions,
     ...nativeLanguageActions,
     ...screeningActions,
 
@@ -110,7 +105,7 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    students: (state) => state.students,
+    ...studentGetters,
     ...nativeLanguageGetters,
     screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING"),
     getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id)
