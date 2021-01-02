@@ -31,7 +31,6 @@ app.use('/api/statuses', statusesRouter)
 app.use('/api/statusUpdates', statusUpdatesRouter)
 app.use('/api/screening', screeningRouter)
 
-
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../public/index.html'))
 })

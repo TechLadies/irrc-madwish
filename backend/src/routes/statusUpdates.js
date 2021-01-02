@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
       }
     })
   }
-  
+
   const result = await statusUpdates.addStatusUpdate(req.body)
 
   // handle error

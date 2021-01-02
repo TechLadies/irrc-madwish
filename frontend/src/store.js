@@ -23,6 +23,11 @@ import {
   studentMutations,
   studentState
 } from "./store/students.js";
+import {
+  matchingActions, 
+  matchingState, 
+  matchingMutations
+} from './store/matching.js'
 
 Vue.use(Vuex);
 
@@ -36,19 +41,23 @@ export default new Vuex.Store({
     ...studentState,
     ...nativeLanguageState,
     ...teacherState,
-    ...screeningState
+    ...screeningState,
+    ...matchingState
   },
   mutations: {
     ...studentMutations,
     ...nativeLanguageMutations,
     ...teacherMutations,
-    ...screeningMutations
+    ...screeningMutations,
+    ...matchingMutations
   },
   actions: {
     ...studentActions,
     ...nativeLanguageActions,
     ...teacherActions,
     ...screeningActions,
+    ...matchingActions,
+
     // Update student status
     async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy }) {
       // PATCH student
@@ -131,6 +140,7 @@ export default new Vuex.Store({
     ...nativeLanguageGetters,
     ...teacherGetters,
     screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING"),
+    unmatchedStudents: (state) => state.students.filter((student) => student.status.Description === "UNMATCHED"),
     getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id)
   },
 });
