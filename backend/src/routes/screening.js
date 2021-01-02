@@ -3,7 +3,6 @@ const router = express.Router();
 // const debug = require('debug')('app:students')
 const students = require("../helpers/students");
 const statuses = require("../helpers/statuses.js")
-const { UniqueViolationError } = require("objection");
 const { NotFoundError } = require("objection");
 
 

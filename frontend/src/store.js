@@ -22,7 +22,7 @@ import {
   studentGetters,
   studentMutations,
   studentState
-} from "./store/Students.js";
+} from "./store/students.js";
 
 Vue.use(Vuex);
 
