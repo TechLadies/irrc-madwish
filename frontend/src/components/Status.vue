@@ -24,7 +24,7 @@ export default {
     props: ["status"],
     computed: {
         stat() {
-            return this.statuses.find(item => item.value === this.status)
+            return this.statuses.find(item => item.value === this.status) || { label: "", value: "", style: "" }
         } 
 
     }
