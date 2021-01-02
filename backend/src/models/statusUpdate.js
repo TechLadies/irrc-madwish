@@ -65,7 +65,7 @@ class StatusUpdate extends Model {
         PreviousStatusID: { type: 'integer' },
         NextStatusID: { type: 'integer' },
         UpdatedBy: { type: 'string', minLength: 1, maxLength: 255 },
-        Reason: { type: 'string', minLength: 1, maxLength: 255 }
+        ReasonID: { type: 'integer' }
       }
     }
   }

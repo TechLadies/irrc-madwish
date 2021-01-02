@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
       }
     })
   }
-  
+
   // If request does not contain ReasonID
   if (req.body.ReasonString) {
     try {

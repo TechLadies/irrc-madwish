@@ -7,9 +7,9 @@
                 <div class="lastline" v-else-if="index == items.length - 1"></div>
                 <div class ="line" v-else></div>
                 <!-- If a student has dropped out, white dot is rendered -->
-                <div class="whitedot" v-if="item.status == 3"></div>
+                <div class="whitedot" v-if="item.description == 'DROPPED OUT'"></div>
                 <div class ="dot" v-else></div>
-                <div id="description"> {{item.description}} </div>
+                <div id="description"> {{item.description}}. {{item.reason}}.</div>
         </div>
     </div>
 

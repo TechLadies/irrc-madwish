@@ -95,10 +95,16 @@ export default {
         };
 
     const studentHistory = data.statusUpdates.map(update => {
+      if (update.reason == null) {
+        update.reason = {
+          Reason: "_"
+        }
+      }
       return {
         date: new Date(update.created_at).toDateString(),
         description: update.nextStatus.Description,
         status: update.nextStatus.StatusID,
+        reason: update.reason.Reason.split('_')[1]
       };
     });
 
