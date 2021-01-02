@@ -6,6 +6,30 @@ const teachers = require('../helpers/teachers')
 
 const { UniqueViolationError } = require('objection')
 
+
+router.get('/', async (req, res) => {
+  const status = req.query.status
+  const result = await teachers.getAllTeachers({
+    filters: {
+      status
+    }
+  })
+
+  // handle error
+  if (result.err) {
+    // console.log('entered result.err')
+    const err = result.err
+    res.status(500).send({
+      message: err.message,
+      type: 'UnknownError',
+      data: {}
+    })
+    return
+  }
+
+  res.json(result)
+})
+
 /* POST teachers listing */
 router.post('/', async (req, res) => {
   // If request does not contain StatusID
