@@ -29,7 +29,7 @@
       <!--start of table -->
       <section>
         <b-table
-          :data="screeningStudents"
+          :data="tableData"
           :sort-icon="sortIcon"
           :sort-icon-size="sortIconSize"
           :sortDirection="sortDirection"
@@ -148,6 +148,14 @@ export default {
   computed: {
     ...mapGetters(["screeningStudents"]),
     ...mapState(['screeningSuccess']),
+    tableData() {
+      return this.screeningStudents.map((student) => {
+        return {
+          ...student,
+          NativeLanguage: `${student.nativeLanguage.NativeLanguage}`,
+        };
+      });
+    },
   },
   watch: {
     screeningSuccess() {
