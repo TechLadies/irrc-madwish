@@ -30,6 +30,31 @@ router.get('/', async (req, res) => {
   res.json(result)
 })
 
+router.get('/:id', async (req, res) => {
+  const result = await teachers.getTeacherById(req.params.id)
+  if (result.err) {
+    const err = result.err
+    if (err instanceof NotFoundError) {
+      res.status(409).send({
+        message: err.message,
+        type: 'TeacherNotFound',
+        data: {}
+      })
+    } else {
+      res.status(500).send({
+        message: err.message,
+        type: 'UnknownError',
+        data: {}
+      })
+    }
+
+    return
+  }
+
+  res.json(result)
+})
+
+
 /* POST teachers listing */
 router.post('/', async (req, res) => {
   // If request does not contain StatusID

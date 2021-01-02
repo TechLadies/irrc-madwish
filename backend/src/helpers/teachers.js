@@ -29,3 +29,15 @@ exports.getAllTeachers = async function (options = defaultOptions) {
     return { err }
   }
 }
+
+exports.getTeacherById = async function (id) {
+  try {
+    const teacher = await db.Teacher.query()
+      .findById(id)
+      .withGraphFetched('[nativeLanguage, secondLanguage, status, statusUpdates.nextStatus]')
+      .throwIfNotFound()
+    return teacher 
+  } catch (err) {
+    return { err }
+  }
+}
