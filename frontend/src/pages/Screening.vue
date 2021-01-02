@@ -29,7 +29,7 @@
       <!--start of table -->
       <section>
         <b-table
-          :data="tableData"
+          :data="screeningStudents"
           :sort-icon="sortIcon"
           :sort-icon-size="sortIconSize"
           :sortDirection="sortDirection"
@@ -99,9 +99,6 @@
 </template>
 
 <script>
-// Placeholder for API //
-const API_URL = "api/students/?status=Screening";
-
 import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
@@ -151,17 +148,6 @@ export default {
   computed: {
     ...mapGetters(["screeningStudents"]),
     ...mapState(['screeningSuccess']),
-    tableData() {
-      return this.screeningStudents.map((student) => {
-        return {
-          StudentID: `${student.StudentID}`,
-          NativeLanguage: `${student.nativeLanguage.NativeLanguage}`,
-          EnglishProficiency: `${student.EnglishProficiency}`,
-          PhoneNumber: `${student.PhoneNumber}`,
-          FullName: `${student.FullName}`,
-        };
-      });
-    },
   },
   watch: {
     screeningSuccess() {
