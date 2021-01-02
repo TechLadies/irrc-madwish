@@ -60,7 +60,7 @@
                    </template> 
                 </b-table-column>
 
-                <b-table-column field="Status" label="Status" searchable sortable>
+                <b-table-column field="status" label="Status" searchable sortable>
                     <template
                     slot="searchable"
                     slot-scope="props"
@@ -72,7 +72,7 @@
                     />
                     </template>
                     <template v-slot="props">
-                        <Status :status="props.row.Status"></Status>
+                        <Status :status="props.row.status.Description"></Status>
                     </template>
                   
                 </b-table-column>
@@ -133,7 +133,10 @@ export default {
                     DateJoined: "2020-01-05",
                     FullName: "Tomoe",
                     TeacherID: 1,
-                    Status: "SCREENING",
+                    status: {
+                        StatusID: 1,
+                        Description: "SCREENING"
+                    },
                     Email: "suzukitomoe@gmail.com",
                     PhoneNumber: "908598344"
                 },
@@ -141,7 +144,10 @@ export default {
                     DateJoined: "2021-01-02",
                     FullName: "Arjay",
                     TeacherID: 2,
-                    Status: "UNMATCHED",
+                    status: {
+                        StatusID: 1,
+                        Description: "SCREENING"
+                    },
                     Email: "arjay@gmail.com",
                     PhoneNumber: "908598344"
                 },
@@ -149,7 +155,10 @@ export default {
                     DateJoined: "2020-01-02",
                     FullName: "Jane",
                     TeacherID: 3,
-                    Status: "MATCHED",
+                    status: {
+                        StatusID: 1,
+                        Description: "SCREENING"
+                    },
                     Email: "jane@gmail.com",
                     PhoneNumber: "90398344"
                 },
@@ -157,7 +166,10 @@ export default {
                     DateJoined: "2020-01-02",
                     FullName: "Debby",
                     TeacherID: 4,
-                    Status: "DROPPED OUT",
+                    status: {
+                        StatusID: 1,
+                        Description: "SCREENING"
+                    },
                     Email: "debby@gmail.com",
                     PhoneNumber: "92838344"
                 },
