@@ -12,7 +12,7 @@
         </div>
         <div class="content">
           <div class="content-title">REASON</div>
-          <p>{{ reason }}</p>
+          <p>{{ latestReason }}</p>
         </div>
       </div>
       <div class="content">
@@ -34,7 +34,7 @@ export default {
     Button,
   },
   props: {
-    reason: {
+    latestReason: {
       type: String,
       default: "No Reason Stated",
     },

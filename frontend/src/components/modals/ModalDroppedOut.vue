@@ -1,5 +1,5 @@
 <template>
-    <form action="">
+    <form @submit.prevent action="">
         <div class="modal-card" style="height: 90%">
             <section class="modal-card-body">
                 <b-field label="Are you sure you want to drop out?">
@@ -83,7 +83,9 @@ export default {
                 nextStatusString: nextStatusString,
                 updatedBy: updatedBy,
                 reason: "DROPPED_" + this.reason,
-            })
+            }).then(() => {
++                this.$emit('close')
+             })
         },
 
         showAddReason() {
@@ -96,6 +98,7 @@ export default {
                 },
                 confirmText: 'Add',
                 onConfirm: async (value) => {
+                    this.selected.Reason = value
                     this.addDroppedReason(this.selected.Reason)
                     // // TODO: notification on successful dispatch
                     // .then(() => {

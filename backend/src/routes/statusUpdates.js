@@ -5,8 +5,6 @@ const statusUpdates = require('../helpers/statusUpdates')
 const statuses = require('../helpers/statuses')
 const students = require('../helpers/students')
 
-const { UniqueViolationError } = require('objection')
-
 router.post('/', async (req, res) => {
   // If request does not contain PreviousStatusID and contains a PreviousStatusString
   if (req.body.PreviousStatusID == null && req.body.PreviousStatusString != null) {
@@ -68,23 +66,11 @@ router.post('/', async (req, res) => {
   // handle error
   if (result.err) {
     const err = result.err
-    if (err instanceof UniqueViolationError) {
-      res.status(409).send({
-        message: err.message,
-        type: 'UniqueViolation',
-        data: {
-          columns: err.columns,
-          table: err.table,
-          constraint: err.constraint
-        }
-      })
-    } else {
-      res.status(500).send({
-        message: err.message,
-        type: 'UnknownError',
-        data: {}
-      })
-    }
+    res.status(500).send({
+      message: err.message,
+      type: 'UnknownError',
+      data: {}
+    })
 
     return
   }

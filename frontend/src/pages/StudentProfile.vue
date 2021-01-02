@@ -21,7 +21,7 @@
           <StatusCardScreening :studentID="studentID" :englishProficiency="englishProficiency" v-if="studentData.status.Description.toUpperCase() === 'SCREENING'" />
           <StatusCardUnmatched :studentID="studentID" v-if="studentData.status.Description.toUpperCase() === 'UNMATCHED'" />
           <StatusCardMatched :studentID="studentID" v-if="studentData.status.Description.toUpperCase() === 'MATCHED'" />
-          <StatusCardDroppedOut :studentID="studentID" v-if="studentData.status.Description.toUpperCase() === 'DROPPED OUT'" />
+          <StatusCardDroppedOut :studentID="studentID" :latestReason="latestReason" v-if="studentData.status.Description.toUpperCase() === 'DROPPED OUT'" />
         </section>
         <section class="student-history-section">
           <StudentHistory v-bind:items="studentHistory" />
@@ -72,7 +72,8 @@ export default {
         },
       },
       studentHistory: [],
-       studentID: this.$route.params.id,
+      studentID: this.$route.params.id,
+      latestReason: ""
     };
   },
   computed: {
@@ -100,7 +101,9 @@ export default {
           Reason: "_"
         }
       }
+      
       return {
+        id: update.StatusUpdateID,
         date: new Date(update.created_at).toDateString(),
         description: update.nextStatus.Description,
         status: update.nextStatus.StatusID,
@@ -110,6 +113,11 @@ export default {
 
     this.studentData = studentObject;
     this.studentHistory = studentHistory;
+
+    var latestStatusUpdateID = Math.max.apply(Math, studentHistory.map(function(o){return o.id;}))
+    if (latestStatusUpdateID !== null && latestStatusUpdateID !== -Infinity) {
+      this.latestReason = studentHistory.find(function(o){ return o.id == latestStatusUpdateID; }).reason
+    }
   },
 };
 </script>
