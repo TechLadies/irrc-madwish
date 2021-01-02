@@ -1,32 +1,54 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import {nativeLanguageActions, nativeLanguageGetters, nativeLanguageMutations, nativeLanguageState} from './store/nativeLanguages.js'
-import {studentActions, studentGetters, studentMutations, studentState} from './store/students.js'
-import {screeningActions, screeningState, screeningMutations} from './store/screening.js'
+import Vue from "vue";
+import Vuex from "vuex";
+import {
+  nativeLanguageActions,
+  nativeLanguageGetters,
+  nativeLanguageMutations,
+  nativeLanguageState,
+} from "./store/nativeLanguages.js";
+import {
+  teacherActions,
+  teacherMutations,
+  teacherGetters,
+  teacherState,
+} from "./store/teachers.js";
+import {
+  screeningActions,
+  screeningState,
+  screeningMutations
+} from "./store/screening.js";
+import {
+  studentActions,
+  studentGetters,
+  studentMutations,
+  studentState
+} from "./store/Students.js";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 // Create enum style variables (to reduce typo errors)
 const MUTATIONS = Object.freeze({
-  SET_STUDENTS: 'SET_STUDENTS'
-})
+  SET_STUDENTS: "SET_STUDENTS",
+});
 
 export default new Vuex.Store({
   state: {
     ...studentState,
     ...nativeLanguageState,
+    ...teacherState,
     ...screeningState
   },
   mutations: {
     ...studentMutations,
     ...nativeLanguageMutations,
+    ...teacherMutations,
     ...screeningMutations
   },
   actions: {
     ...studentActions,
     ...nativeLanguageActions,
+    ...teacherActions,
     ...screeningActions,
-
     // Update student status
     async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy }) {
       // PATCH student
@@ -107,7 +129,8 @@ export default new Vuex.Store({
   getters: {
     ...studentGetters,
     ...nativeLanguageGetters,
+    ...teacherGetters,
     screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING"),
     getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id)
   },
-})
+});
