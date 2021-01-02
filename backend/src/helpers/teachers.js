@@ -30,13 +30,12 @@ exports.getAllTeachers = async function (options = defaultOptions) {
   }
 }
 
-exports.getTeacherById = async function (id) {
+exports.patchTeacher = async function (id, patchTeacher) {
   try {
-    const teacher = await db.Teacher.query()
-      .findById(id)
-      .withGraphFetched('[nativeLanguage, secondLanguage, status, statusUpdates.nextStatus]')
+    const response = await db.Teacher.query()
+      .patchAndFetchById(id, patchTeacher)
       .throwIfNotFound()
-    return teacher 
+    return response
   } catch (err) {
     return { err }
   }
