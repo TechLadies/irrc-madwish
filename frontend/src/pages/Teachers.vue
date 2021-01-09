@@ -128,57 +128,6 @@ export default {
         PageHeader,
         Status
     },
-    // data(){
-    //     return {
-    //         teachers: [
-    //             {
-    //                 DateJoined: "2020-01-05",
-    //                 FullName: "Tomoe",
-    //                 TeacherID: 1,
-    //                 status: {
-    //                     StatusID: 1,
-    //                     Description: "SCREENING"
-    //                 },
-    //                 Email: "suzukitomoe@gmail.com",
-    //                 PhoneNumber: "908598344"
-    //             },
-    //             {
-    //                 DateJoined: "2021-01-02",
-    //                 FullName: "Arjay",
-    //                 TeacherID: 2,
-    //                 status: {
-    //                     StatusID: 1,
-    //                     Description: "SCREENING"
-    //                 },
-    //                 Email: "arjay@gmail.com",
-    //                 PhoneNumber: "908598344"
-    //             },
-    //             {
-    //                 DateJoined: "2020-01-02",
-    //                 FullName: "Jane",
-    //                 TeacherID: 3,
-    //                 status: {
-    //                     StatusID: 1,
-    //                     Description: "SCREENING"
-    //                 },
-    //                 Email: "jane@gmail.com",
-    //                 PhoneNumber: "90398344"
-    //             },
-    //             {
-    //                 DateJoined: "2020-01-02",
-    //                 FullName: "Debby",
-    //                 TeacherID: 4,
-    //                 status: {
-    //                     StatusID: 1,
-    //                     Description: "SCREENING"
-    //                 },
-    //                 Email: "debby@gmail.com",
-    //                 PhoneNumber: "92838344"
-    //             },
-
-    //         ] 
-    //     }
-    // },
     computed: {
         teachersData() {
             return this.teachers.map(item => {
