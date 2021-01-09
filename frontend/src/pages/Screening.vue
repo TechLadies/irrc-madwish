@@ -99,9 +99,6 @@
 </template>
 
 <script>
-// Placeholder for API //
-const API_URL = "api/students/?status=Screening";
-
 import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
@@ -154,11 +151,8 @@ export default {
     tableData() {
       return this.screeningStudents.map((student) => {
         return {
-          StudentID: `${student.StudentID}`,
+          ...student,
           NativeLanguage: `${student.nativeLanguage.NativeLanguage}`,
-          EnglishProficiency: `${student.EnglishProficiency}`,
-          PhoneNumber: `${student.PhoneNumber}`,
-          FullName: `${student.FullName}`,
         };
       });
     },
