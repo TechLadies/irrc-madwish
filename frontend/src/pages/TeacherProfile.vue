@@ -8,7 +8,7 @@
             studentContact: teacherData.PhoneNumber,
             source: teacherData.Source,
             dateJoined: teacherData.dateJoined,
-            nativeLanguage: teacherData.secondLanguage.NativeLanguage,
+            nativeLanguage: teacherData.nativeLanguage.NativeLanguage,
             notes: teacherData.Notes,
             status: teacherData.status.Description,
             proficiencyLevel: teacherData.EnglishProficiency,
@@ -21,7 +21,7 @@
           v-on:englishProficiencyIsSelected="englishProficiency = $event"
         />
       </div>
-      <!-- <div class="teacher-profile-right">
+      <div class="teacher-profile-right">
         <section class="student-status-section">
           <StatusCardScreening
             :studentID="teacherID"
@@ -30,14 +30,17 @@
           />
           <StatusCardUnmatched
             :studentID="teacherID"
+            v-bind:isTeacher="true"
             v-if="teacherData.status.Description.toUpperCase() === 'UNMATCHED'"
           />
           <StatusCardMatched
             :studentID="teacherID"
+            v-bind:isTeacher="true"
             v-if="teacherData.status.Description.toUpperCase() === 'MATCHED'"
           />
           <StatusCardDroppedOut
             :studentID="teacherID"
+            v-bind:isTeacher="true"
             v-if="
               teacherData.status.Description.toUpperCase() === 'DROPPED OUT'
             "
@@ -46,7 +49,7 @@
         <section class="student-history-section">
           <StudentHistory v-bind:items="teacherHistory" />
         </section>
-      </div> -->
+      </div>
     </div>
   </Page>
 </template>
@@ -60,7 +63,6 @@ import StatusCardDroppedOut from "../components/statusCards/StatusCardDroppedOut
 import StatusCardScreening from "../components/statusCards/StatusCardScreening.vue";
 import StatusCardUnmatched from "../components/statusCards/StatusCardUnmatched.vue";
 import { mapGetters } from "vuex";
-
 export default {
   name: "TeacherProfile",
   components: {
@@ -118,19 +120,17 @@ export default {
       Notes: data.Notes,
       dateJoined: new Date(data.created_at).toDateString(),
       EnglishProficiency: data.EnglishProficiency,
-      LanguageProficiency: data.LanguageProficiecy,
+      LanguageProficiency: data.LanguageProficiency,
     };
-
-    // const studentHistory = data.statusUpdates.map((update) => {
-    //   return {
-    //     date: new Date(update.created_at).toDateString(),
-    //     description: update.nextStatus.Description,
-    //     status: update.nextStatus.StatusID,
-    //   };
-    // });
-
-    this.teacherData = data;
-    // this.studentHistory = [];
+    const teacherHistory = data.statusUpdates.map((update) => {
+      return {
+        date: new Date(update.created_at).toDateString(),
+        description: update.nextStatus.Description,
+        status: update.nextStatus.StatusID,
+      };
+    });
+    this.teacherData = teacherObject;
+    this.teacherHistory = teacherHistory;
   },
 };
 </script>
