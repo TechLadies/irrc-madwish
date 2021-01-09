@@ -8,7 +8,7 @@
             studentContact: teacherData.PhoneNumber,
             source: teacherData.Source,
             dateJoined: teacherData.dateJoined,
-            nativeLanguage: teacherData.nativeLanguage.NativeLanguage,
+            nativeLanguage: teacherData.secondLanguage.NativeLanguage,
             notes: teacherData.Notes,
             status: teacherData.status.Description,
             proficiencyLevel: teacherData.EnglishProficiency,
