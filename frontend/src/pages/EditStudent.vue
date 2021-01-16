@@ -46,7 +46,7 @@
                 <b-field grouped>
 
                   <b-field label="Native Language" class="half-width">
-                     <b-autocomplete v-model="studentData.NativeLanguageString"
+                     <b-autocomplete :value="nativeLanguage"
                         field= "NativeLanguage"
                         ref="languageComplete"
                         :data="languages"
@@ -90,6 +90,8 @@
 <script>
 
 import Page from '../components/Page.vue'
+import {mapGetters, mapActions} from 'vuex'
+
 export default {
   name: 'EditStudent',
     components: {
@@ -109,15 +111,14 @@ export default {
           },
           studentData: {},
           languages: [],
-          API_nativeLanguage: []
-
       }
   },
-  computed: {
-    // If NativeLanguage is changed, we assign it this value 
+  computed: {    
+    ...mapGetters(['API_nativeLanguage']),
     nativeLanguage(){
       return this.selected ? this.selected.NativeLanguage: ''
-    }
+    },
+
   },
   watch: {
     file (val){
@@ -126,10 +127,9 @@ export default {
   },
 
  async mounted() {
+   
     // Call API for Native Languages
-      await fetch("/api/nativeLanguages")
-        .then(response => response.json())
-        .then(result => this.API_nativeLanguage = result)
+      this.getNativeLanguages()
       
     // Call API for Student data
       const id = this.$route.params.id
@@ -143,18 +143,18 @@ export default {
           Source: result.Source,
           EnglishProficiency: result.EnglishProficiency,
           Notes: result.Notes,
-          NativeLanguageString: result.nativeLanguage.NativeLanguage
+          nativeLanguage: result.nativeLanguage.NativeLanguage
         }
-  
-
         this.studentData = value;
+        this.selected.NativeLanguage = result.nativeLanguage.NativeLanguage
         });
   },
 
   methods: {
+    ...mapActions(['getNativeLanguages']),
     saveStudent(){
       // HTTP PATCH to update student, changing specific field on backend.
-        const updateData = {...this.studentData}
+        const updateData = {...this.studentData, NativeLanguageString: this.selected.NativeLanguage}
         const studentSave = {
         method: "PATCH",
         headers: {
@@ -175,6 +175,8 @@ export default {
               type: 'is-success',
               position: 'is-top',
             })
+            // Refresh NativeLanguage
+            this.getNativeLanguages()
             setTimeout(() => {this.$router.push({path: `/students/${id}`})}, 5000)} 
           else {
             this.$buefy.notification.open({ 
@@ -226,7 +228,7 @@ export default {
         },
         confirmText: 'Add',
         onConfirm: async (value) => {
-          this.studentData.NativeLanguage = value
+          this.selected.NativeLanguage = value
         }
       })
     },         
