@@ -52,7 +52,6 @@ export const studentMutations = {
     [MUTATIONS.SET_UPDATE_STUDENT_SUCCESS](state, value){
         // sets updateStudentSuccess to true
         state.updateStudentSuccess = value
-        console.log(state.updateStudentSuccess)
     }
 } 
 export const studentGetters = {
