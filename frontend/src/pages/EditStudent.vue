@@ -171,36 +171,8 @@ export default {
   methods: {
     ...mapActions(['getNativeLanguages', 'patchStudent']),
     saveStudent(){
-      // HTTP PATCH to update student, changing specific field on backend.
         const updateData = {...this.studentData, NativeLanguageString: this.selected.NativeLanguage}
         this.patchStudent(updateData)
-      //   const studentSave = {
-      //   method: "PATCH",
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(
-      //     updateData 
-      //   )
-      // }
-      // const id = this.$route.params.id
-      // fetch(`/api/students/${id}`, studentSave)
-      //   .then(response => {
-      //     if (response.status < 400) {
-      //       this.$buefy.notification.open({
-      //         message: 'Student saved. <u>View profile</u>!',
-      //         duration: 3000,
-      //         type: 'is-success',
-      //         position: 'is-top',
-      //       })
-      //       // Refresh NativeLanguage
-      //       this.getNativeLanguages()
-      //       setTimeout(() => {this.$router.push({path: `/students/${id}`})}, 5000)} 
-      //     else {
-           
-      //     }
-      //  })
     },
 
        

@@ -25,6 +25,8 @@ export const studentActions = {
         dispatch("getAllStudents")
         return response     
     },
+
+    // PATCH Student Data to backend 
     async patchStudent({dispatch, commit}, studentData){
         const patchStudent = {
             method: "PATCH",
