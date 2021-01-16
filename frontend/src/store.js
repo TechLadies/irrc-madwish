@@ -76,6 +76,6 @@ export default new Vuex.Store({
     screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING"),
     unmatchedStudents: (state) => state.students.filter((student) => student.status.Description === "UNMATCHED"),
     getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id),
-    getTeacherByTeacherId: (state) =>  (id) => state.teachers.find(teacher => teacher.TeacherID == id)
+    getTeacherByTeacherId: (state) => (id) => state.teachers.find(teacher => teacher.TeacherID == id)
   },
 });

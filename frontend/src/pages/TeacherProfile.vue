@@ -8,7 +8,7 @@
             studentContact: teacherData.PhoneNumber,
             source: teacherData.Source,
             dateJoined: teacherData.dateJoined,
-            nativeLanguage: teacherData.secondLanguage.NativeLanguage,
+            nativeLanguage: teacherData.nativeLanguage.NativeLanguage,
             notes: teacherData.Notes,
             status: teacherData.status.Description,
             proficiencyLevel: teacherData.EnglishProficiency,
@@ -122,6 +122,7 @@ export default {
       EnglishProficiency: data.EnglishProficiency,
       LanguageProficiency: data.LanguageProficiency,
     };
+
     const teacherHistory = data.statusUpdates.map((update) => {
       return {
         date: new Date(update.created_at).toDateString(),
@@ -129,6 +130,7 @@ export default {
         status: update.nextStatus.StatusID,
       };
     });
+
     this.teacherData = teacherObject;
     this.teacherHistory = teacherHistory;
   },

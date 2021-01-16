@@ -19,41 +19,44 @@
         <div class="student-label-small padding-small">Native Language</div>
         <div class="student-detail">{{ studentInfo.nativeLanguage }}</div>
       </div>
-      <div class="student-label-small padding-small">English Proficiency</div>
       <div>
-        <b-select
-          v-if="
-            studentInfo.status.toUpperCase() === 'SCREENING' &&
-            studentInfo.proficiencyLevel == null
-          "
-          placeholder="Select Proficiency"
-          @change.native="selectedEnglishProficiency"
-        >
-          <option value="No">No - Unable to understand at all</option>
-          <option value="Little">
-            Little - Able to understand simple words
-          </option>
-          <option value="Simple">Simple - Able to speak full sentences</option>
-          <option value="Intermediate">
-            Intermediate - Able to carry conversations
-          </option>
-        </b-select>
-        <div v-else class="student-detail">
-          {{ studentInfo.proficiencyLevel }}
+        <div class="student-label-small padding-small">
+          English Proficiency
         </div>
         <div>
-          <div class="student-label-small padding-small" v-if="isTeacher">
-            Second Language
+          <b-select
+            v-if="studentInfo.status.toUpperCase() === 'SCREENING' && studentInfo.proficiencyLevel == null"
+            placeholder="Select Proficiency"
+            @change.native="selectedEnglishProficiency"
+          >
+            <option value="No">No - Unable to understand at all</option>
+            <option value="Little"
+              >Little - Able to understand simple words</option
+            >
+            <option value="Simple"
+              >Simple - Able to speak full sentences</option
+            >
+            <option value="Intermediate"
+              >Intermediate - Able to carry conversations</option
+            >
+          </b-select>
+          <div v-else class="student-detail">
+            {{ studentInfo.proficiencyLevel }}
           </div>
-          <div class="student-detail">{{ teacherInfo.secondLanguage }}</div>
         </div>
-        <div>
-          <div class="student-label-small padding-small" v-if="isTeacher">
-            Language Proficiency
-          </div>
-          <div>
-            {{ teacherInfo.languageProficiency }}
-          </div>
+      </div>
+      <div>
+        <div class="student-label-small padding-small" v-if="isTeacher">
+          Second Language
+        </div>
+        <div class="student-detail" v-if="isTeacher">{{ teacherInfo.secondLanguage }}</div>
+      </div>
+      <div>
+        <div class="student-label-small padding-small" v-if="isTeacher">
+          Language Proficiency
+        </div>
+        <div class="student-detail" v-if="isTeacher">
+          {{ teacherInfo.languageProficiency }}
         </div>
       </div>
     </div>
@@ -74,7 +77,7 @@ export default {
       type: Object,
       default: function () {
         return {
-          studentName: "Kasam Rujuthan",
+          studentName: "Default Name",
           studentContact: "9123 4567",
           dateJoined: "Sept 07 2020",
           source: "Rotary",
