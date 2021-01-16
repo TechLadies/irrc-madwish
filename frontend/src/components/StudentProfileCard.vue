@@ -3,7 +3,8 @@
     <div class="edit-container">Edit</div>
     <div class="student-grid">
       <img src="../assets/images/student.png" />
-      <div class="student-label">Student</div>
+      <div class="student-label" v-if="isTeacher">Teacher</div>
+      <div class="student-label" v-else>Student</div>
       <div class="student-main">{{ studentInfo.studentName }}</div>
       <div class="student-main">{{ studentInfo.studentContact }}</div>
       <div>
@@ -18,29 +19,40 @@
         <div class="student-label-small padding-small">Native Language</div>
         <div class="student-detail">{{ studentInfo.nativeLanguage }}</div>
       </div>
+      <div class="student-label-small padding-small">English Proficiency</div>
       <div>
-        <div class="student-label-small padding-small">
-          English Proficiency
+        <b-select
+          v-if="
+            studentInfo.status.toUpperCase() === 'SCREENING' &&
+            studentInfo.proficiencyLevel == null
+          "
+          placeholder="Select Proficiency"
+          @change.native="selectedEnglishProficiency"
+        >
+          <option value="No">No - Unable to understand at all</option>
+          <option value="Little">
+            Little - Able to understand simple words
+          </option>
+          <option value="Simple">Simple - Able to speak full sentences</option>
+          <option value="Intermediate">
+            Intermediate - Able to carry conversations
+          </option>
+        </b-select>
+        <div v-else class="student-detail">
+          {{ studentInfo.proficiencyLevel }}
         </div>
         <div>
-          <b-select
-            v-if="studentInfo.status.toUpperCase() === 'SCREENING' && studentInfo.proficiencyLevel == null"
-            placeholder="Select Proficiency"
-            @change.native="selectedEnglishProficiency"
-          >
-            <option value="No">No - Unable to understand at all</option>
-            <option value="Little"
-              >Little - Able to understand simple words</option
-            >
-            <option value="Simple"
-              >Simple - Able to speak full sentences</option
-            >
-            <option value="Intermediate"
-              >Intermediate - Able to carry conversations</option
-            >
-          </b-select>
-          <div v-else class="student-detail">
-            {{ studentInfo.proficiencyLevel }}
+          <div class="student-label-small padding-small" v-if="isTeacher">
+            Second Language
+          </div>
+          <div class="student-detail">{{ teacherInfo.secondLanguage }}</div>
+        </div>
+        <div>
+          <div class="student-label-small padding-small" v-if="isTeacher">
+            Language Proficiency
+          </div>
+          <div>
+            {{ teacherInfo.languageProficiency }}
           </div>
         </div>
       </div>
@@ -60,7 +72,7 @@ export default {
   props: {
     studentInfo: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
           studentName: "Kasam Rujuthan",
           studentContact: "9123 4567",
@@ -73,13 +85,26 @@ export default {
         };
       },
     },
+    teacherInfo: {
+      type: Object,
+      default: function () {
+        return {
+          secondLanguage: "Bangla",
+          languageProficiency: "Intermediate",
+        };
+      },
+    },
+    isTeacher: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     selectedEnglishProficiency(event) {
-      const englishProficiency = event.target.value
-      this.$emit('englishProficiencyIsSelected', englishProficiency)
+      const englishProficiency = event.target.value;
+      this.$emit("englishProficiencyIsSelected", englishProficiency);
     },
-  }
+  },
 };
 </script>
 

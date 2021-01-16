@@ -40,6 +40,7 @@ Vue.use(Vuex);
 // Create enum style variables (to reduce typo errors)
 const MUTATIONS = Object.freeze({
   SET_STUDENTS: "SET_STUDENTS",
+  SET_TEACHERS: "SET_TEACHERS"
 });
 
 export default new Vuex.Store({
@@ -74,6 +75,7 @@ export default new Vuex.Store({
     ...reasonGetters,
     screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING"),
     unmatchedStudents: (state) => state.students.filter((student) => student.status.Description === "UNMATCHED"),
-    getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id)
+    getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id),
+    getTeacherByTeacherId: (state) =>  (id) => state.teachers.find(teacher => teacher.TeacherID == id)
   },
 });

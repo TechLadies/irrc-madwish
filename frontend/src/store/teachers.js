@@ -29,8 +29,8 @@ export const teacherActions = {
   }
 };
 export const teacherMutations = {
-  [MUTATIONS.SET_TEACHERS](state, teacherData) {
-    state.teachers = teacherData;
+  [MUTATIONS.SET_TEACHERS](state, teachers) {
+    state.teachers = teachers;
   },
 };
 export const teacherGetters = {

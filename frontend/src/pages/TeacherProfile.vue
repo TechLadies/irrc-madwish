@@ -1,47 +1,52 @@
 <template>
   <Page blueBg>
-    <div class="student-profile-container">
-      <div class="student-profile-left">
+    <div class="teacher-profile-container">
+      <div class="teacher-profile-left">
         <StudentProfileCard
           v-bind:studentInfo="{
-            studentName: studentData.FullName,
-            studentContact: studentData.PhoneNumber,
-            source: studentData.Source,
-            dateJoined: studentData.dateJoined,
-            nativeLanguage: studentData.nativeLanguage.NativeLanguage,
-            notes: studentData.Notes,
-            status: studentData.status.Description,
-            proficiencyLevel: studentData.EnglishProficiency,
+            studentName: teacherData.FullName,
+            studentContact: teacherData.PhoneNumber,
+            source: teacherData.Source,
+            dateJoined: teacherData.dateJoined,
+            nativeLanguage: teacherData.secondLanguage.NativeLanguage,
+            notes: teacherData.Notes,
+            status: teacherData.status.Description,
+            proficiencyLevel: teacherData.EnglishProficiency,
           }"
+          v-bind:teacherInfo="{
+            secondLanguage: teacherData.secondLanguage.NativeLanguage,
+            languageProficiency: teacherData.LanguageProficiency,
+          }"
+          v-bind:isTeacher="true"
           v-on:englishProficiencyIsSelected="englishProficiency = $event"
         />
       </div>
-      <div class="student-profile-right">
+      <!-- <div class="teacher-profile-right">
         <section class="student-status-section">
           <StatusCardScreening
-            :studentID="studentID"
+            :studentID="teacherID"
             :englishProficiency="englishProficiency"
-            v-if="studentData.status.Description.toUpperCase() === 'SCREENING'"
+            v-if="teacherData.status.Description.toUpperCase() === 'SCREENING'"
           />
           <StatusCardUnmatched
-            :studentID="studentID"
-            v-if="studentData.status.Description.toUpperCase() === 'UNMATCHED'"
+            :studentID="teacherID"
+            v-if="teacherData.status.Description.toUpperCase() === 'UNMATCHED'"
           />
           <StatusCardMatched
-            :studentID="studentID"
-            v-if="studentData.status.Description.toUpperCase() === 'MATCHED'"
+            :studentID="teacherID"
+            v-if="teacherData.status.Description.toUpperCase() === 'MATCHED'"
           />
           <StatusCardDroppedOut
-            :studentID="studentID"
+            :studentID="teacherID"
             v-if="
-              studentData.status.Description.toUpperCase() === 'DROPPED OUT'
+              teacherData.status.Description.toUpperCase() === 'DROPPED OUT'
             "
           />
         </section>
         <section class="student-history-section">
-          <StudentHistory v-bind:items="studentHistory" />
+          <StudentHistory v-bind:items="teacherHistory" />
         </section>
-      </div>
+      </div> -->
     </div>
   </Page>
 </template>
@@ -57,7 +62,7 @@ import StatusCardUnmatched from "../components/statusCards/StatusCardUnmatched.v
 import { mapGetters } from "vuex";
 
 export default {
-  name: "StudentProfile",
+  name: "TeacherProfile",
   components: {
     Page,
     StudentProfileCard,
@@ -69,9 +74,8 @@ export default {
   },
   data: function () {
     return {
-      englishProficiency: "",
-      studentData: {
-        StudentID: -1,
+      teacherData: {
+        TeacherID: -1,
         PhoneNumber: "",
         FullName: "",
         Source: "",
@@ -80,83 +84,70 @@ export default {
           NativeLanguage: "",
         },
         EnglishProficiency: "",
+        secondLanguage: {
+          NativeLanguageID: -1,
+          NativeLanguage: "",
+        },
+        LanguageProficiency: "",
         Notes: "",
         status: {
           StatusID: -1,
           Description: "",
         },
       },
-      studentHistory: [],
-      studentID: this.$route.params.id,
-      latestReason: "",
+      teacherHistory: [],
+      teacherID: this.$route.params.id,
     };
   },
   computed: {
-    ...mapGetters(["getStudentByStudentId"]),
+    ...mapGetters(["getTeacherByTeacherId"]),
   },
   mounted: function () {
     const id = this.$route.params.id;
-    const data = this.getStudentByStudentId(id);
-
-    const studentObject = {
-      StudentID: data.StudentID,
+    //TODO: get teacher by teacher ID from the store
+    const data = this.getTeacherByTeacherId(id);
+    //console.log(data);
+    const teacherObject = {
+      TeacherID: data.TeacherID,
       PhoneNumber: data.PhoneNumber,
       FullName: data.FullName,
       Source: data.Source,
       nativeLanguage: data.nativeLanguage,
+      secondLanguage: data.secondLanguage,
       status: data.status,
       Notes: data.Notes,
       dateJoined: new Date(data.created_at).toDateString(),
       EnglishProficiency: data.EnglishProficiency,
+      LanguageProficiency: data.LanguageProficiecy,
     };
 
-    const studentHistory = data.statusUpdates.map((update) => {
-      if (update.reason == null) {
-        update.reason = {
-          Reason: "_",
-        };
-      }
+    // const studentHistory = data.statusUpdates.map((update) => {
+    //   return {
+    //     date: new Date(update.created_at).toDateString(),
+    //     description: update.nextStatus.Description,
+    //     status: update.nextStatus.StatusID,
+    //   };
+    // });
 
-      return {
-        id: update.StatusUpdateID,
-        date: new Date(update.created_at).toDateString(),
-        description: update.nextStatus.Description,
-        status: update.nextStatus.StatusID,
-        reason: update.reason.Reason.split("_")[1],
-      };
-    });
-
-    this.studentData = studentObject;
-    this.studentHistory = studentHistory;
-
-    var latestStatusUpdateID = Math.max.apply(
-      Math,
-      studentHistory.map(function (o) {
-        return o.id;
-      })
-    );
-    if (latestStatusUpdateID !== null && latestStatusUpdateID !== -Infinity) {
-      this.latestReason = studentHistory.find(function (o) {
-        return o.id == latestStatusUpdateID;
-      }).reason;
-    }
+    this.teacherData = data;
+    // this.studentHistory = [];
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.student-profile-container {
+.teacher-profile-container {
   display: flex;
   padding-top: 4px;
   padding-bottom: 4px;
   padding-left: 14px;
   min-height: calc(100vh - 48px);
 }
-.student-profile-left {
+.teacher-profile-left {
   display: flex;
   flex: 1;
 }
-.student-profile-right {
+.teacher-profile-right {
   display: flex;
   flex-direction: column;
   padding-right: 14px;
