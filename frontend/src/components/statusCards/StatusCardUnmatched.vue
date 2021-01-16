@@ -12,7 +12,7 @@
       <div class="content">
         <div class="content-title">ACTION</div>
         <div class="buttons">
-          <Button @click.native="unmatchedToDroppedOut" label="Drop Out" />
+          <Button label="Drop Out" @click.native="unmatchedToDroppedOut()"/>
           <Button label="Select Match" solid />
         </div>
       </div>
@@ -22,11 +22,14 @@
 
 <script>
 import Button from "./Button.vue";
+import ModalDroppedOut from "./../modals/ModalDroppedOut.vue"
 import { mapActions } from 'vuex'
+
 export default {
   name: "StatusCardUnmatched",
   components: {
     Button,
+    ModalDroppedOut,
   },
   props: {
     studentID: {
@@ -37,16 +40,17 @@ export default {
     ...mapActions([ 'updateStudentStatus' ]),
     // TODO: Remove the Matched pair from the matching table (not created yet)
     unmatchedToDroppedOut() {
-      const studentID = parseInt(this.studentID)
       const previousStatusString = "UNMATCHED"
-      const nextStatusString = "DROPPED OUT"
-      const updatedBy = "IRRCAdmin"
-
-      this.updateStudentStatus({
-        studentID: studentID,
-        previousStatusString: previousStatusString,
-        nextStatusString: nextStatusString,
-        updatedBy: updatedBy
+      this.$buefy.modal.open({
+        parent: this,
+        component: ModalDroppedOut,
+        props: {
+          "studentID": this.studentID,
+          "previousStatusString": previousStatusString,
+        },
+        hasModalCard: true,
+        customClass: 'custom-class custom-class-2',
+        trapFocus: true
       })
     }
   }
