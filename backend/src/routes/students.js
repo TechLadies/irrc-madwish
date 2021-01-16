@@ -142,6 +142,16 @@ router.patch('/:id', async (req, res) => {
       })
     }
   }
+  
+  // If request does not contain StatusID and contains a StatusString
+  if (req.body.StatusID == null && req.body.StatusString != null) {
+    let statusString = req.body.StatusString
+    delete req.body.StatusString
+    const status = await statuses.getStatusByStatusString(statusString)
+    req.body.StatusID = status.StatusID
+  }
+
+  const result = await students.patchStudent(req.params.id, req.body);
 
   // handle error
   if (result.err) {

@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
     delete req.body.NextStatusString
   }
 
-  if (req.body.PreviousStatusID == req.body.NextStatusID) {
+  if (req.body.PreviousStatusID === req.body.NextStatusID) {
     return res.status(422).send({
       message: 'Previous Status and Next Status should not be the same.',
       type: 'StatusError',
