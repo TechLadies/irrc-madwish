@@ -90,7 +90,7 @@
 <script>
 
 import Page from '../components/Page.vue'
-import {mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions, mapState} from 'vuex'
 
 export default {
   name: 'EditStudent',
@@ -114,7 +114,8 @@ export default {
       }
   },
   computed: {    
-    ...mapGetters(['API_nativeLanguage']),
+    ...mapGetters(['API_nativeLanguage', 'getStudentByStudentId']),
+    ...mapState(['updateStudentSuccess']),
     nativeLanguage(){
       return this.selected ? this.selected.NativeLanguage: ''
     },
@@ -123,70 +124,83 @@ export default {
   watch: {
     file (val){
       this.uploadFile() 
-    }
-  },
-
- async mounted() {
-   
-    // Call API for Native Languages
-      this.getNativeLanguages()
-      
-    // Call API for Student data
-      const id = this.$route.params.id
-      await fetch(`/api/students/${id}`)
-      .then(response => response.json())
-      .then(result => {
-        //transform Nativelanguage ID from int to string 
-        const value = {
-          FullName: result.FullName,
-          PhoneNumber: result.PhoneNumber,
-          Source: result.Source,
-          EnglishProficiency: result.EnglishProficiency,
-          Notes: result.Notes,
-          nativeLanguage: result.nativeLanguage.NativeLanguage
-        }
-        this.studentData = value;
-        this.selected.NativeLanguage = result.nativeLanguage.NativeLanguage
-        });
-  },
-
-  methods: {
-    ...mapActions(['getNativeLanguages']),
-    saveStudent(){
-      // HTTP PATCH to update student, changing specific field on backend.
-        const updateData = {...this.studentData, NativeLanguageString: this.selected.NativeLanguage}
-        const studentSave = {
-        method: "PATCH",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(
-          updateData 
-        )
-      }
-      const id = this.$route.params.id
-      fetch(`/api/students/${id}`, studentSave)
-        .then(response => {
-          if (response.status < 400) {
-            this.$buefy.notification.open({
+    },
+    updateStudentSuccess(value){
+      if(value === true){
+        this.$buefy.notification.open({
               message: 'Student saved. <u>View profile</u>!',
               duration: 3000,
               type: 'is-success',
               position: 'is-top',
             })
-            // Refresh NativeLanguage
-            this.getNativeLanguages()
-            setTimeout(() => {this.$router.push({path: `/students/${id}`})}, 5000)} 
-          else {
-            this.$buefy.notification.open({ 
+        // Refresh NativeLanguage
+        this.getNativeLanguages()
+        setTimeout(() => {
+          this.$router.push(
+            {path: `/students/${this.studentData.StudentID}`})}, 3000)
+      } 
+      else {
+         this.$buefy.notification.open({ 
               message: 'Something went wrong. Please try again.',
               duration: 3000, 
               type: 'is-warning',
               position: 'is-top'
             })
-          }
-       })
+      }
+    }
+  },
+  async mounted(){
+   
+    // Call API for Native Languages
+      this.getNativeLanguages()
+    // Call API for Student data
+      const id = this.$route.params.id
+      const result = this.getStudentByStudentId(id)
+      this.studentData = {
+          FullName: result.FullName,
+          PhoneNumber: result.PhoneNumber,
+          Source: result.Source,
+          EnglishProficiency: result.EnglishProficiency,
+          Notes: result.Notes,
+          nativeLanguage: result.nativeLanguage.NativeLanguage,
+          StudentID: result.StudentID
+        }
+      this.selected.NativeLanguage = result.nativeLanguage.NativeLanguage
+  },
+
+  methods: {
+    ...mapActions(['getNativeLanguages', 'patchStudent']),
+    saveStudent(){
+      // HTTP PATCH to update student, changing specific field on backend.
+        const updateData = {...this.studentData, NativeLanguageString: this.selected.NativeLanguage}
+        this.patchStudent(updateData)
+      //   const studentSave = {
+      //   method: "PATCH",
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(
+      //     updateData 
+      //   )
+      // }
+      // const id = this.$route.params.id
+      // fetch(`/api/students/${id}`, studentSave)
+      //   .then(response => {
+      //     if (response.status < 400) {
+      //       this.$buefy.notification.open({
+      //         message: 'Student saved. <u>View profile</u>!',
+      //         duration: 3000,
+      //         type: 'is-success',
+      //         position: 'is-top',
+      //       })
+      //       // Refresh NativeLanguage
+      //       this.getNativeLanguages()
+      //       setTimeout(() => {this.$router.push({path: `/students/${id}`})}, 5000)} 
+      //     else {
+           
+      //     }
+      //  })
     },
 
        
