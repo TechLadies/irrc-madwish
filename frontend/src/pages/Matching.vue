@@ -230,7 +230,7 @@
                   @click="cardModal()"
                   :disabled="!checkedRows.length"
                 >
-                  <span>Matched selected </span> ({{ checkedRows.length }})
+                  <span>Confirm selected </span> ({{ checkedRows.length }})
                 </button>
                 <div class="divider"/>
                 <b-button 
