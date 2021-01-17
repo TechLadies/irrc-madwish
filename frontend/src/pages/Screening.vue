@@ -174,7 +174,9 @@ export default {
           const patchStudentsData = this.checkedRows.map(item => {
             return {
               StudentID: item.StudentID,
-              EnglishProficiency: item.EnglishProficiency
+              EnglishProficiency: item.EnglishProficiency,
+              // TODO: Make dynamic with account management
+              UpdatedBy: "IRRCAdmin"
             }
           })
           this.patchScreeningStudents(patchStudentsData)
