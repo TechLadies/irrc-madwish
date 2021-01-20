@@ -77,11 +77,13 @@ class StatusUpdate extends Model {
     return {
       type: "object",
       oneOf: [
-        { required: ["StudentID"] },
-        { required: ["TeacherID"] }
-     ],
-      
-      //required: ["StudentID", "TeacherID"],
+        {
+          required: ["StudentID"],
+        },
+        {
+          required: ["TeacherID"],
+        },
+      ],
       properties: {
         StatusUpdateID: { type: "integer" },
         StudentID: { type: "integer" },
