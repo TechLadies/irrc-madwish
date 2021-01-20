@@ -1,10 +1,9 @@
 const express = require('express')
 const router = express.Router()
+const reasons = require('../helpers/reasons')
 const statusUpdates = require('../helpers/statusUpdates')
 const statuses = require('../helpers/statuses')
 const students = require('../helpers/students')
-
-const { UniqueViolationError } = require('objection')
 
 router.post('/', async (req, res) => {
   // If request does not contain PreviousStatusID and contains a PreviousStatusString
@@ -47,26 +46,33 @@ router.post('/', async (req, res) => {
 
   const result = await statusUpdates.addStatusUpdate(req.body)
 
-  // handle error
-  if (result.err) {
-    const err = result.err
-    if (err instanceof UniqueViolationError) {
-      res.status(409).send({
+  // If request does not contain ReasonID
+  if (req.body.ReasonString) {
+    try {
+      const reason = await reasons.getReasonPromise(
+        req.body.ReasonString
+      )
+      req.body.ReasonID = reason.ReasonID
+      delete req.body.ReasonString
+    } catch (err) {
+      return res.status(500).send({
         message: err.message,
-        type: 'UniqueViolation',
-        data: {
-          columns: err.columns,
-          table: err.table,
-          constraint: err.constraint
-        }
-      })
-    } else {
-      res.status(500).send({
-        message: err.message,
-        type: 'UnknownError',
+        type: 'UnknownError with Reason',
         data: {}
       })
     }
+  }
+
+  const result = await statusUpdates.addStatusUpdate(req.body)
+
+  // handle error
+  if (result.err) {
+    const err = result.err
+    res.status(500).send({
+      message: err.message,
+      type: 'UnknownError',
+      data: {}
+    })
 
     return
   }

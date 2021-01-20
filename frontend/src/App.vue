@@ -36,7 +36,7 @@ export default {
   methods: {
     ...mapActions(["getAllStudents"]),
     createNew() {
-      this.$router.push({ path: "new-student" });
+      this.$router.push({ path: "/new-student" });
     },
   },
 };
