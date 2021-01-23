@@ -115,3 +115,11 @@ export default {
     }
 }
 </script>
+<style>
+.modal-card-body{
+    width: 640px
+}
+.modal-card-foot{
+    width: 640px
+}
+</style>

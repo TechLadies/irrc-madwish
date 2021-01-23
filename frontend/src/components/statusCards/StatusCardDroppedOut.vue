@@ -43,7 +43,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([ 'updateStudentStatus' ]),
+    ...mapActions([ 'updateStudentStatus']),
     droppedOutToScreening() {
       const studentID = parseInt(this.studentID)
       const previousStatusString = "DROPPED OUT"
