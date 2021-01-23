@@ -15,7 +15,7 @@ export default {
 
 .header {
   overflow: hidden;
-  background-color: #f1f1f1;
+  background-color: none;
   padding: 20px 10px;
   width: 100%;
   height: 10%;

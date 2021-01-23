@@ -24,6 +24,11 @@ import {
   studentState
 } from "./store/students.js";
 import {
+  matchingActions, 
+  matchingState, 
+  matchingMutations
+} from "./store/matching.js";
+import {
   reasonActions,
   reasonGetters,
   reasonMutations,
@@ -43,6 +48,7 @@ export default new Vuex.Store({
     ...nativeLanguageState,
     ...teacherState,
     ...screeningState,
+    ...matchingState,
     ...reasonState
   },
   mutations: {
@@ -50,6 +56,7 @@ export default new Vuex.Store({
     ...nativeLanguageMutations,
     ...teacherMutations,
     ...screeningMutations,
+    ...matchingMutations,
     ...reasonMutations
   },
   actions: {
@@ -57,6 +64,7 @@ export default new Vuex.Store({
     ...nativeLanguageActions,
     ...teacherActions,
     ...screeningActions,
+    ...matchingActions,
     ...reasonActions
   },
   getters: {
@@ -65,6 +73,7 @@ export default new Vuex.Store({
     ...teacherGetters,
     ...reasonGetters,
     screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING"),
+    unmatchedStudents: (state) => state.students.filter((student) => student.status.Description === "UNMATCHED"),
     getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id)
   },
 });
