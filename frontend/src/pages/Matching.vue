@@ -4,18 +4,21 @@
       <PageHeader slot="header">
         <a class="logo">Matching<br>
         <span class="subtitle">All Students To Be Matched</span></a>
+
       </PageHeader>
       <!--start of table -->
       <section>
         <b-table
-          :data="tableData"
+          :data="studentsData"
           :sort-icon="sortIcon"
           :sort-icon-size="sortIconSize"
           :sortDirection="sortDirection"
+          :selected.sync="selectedStudent"
+          @click="isComponentModalActive = true"
         >
           <!-- date column -->
 
-          <template v-for="(column, index) in columns" v-if="index == 0">
+          <template v-for="(column, index) in studentsColumns" v-if="index == 0">
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -48,7 +51,7 @@
 
           <!-- Student ID column -->
 
-          <template v-for="(column, index) in columns" v-if="index == 1">
+          <template v-for="(column, index) in studentsColumns" v-if="index == 1">
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -71,7 +74,7 @@
 
           <!-- Student Name column -->
 
-          <template v-for="(column, index) in columns" v-if="index == 2">
+          <template v-for="(column, index) in studentsColumns" v-if="index == 2">
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -95,7 +98,7 @@
 
           <!-- status column -->
 
-          <template v-for="(column, index) in columns" v-if="index == 3">
+          <template v-for="(column, index) in studentsColumns" v-if="index == 3">
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -144,7 +147,7 @@
 
           <!-- Native Language -->
 
-          <template v-for="(column, index) in columns" v-if="index == 5">
+          <template v-for="(column, index) in studentsColumns" v-if="index == 5">
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -166,7 +169,7 @@
 
           <!-- English Proficiency -->
 
-          <template v-for="(column, index) in columns" v-if="index == 4">
+          <template v-for="(column, index) in studentsColumns" v-if="index == 4">
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -189,7 +192,7 @@
 
           <!-- Source -->
 
-          <template v-for="(column, index) in columns" v-if="index == 6">
+          <template v-for="(column, index) in studentsColumns" v-if="index == 6">
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -219,18 +222,18 @@
               <div class="subheader-right">
                 <button
                   class="button field is-white"
-                  @click="checkedRows = []"
-                  :disabled="!checkedRows.length"
+                  @click="selectedStudent = null"
+                  :disabled="!matchedPairs.length"
                 >
-                  <span>Unmatch Selected </span> ({{ checkedRows.length }})
+                  <span>Unmatch Selected </span> ({{ matchedPairs.length }})
                 </button>
                 <div class="divider"/>
                 <button
                   class="button field is-white"
                   @click="cardModal()"
-                  :disabled="!checkedRows.length"
+                  :disabled="!matchedPairs.length"
                 >
-                  <span>Confirm selected </span> ({{ checkedRows.length }})
+                  <span>Confirm selected </span> ({{ matchedPairs.length }})
                 </button>
                 <div class="divider"/>
                 <b-button 
@@ -245,57 +248,64 @@
 
       <section>
         <b-table
-          :data="matchingData"
-          :columns="matchingColumns"
+          :data="matchedPairs"
+          :columns="matchedColumns"
           :sort-icon="sortIcon"
           :sort-icon-size="sortIconSize"
           :sortDirection="sortDirection"
           checkable
           :checkbox-position="checkboxPosition"
-          :checked-rows.sync="checkedRows"
         >
         </b-table>
       </section>
+    <section>
 
+         <b-modal v-model="isComponentModalActive" :width="640" scroll="keep">
+            <div class="card">
+              <h2>Select a teacher for student:</h2>
+                <h4>Student Name: {{selectedStudent.FullName}}</h4>
+                <h4>Teacher Name: {{selectedTeacher.FullName}}</h4>
+                <div class="card-image">
+                  <b-table
+                    :data="teachersData"
+                    :columns="teachersColumns"
+                    :selected.sync="selectedTeacher"
+                  >
+                  </b-table>
+                    <b-button
+                    class="button field is-blue"
+                    @click="addMatchedPair()"
+                    >
+                      <span>Match temporarily</span>
+                    </b-button>
+                </div>
+            </div>
+        </b-modal>
+    </section>
     </div>
   </Page>
 </template>
 
 <script>
 
+
 import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
 
-
 export default {
   data() {
     return {
-      matchingData: [
-        {'studentName':'Kaasm Rujuthan', 'teacherName':'Praveen Kumar'},
-        {'studentName':'Rujuthan Kaasm', 'teacherName':'Kumar Praveen'},
-      ],
-      selected: null,
+      isComponentModalActive: false,
+      selectedStudent: {},
+      selectedTeacher: {},
       sortIcon: "arrow-up",
       sortIconSize: "is-small",
       sortDirection: "asc",
       checkboxPosition: "right",
       isActive: false,
-      checkedRows: [],
-      matchingColumns:[
-      {
-        field: "studentName",
-        label: "Student Name/ID",
-        searchable: true,
-      },
-
-      {
-        field: "teacherName",
-        label: "Teacher Name/ID",
-        searchable: true,
-      },
-      ],
-      columns: [
+      matchedPairs: [],
+      studentsColumns: [
         {
           field: "CreatedAt",
           label: "Date Joined",
@@ -334,16 +344,44 @@ export default {
           searchable: true,
         },
       ],
+      teachersColumns:[
+        {
+          field: "FullName",
+          label: "Teacher Name",
+          searchable: true,
+        },
+        {
+          field: "NativeLanguage",
+          label: "Native Language",
+        },
+        {
+          field: "SecondLanguage",
+          label: "Second Language",
+        },
+        {
+          field: "Source",
+          label: "Company",
+          searchable: true,
+        },
+      ],
+      matchedColumns:[
+        {
+          field: "StudentFullName",
+          label: "Student Name",
+        },
+        {
+          field: "TeacherFullName",
+          label: "Teacher Name",
+        },
+      ],
     };
   },
 
-
-
   computed: {
-    ...mapGetters(["unmatchedStudents"]),
+    ...mapGetters(["unmatchedStudents", "teachers"]),
     ...mapState(['matchingSuccess']),
-    tableData() {
-      return this.unmatchedStudents.map((student) => {
+    studentsData() {
+      return this.unmatchedStudents.map(student => {
         return {
           StudentID: `${student.StudentID}`,
           FullName: `${student.FullName}`,
@@ -356,25 +394,53 @@ export default {
         };
       });
     },
+    teachersData() {
+      return this.teachers.map(teacher => {
+        return {
+          ...teacher,
+          NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
+          SecondLanguage: `${teacher.secondLanguage.SecondLanguage}`,
+          Status: `${teacher.status.Description}`,
+        }
+      })
+    },
+    isDisabled(){
+      return this.selectedStudent === null;
+    },
   },
   components: {
     Page,
     PageHeader,
   },
   methods: {
-    ...mapActions(["getUnmatchedStudents"]),    
+    ...mapActions(["getUnmatchedStudents", "getAllTeachers"]),
     cardModal() {
       this.$buefy.dialog.confirm({
         type: 'is-blue',
         message: 'The selected matches will be confirmed. All selected teachers matched will receive an email in their inbox',
-        onConfirm: () => {
-          // some method
-        }
       }) 
     },
+    addMatchedPair() {
+      this.matchedPairs.push(
+        {
+          TeacherID: this.selectedTeacher.TeacherID,
+          TeacherFullName: this.selectedTeacher.FullName,
+          StudentID: this.selectedStudent.StudentID,
+          StudentFullName: this.selectedStudent.FullName,
+        }
+      )
+      this.isComponentModalActive = false;
+    },
   },
+  mounted() {
+    this.getAllTeachers()
+  }
 };
+
 </script>
+
+
+
 
 <style>
 body {
@@ -473,6 +539,10 @@ button.button.field.is-white{
     width:5px;
     height:auto;
     display:inline-block;
+}
+
+.card {
+  padding: 30px;
 }
 
 
