@@ -28,17 +28,8 @@ export const studentActions = {
 
     // Update student status
     async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy, reason }) {
-        // PATCH student
-        const studentRequestOptions = {
-            method: "PATCH",
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({StudentID: studentID, StatusString: nextStatusString})
-        }
-
-        // POST statusUpdate
+        // POST statusUpdate. Note that the POST statusUpdate endpoint also patches the student status
+        // behind-the-scenes.
         const statusUpdateRequestOptions = {
             method: "POST",
             headers: {
@@ -59,14 +50,6 @@ export const studentActions = {
             if(response.status !== 200) {
                 throw new Error(response);
             }
-        })
-        .then(() => {
-            fetch("/api/students/" + studentID, studentRequestOptions)
-            .then((response) => {
-            if(response.status !== 200) {
-                throw new Error(response);
-            }
-            })
         })
         .then(() => {
             dispatch('getAllStudents')

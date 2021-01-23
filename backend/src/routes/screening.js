@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 // const debug = require('debug')('app:students')
-const students = require("../helpers/students");
-const statuses = require("../helpers/statuses.js")
-const { NotFoundError } = require("objection");
+const students = require('../helpers/students')
+const statuses = require('../helpers/statuses.js')
+const statusUpdates = require('../helpers/statusUpdates.js')
+const { NotFoundError } = require('objection')
 
 // TODO: Handle errors
 
@@ -11,16 +12,37 @@ const { NotFoundError } = require("objection");
 // on Postman: http://localhost:3001/students/1
 router.post('/', async (req, res) => {
   if (Array.isArray(req.body)) {
-    // handle errors: Check if required fields are present
+    // TODO: handle errors: Check if required fields are present
 
-    // All students have Status set to UNMATCHED
-    const status = await statuses.getStatusByStatusString('UNMATCHED')
-    // process each item asynchronously
+    // All students have current status SCREENING and next status UNMATCHED
+    const currentStatus = await statuses.getStatusByStatusString('SCREENING')
+    const nextStatus = await statuses.getStatusByStatusString('UNMATCHED')
+
     const result = await Promise.all(req.body.map(async item => {
-      item.StatusID = status.StatusID
+      // Check that item has UpdatedBy field
+      if (item.UpdatedBy == null) {
+        return res.status(400).send({
+          message: 'UpdatedBy field is required'
+        })
+      }
+
+      // Update status for each student asynchronously
+      // Construct statusUpdate
+      const statusUpdate = {
+        StudentID: item.StudentID,
+        PreviousStatusID: currentStatus.StatusID,
+        NextStatusID: nextStatus.StatusID,
+        UpdatedBy: item.UpdatedBy
+      }
+      // Delete `UpdatedBy` field from each item
+      delete item.UpdatedBy
+
+      statusUpdates.addStatusUpdate(statusUpdate)
+
+      // Update EnglishProficiency for each student asynchronously
       return students.patchStudent(item.StudentID, item)
-    }
-    ))
+    }))
+
     // Error handling
     if (result.err) {
       const err = result.err
