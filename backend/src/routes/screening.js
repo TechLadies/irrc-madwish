@@ -19,6 +19,13 @@ router.post('/', async (req, res) => {
     const nextStatus = await statuses.getStatusByStatusString('UNMATCHED')
 
     const result = await Promise.all(req.body.map(async item => {
+      // Check that item has UpdatedBy field
+      if (item.UpdatedBy == null) {
+        return res.status(400).send({
+          message: 'UpdatedBy field is required'
+        })
+      }
+
       // Update status for each student asynchronously
       // Construct statusUpdate
       const statusUpdate = {
