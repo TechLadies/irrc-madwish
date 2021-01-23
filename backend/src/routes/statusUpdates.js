@@ -44,8 +44,6 @@ router.post('/', async (req, res) => {
     })
   }
 
-  const result = await statusUpdates.addStatusUpdate(req.body)
-
   // If request does not contain ReasonID
   if (req.body.ReasonString) {
     try {

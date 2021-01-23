@@ -27,7 +27,8 @@ import {
   matchingActions, 
   matchingState, 
   matchingMutations
-} from "./store/matching.js"
+} from "./store/matching.js";
+import {
   reasonActions,
   reasonGetters,
   reasonMutations,
@@ -47,7 +48,7 @@ export default new Vuex.Store({
     ...nativeLanguageState,
     ...teacherState,
     ...screeningState,
-    ...matchingState
+    ...matchingState,
     ...reasonState
   },
   mutations: {
@@ -55,7 +56,7 @@ export default new Vuex.Store({
     ...nativeLanguageMutations,
     ...teacherMutations,
     ...screeningMutations,
-    ...matchingMutations
+    ...matchingMutations,
     ...reasonMutations
   },
   actions: {
@@ -64,84 +65,6 @@ export default new Vuex.Store({
     ...teacherActions,
     ...screeningActions,
     ...matchingActions,
-
-    // Update student status
-    async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy }) {
-      // PATCH student
-      const studentRequestOptions = {
-        method: "PATCH",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({StudentID: studentID, StatusString: nextStatusString})
-      }
-
-      // POST statusUpdate
-      const statusUpdateRequestOptions = {
-        method: "POST",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          StudentID: studentID,
-          PreviousStatusString: previousStatusString,
-          NextStatusString: nextStatusString,
-          UpdatedBy: updatedBy
-        })
-      }
-
-      const patchStudent = fetch("/api/students/" + studentID, studentRequestOptions)
-      const postStatusUpdate = fetch("/api/statusUpdates", statusUpdateRequestOptions)
-
-      Promise.all([
-        patchStudent,
-        postStatusUpdate
-      ])
-      .then(([responsePatch, responsePost]) => {
-          // If PATCH and/or POST fail, return
-          if(responsePatch.status !== 200) {
-            console.log('responsePatch', responsePatch)
-            return;
-          }
-          if(responsePost.status !== 200) {
-            console.log('responsePost', responsePost)
-            return;
-          }
-          dispatch('getAllStudents')
-      }).catch((err) => {
-        console.error(err);
-      });
-    },
-
-    // Update student English proficiency
-    async updateStudentEnglishProficiency({ commit, dispatch }, { studentID, englishProficiency }) {
-
-      if (!englishProficiency) return;
-
-      // PATCH student
-      const studentRequestOptions = {
-        method: "PATCH",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({StudentID: studentID, EnglishProficiency: englishProficiency})
-      }
-
-      fetch("/api/students/" + studentID, studentRequestOptions)
-        .then(response => {
-            // If PATCH fails, return
-            if(response.status !== 200) {
-              console.log(response);
-              return;
-            }
-            dispatch('getAllStudents')
-          }
-        )
-    },
-
     ...reasonActions
   },
   getters: {
