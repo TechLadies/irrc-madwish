@@ -222,23 +222,23 @@
               <div class="subheader-right">
                 <button
                   class="button field is-white"
-                  @click="selectedStudent = null"
-                  :disabled="!matchedPairs.length"
+                  @click="unmatchSelected()"
+                  :disabled="!selectedMatches.length"
                 >
-                  <span>Unmatch Selected </span> ({{ matchedPairs.length }})
+                  <span>Unmatch Selected </span> ({{ selectedMatches.length }})
                 </button>
                 <div class="divider"/>
                 <button
                   class="button field is-white"
-                  @click="cardModal()"
-                  :disabled="!matchedPairs.length"
+                  @click="confirmSelected()"
+                  :disabled="!selectedMatches.length"
                 >
-                  <span>Confirm selected </span> ({{ matchedPairs.length }})
+                  <span>Confirm selected </span> ({{ selectedMatches.length }})
                 </button>
                 <div class="divider"/>
                 <b-button 
                 class="button field is-blue"
-                @click="cardModal()"
+                @click="confirmSelected()"
                 >
                   <span>Confirm all</span>
                 </b-button>
@@ -253,6 +253,7 @@
           :sort-icon="sortIcon"
           :sort-icon-size="sortIconSize"
           :sortDirection="sortDirection"
+          :checked-rows.sync="selectedMatches"
           checkable
           :checkbox-position="checkboxPosition"
         >
@@ -299,12 +300,8 @@ export default {
       isComponentModalActive: false,
       selectedStudent: {},
       selectedTeacher: {},
-      sortIcon: "arrow-up",
-      sortIconSize: "is-small",
-      sortDirection: "asc",
-      checkboxPosition: "right",
-      isActive: false,
       matchedPairs: [],
+      selectedMatches: [],
       studentsColumns: [
         {
           field: "CreatedAt",
@@ -374,6 +371,10 @@ export default {
           label: "Teacher Name",
         },
       ],
+      sortIcon: "arrow-up",
+      sortIconSize: "is-small",
+      sortDirection: "asc",
+      checkboxPosition: "right",
     };
   },
 
@@ -392,7 +393,8 @@ export default {
           EnglishProficiency: `${student.EnglishProficiency}`,
           Source: `${student.Source}`,
         };
-      });
+      })
+      .filter(({ StudentID: id1 }) => !this.matchedPairs.some(({ StudentID: id2 }) => id2 === id1));
     },
     teachersData() {
       return this.teachers.map(teacher => {
@@ -414,12 +416,6 @@ export default {
   },
   methods: {
     ...mapActions(["getUnmatchedStudents", "getAllTeachers"]),
-    cardModal() {
-      this.$buefy.dialog.confirm({
-        type: 'is-blue',
-        message: 'The selected matches will be confirmed. All selected teachers matched will receive an email in their inbox',
-      }) 
-    },
     addMatchedPair() {
       this.matchedPairs.push(
         {
@@ -429,8 +425,20 @@ export default {
           StudentFullName: this.selectedStudent.FullName,
         }
       )
+      this.selectedStudent = {}
+      this.selectedTeacher = {}
       this.isComponentModalActive = false;
     },
+    unmatchSelected() {
+      this.matchedPairs = this.matchedPairs.filter(({ StudentID: id1 }) => !this.selectedMatches.some(({ StudentID: id2 }) => id2 === id1))
+      this.selectedMatches = []
+    },
+    confirmSelected() {
+      this.$buefy.dialog.confirm({
+        type: 'is-blue',
+        message: 'The selected matches will be confirmed. All selected teachers matched will receive an email in their inbox',
+      })
+    }
   },
   mounted() {
     this.getAllTeachers()
