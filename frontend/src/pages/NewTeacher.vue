@@ -149,7 +149,7 @@
               expanded
               @click="createNewTeacher"
               :disabled="formIsInvalid"
-              >Create Student</b-button
+              >Create Teacher</b-button
             >
           </form>
         </div>
