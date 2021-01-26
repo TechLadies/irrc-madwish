@@ -2,7 +2,7 @@
   <Page>
     <div class="container">
       <div class="Title">
-        <b class="newstudent">New Teacher</b>
+        <b class="newteacher">New Teacher</b>
         <!-- upload button -->
         <b-field
           class="file is-primary is-right"
