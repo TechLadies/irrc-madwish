@@ -190,7 +190,7 @@ export default {
   computed: {
     ...mapGetters(["API_nativeLanguage"]),
 
-    // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
+    // Checks if required fields are empty. If required fields are empty, the Create Teacher Button is disabled.
     formIsInvalid() {
       const formFields = ["name", "PhoneNumber"].map((item) => this[item]);
       if (
