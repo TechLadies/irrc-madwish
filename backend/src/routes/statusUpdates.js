@@ -3,8 +3,6 @@ const router = express.Router();
 const reasons = require("../helpers/reasons");
 const statusUpdates = require("../helpers/statusUpdates");
 const statuses = require("../helpers/statuses");
-// const students = require("../helpers/students");
-// const teachers = require("../helpers/teachers");
 
 router.post("/", async (req, res) => {
   // If request does not contain PreviousStatusID and contains a PreviousStatusString
@@ -29,36 +27,6 @@ router.post("/", async (req, res) => {
 
   // If request does not contain NextStatusID and contains a NextStatusString
   if (req.body.NextStatusID == null && req.body.NextStatusString != null) {
-    //   const nextStatus = await statuses.getStatusByStatusString(req.body.NextStatusString)
-    //   req.body.NextStatusID = nextStatus.StatusID
-    //   delete req.body.NextStatusString
-    // }
-
-    // console.log(req.body)
-    // if (req.body.PreviousStatusID === req.body.NextStatusID) {
-    //   return res.status(422).send({
-    //     message: 'Previous Status and Next Status should not be the same.',
-    //     type: 'StatusError',
-    //     data: {
-    //       previousStatus: req.body.PreviousStatusID,
-    //       nextStatus: req.body.NextStatusID
-    //     }
-    //   })
-    // }
-
-    // const student = await students.getStudentById(req.body.StudentID)
-    // const teacher = await teachers.getTeacherById(req.body.TeacherID)
-    // // console.log(teacher)
-
-    // if (!req.body.TeacherID && student.StatusID !== req.body.PreviousStatusID) {
-    //   return res.status(409).send({
-    //     message: 'Previous status must match current student status.',
-    //     type: 'StatusMismatch',
-    //     data: {
-    //       submittedStatus: req.body.PreviousStatusID,
-    //       actualStatus: student.StatusID
-    //     }
-    //   })
     try {
       const nextStatus = await statuses.getStatusByStatusString(
         req.body.NextStatusString
@@ -74,17 +42,6 @@ router.post("/", async (req, res) => {
     }
   }
 
-  // if (!req.body.StudentID && teacher.StatusID !== req.body.PreviousStatusID) {
-  //   return res.status(409).send({
-  //     message: 'Previous status must match current teacher status.',
-  //     type: 'StatusMismatch',
-  //     data: {
-  //       submittedStatus: req.body.PreviousStatusID,
-  //       actualStatus: teacher.StatusID
-  //     }
-  //   })
-  // }
-  // If request does not contain ReasonID
   if (req.body.ReasonString) {
     try {
       const reason = await reasons.getReasonPromise(req.body.ReasonString);
