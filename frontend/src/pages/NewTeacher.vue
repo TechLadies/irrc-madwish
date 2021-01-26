@@ -347,7 +347,7 @@ button.button.dark-blue {
   color: #59666e !important;
 }
 
-b.newstudent {
+b.newteacher {
   font-size: 30px;
   padding-left: 20px;
 }
