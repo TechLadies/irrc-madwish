@@ -1,8 +1,12 @@
 const db = require('../models/statusUpdate')
 const dbStudent = require('../models/student')
 const students = require('../helpers/students')
+const dbTeacher = require('../models/teacher')
+const teachers = require('../helpers/teachers')
 
 exports.addStatusUpdate = async function (statusUpdate) {
+  const isTeacher = statusUpdate.TeacherID;
+
   try {
     // Validate statusUpdate
     if (statusUpdate.PreviousStatusID === statusUpdate.NextStatusID) {
@@ -19,17 +23,18 @@ exports.addStatusUpdate = async function (statusUpdate) {
       )
     }
 
-    const student = await students.getStudentById(statusUpdate.StudentID)
+    const stdOrTeacher = isTeacher ? await teachers.getTeacherById(statusUpdate.TeacherID) : await students.getStudentById(statusUpdate.StudentID)
+    // const student = await students.getStudentById(statusUpdate.StudentID)
 
-    if (student.StatusID !== statusUpdate.PreviousStatusID) {
+    if (stdOrTeacher.StatusID !== statusUpdate.PreviousStatusID) {
       throw Object.assign(
-        new Error('Previous status must match current student status.'),
+        new Error('Previous status must match current student/teacher status.'),
         {
           code: 422,
           type: 'StatusMismatch',
           data: {
             submittedStatus: statusUpdate.PreviousStatusID,
-            actualStatus: student.StatusID
+            actualStatus: stdOrTeacher.StatusID
           }
         }
       )
@@ -39,11 +44,16 @@ exports.addStatusUpdate = async function (statusUpdate) {
     const response = await db.StatusUpdate.transaction(async trx => {
       await db.StatusUpdate.query().insert(statusUpdate)
 
-      // Then patch student status ('status')
-      const updateStudent = await dbStudent.Student.query(trx).findById(statusUpdate.StudentID).patch(
+      // Then patch teacher or student status ('status')
+      const updateStdOrTeacher = 
+      isTeacher ? await dbTeacher.Teacher.query(trx).findById(statusUpdate.TeacherID).patch(
         { StatusID: statusUpdate.NextStatusID }
       )
-      return updateStudent
+      :
+      await dbStudent.Student.query(trx).findById(statusUpdate.StudentID).patch(
+        { StatusID: statusUpdate.NextStatusID }
+      )
+      return updateStdOrTeacher;
     })
     return response
   } catch (err) {
