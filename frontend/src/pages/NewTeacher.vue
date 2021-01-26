@@ -28,7 +28,7 @@
         <div class="column is-two-thirds">
           <form
             method="POST"
-            action="/api/students"
+            action="/api/teachers"
             @submit.prevent="createTeacher"
           >
             <!--.prevent prevents the default submit behaviour and executes createTeacher instead -->
