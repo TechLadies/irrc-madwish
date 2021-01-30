@@ -23,6 +23,19 @@ exports.addStatusUpdate = async function (statusUpdate) {
       )
     }
 
+    if (!statusUpdate.UpdatedBy) {
+      throw Object.assign(
+        new Error('Missing status change UpdatedBy field.'),
+        {
+          code: 422,
+          type: 'MissingUpdatedBy',
+          data: {
+            error: "Missing status change UpdatedBy field",
+          }
+        }
+      )
+    }
+
     const stdOrTeacher = isTeacher ? await teachers.getTeacherById(statusUpdate.TeacherID) : await students.getStudentById(statusUpdate.StudentID)
     // const student = await students.getStudentById(statusUpdate.StudentID)
 
