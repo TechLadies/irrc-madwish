@@ -238,7 +238,7 @@
                 <div class="divider"/>
                 <b-button 
                 class="button field is-blue"
-                @click="confirmSelected()"
+                @click="confirmAll()"
                 >
                   <span>Confirm all</span>
                 </b-button>
@@ -437,6 +437,12 @@ export default {
       this.$buefy.dialog.confirm({
         type: 'is-blue',
         message: 'The selected matches will be confirmed. All selected teachers matched will receive an email in their inbox',
+      })
+    },
+    confirmAll() {
+      this.$buefy.dialog.confirm({
+        type: 'is-blue',
+        message: 'All matches will be confirmed. All teachers matched will receive an email in their inbox',
       })
     }
   },

@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
     }
     return res.status(200).json(result)
   }
-  return res.status(500).send({
+  return res.status(422).send({
     message: 'Request should be an array',
     type: 'UnknownError'
   })
