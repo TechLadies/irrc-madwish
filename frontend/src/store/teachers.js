@@ -26,7 +26,57 @@ export const teacherActions = {
   },
   async patchTeacher({ dispatch }, teacherData){
 //to add PATCH endpoint when it is created in backend
-  }
+  },
+
+  async updateTeacherStatus({ commit, dispatch }, { teacherID, previousStatusString, nextStatusString, updatedBy, reason }) {
+    // PATCH student
+    const teacherRequestOptions = {
+        method: "PATCH",
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({TeacherID: teacherID, StatusString: nextStatusString})
+    }
+
+    // POST statusUpdate
+    const statusUpdateRequestOptions = {
+        method: "POST",
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        TeacherID: teacherID,
+        PreviousStatusString: previousStatusString,
+        NextStatusString: nextStatusString,
+        UpdatedBy: updatedBy,
+        ReasonString: reason
+        })
+    }
+
+    // fetch("/api/statusUpdates", statusUpdateRequestOptions)
+    // .then((response) => {
+    //     if(response.status !== 200) {
+    //         throw new Error(response);
+    //     }
+    // })
+    // .then(() => {
+    //     fetch("/api/teachers/" + teacherID, teacherRequestOptions)
+    //     .then((response) => {
+    //     if(response.status !== 200) {
+    //         throw new Error(response);
+    //     }
+    //     })
+    // })
+    // .then(() => {
+    //     dispatch('getAllTeachers')
+    // })
+    // .catch((err) => {
+    //     console.error(err);
+    // });
+},
+
 };
 export const teacherMutations = {
   [MUTATIONS.SET_TEACHERS](state, teachers) {
