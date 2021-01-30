@@ -24,6 +24,9 @@ export const teacherActions = {
     await fetch("api/teachers", payload);
     dispatch("getAllTeachers");
   },
+  async patchTeacher({ dispatch }, teacherData){
+//to add PATCH endpoint when it is created in backend
+  }
 };
 export const teacherMutations = {
   [MUTATIONS.SET_TEACHERS](state, teacherData) {
