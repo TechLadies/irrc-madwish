@@ -62,7 +62,7 @@ router.get('/:id', async (req, res) => {
 /* POST students listing */
 router.post('/', async (req, res) => {
   // If EnglishProficiency is empty
-  if (req.body.EnglishProficiency === "" || null) {
+  if (!req.body.EnglishProficiency || req.body.EnglishProficiency === "") {
     delete req.body.EnglishProficiency
   }
   // If request does not contain StatusID
