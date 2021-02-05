@@ -9,6 +9,7 @@ export const teacherActions = {
     const response = await fetch("/api/teachers");
     const teacherData = await response.json();
     commit(MUTATIONS.SET_TEACHERS, teacherData);
+    
   },
   async createTeacher({ dispatch }, teacherData) {
     const payload = {
@@ -20,9 +21,8 @@ export const teacherActions = {
 
       body: JSON.stringify(teacherData),
     };
-    const response = await fetch("api/teachers", payload);
+    await fetch("api/teachers", payload);
     dispatch("getAllTeachers");
-    return response;
   },
   async patchTeacher({ dispatch }, teacherData){
 //to add PATCH endpoint when it is created in backend
