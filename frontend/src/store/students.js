@@ -4,7 +4,7 @@ const MUTATIONS = Object.freeze({
   })
 
 
-export const studentState = {students: [], updateStudentSuccess: false} 
+export const studentState = {students: [], updateStudentSuccess: undefined} 
 export const studentActions = {
     async getAllStudents({commit}){
         const response = await fetch("/api/students")
@@ -43,6 +43,12 @@ export const studentActions = {
             dispatch("getAllStudents")
             commit('SET_UPDATE_STUDENT_SUCCESS', true)
         }
+        else{
+            commit('SET_UPDATE_STUDENT_SUCCESS', false)
+        }
+    },
+    resetUpdateStudentSuccess({commit}, value){
+        commit(MUTATIONS.SET_UPDATE_STUDENT_SUCCESS, value)
     },
     // Update student status
     async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy, reason }) {

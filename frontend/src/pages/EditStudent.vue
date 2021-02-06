@@ -139,7 +139,7 @@ export default {
           this.$router.push(
             {path: `/students/${this.studentData.StudentID}`})}, 3000)
       } 
-      else {
+      else if (value === false){
          this.$buefy.notification.open({ 
               message: 'Something went wrong. Please try again.',
               duration: 3000, 
@@ -147,6 +147,7 @@ export default {
               position: 'is-top'
             })
       }
+      this.resetUpdateStudentSuccess(undefined)
     }
   },
   async mounted(){
@@ -169,7 +170,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getNativeLanguages', 'patchStudent']),
+    ...mapActions(['getNativeLanguages', 'patchStudent', 'resetUpdateStudentSuccess']),
     saveStudent(){
         const updateData = {...this.studentData, NativeLanguageString: this.selected.NativeLanguage}
         this.patchStudent(updateData)
