@@ -39,7 +39,7 @@ import StatusCardMatched from "../components/statusCards/StatusCardMatched.vue";
 import StatusCardDroppedOut from "../components/statusCards/StatusCardDroppedOut.vue";
 import StatusCardScreening from "../components/statusCards/StatusCardScreening.vue";
 import StatusCardUnmatched from "../components/statusCards/StatusCardUnmatched.vue";
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
   name: "StudentProfile",
@@ -81,7 +81,7 @@ export default {
         date: new Date(update.created_at).toDateString(),
         description: update.nextStatus.Description,
         status: update.nextStatus.StatusID,
-        reason: update.reason.Reason.split('_')[1]
+        reason: update.reason.Reason.split("_")[1],
       };
     });
     return studentHistory.sort((a, b) => b.id - a.id)

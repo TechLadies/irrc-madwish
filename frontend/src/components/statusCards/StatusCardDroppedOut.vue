@@ -18,7 +18,16 @@
       <div class="content">
         <div class="content-title">ACTION</div>
         <div class="buttons">
-          <Button @click.native="droppedOutToScreening" label="Reactivate for Screening" />
+          <Button
+            v-if="isTeacher"
+            @click.native="droppedOutToMatching"
+            label="Reactivate for Matching"
+          />
+          <Button
+            v-else
+            @click.native="droppedOutToScreening"
+            label="Reactivate for Screening"
+          />
         </div>
       </div>
     </div>
@@ -27,7 +36,7 @@
 
 <script>
 import Button from "./Button.vue";
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 export default {
   name: "StatusCardDroppedOut",
   components: {
@@ -38,26 +47,42 @@ export default {
       type: String,
       default: "No Reason Stated",
     },
+    isTeacher: {
+      type: String,
+    },
     studentID: {
       type: String,
-    }
+    },
   },
   methods: {
-    ...mapActions([ 'updateStudentStatus']),
+    ...mapActions(["updateStudentStatus"]),
     droppedOutToScreening() {
-      const studentID = parseInt(this.studentID)
-      const previousStatusString = "DROPPED OUT"
-      const nextStatusString = "SCREENING"
-      const updatedBy = "IRRCAdmin"
+      const studentID = parseInt(this.studentID);
+      const previousStatusString = "DROPPED OUT";
+      const nextStatusString = "SCREENING";
+      const updatedBy = "IRRCAdmin";
 
       this.updateStudentStatus({
         studentID: studentID,
         previousStatusString: previousStatusString,
         nextStatusString: nextStatusString,
-        updatedBy: updatedBy
-      })
-    }
-  }
+        updatedBy: updatedBy,
+      });
+    },
+    droppedOutToMatching() {
+      const teacherID = parseInt(this.teacherID);
+      const previousStatusString = "DROPPED OUT";
+      const nextStatusString = "UNMATCHED";
+      const updatedBy = "IRRCAdmin";
+
+      this.updateTeacherStatus({
+        teacherID: teacherID,
+        previousStatusString: previousStatusString,
+        nextStatusString: nextStatusString,
+        updatedBy: updatedBy,
+      });
+    },
+  },
 };
 </script>
 

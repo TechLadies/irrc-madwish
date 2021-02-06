@@ -13,6 +13,7 @@ const EditStudent = () => import("./pages/EditStudent.vue");
 const NewTeacher = () => import("./pages/NewTeacher.vue");
 const EditTeacher = () => import("./pages/EditTeacher.vue");
 const AllTeachers = () => import ("./pages/Teachers.vue")
+const TeacherProfile = () => import("./pages/TeacherProfile.vue");
 
 const router = new VueRouter({
   mode: "history",
@@ -28,6 +29,7 @@ const router = new VueRouter({
     { path: "/students/:id", component: StudentProfile },
     { path: "/edit-student/:id", component: EditStudent },
     { path: "/edit-teacher/:id", component: EditTeacher },
+    { path: "/teachers/:id", component: TeacherProfile },
   ],
 });
 
