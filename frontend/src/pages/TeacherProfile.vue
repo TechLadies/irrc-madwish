@@ -24,22 +24,22 @@
       <div class="teacher-profile-right">
         <section class="student-status-section">
           <StatusCardScreening
-            :studentID="teacherID"
+            :teacherID="teacherData.TeacherID"
             :englishProficiency="englishProficiency"
             v-if="teacherData.status.Description.toUpperCase() === 'SCREENING'"
           />
           <StatusCardUnmatched
-            :studentID="teacherID"
+            :teacherID="teacherData.TeacherID"
             v-bind:isTeacher="true"
             v-if="teacherData.status.Description.toUpperCase() === 'UNMATCHED'"
           />
           <StatusCardMatched
-            :studentID="teacherID"
+            :teacherID="teacherData.TeacherID"
             v-bind:isTeacher="true"
             v-if="teacherData.status.Description.toUpperCase() === 'MATCHED'"
           />
           <StatusCardDroppedOut
-            :studentID="teacherID"
+            :teacherID="teacherData.TeacherID"
             v-bind:isTeacher="true"
             v-if="
               teacherData.status.Description.toUpperCase() === 'DROPPED OUT'
@@ -62,7 +62,9 @@ import StatusCardMatched from "../components/statusCards/StatusCardMatched.vue";
 import StatusCardDroppedOut from "../components/statusCards/StatusCardDroppedOut.vue";
 import StatusCardScreening from "../components/statusCards/StatusCardScreening.vue";
 import StatusCardUnmatched from "../components/statusCards/StatusCardUnmatched.vue";
+
 import { mapGetters } from "vuex";
+
 export default {
   name: "TeacherProfile",
   components: {
@@ -76,64 +78,56 @@ export default {
   },
   data: function () {
     return {
-      teacherData: {
-        TeacherID: -1,
-        PhoneNumber: "",
-        FullName: "",
-        Source: "",
-        nativeLanguage: {
-          NativeLanguageID: -1,
-          NativeLanguage: "",
-        },
-        EnglishProficiency: "",
-        secondLanguage: {
-          NativeLanguageID: -1,
-          NativeLanguage: "",
-        },
-        LanguageProficiency: "",
-        Notes: "",
-        status: {
-          StatusID: -1,
-          Description: "",
-        },
-      },
-      teacherHistory: [],
-      teacherID: this.$route.params.id,
+      teacherID: ""
     };
   },
   computed: {
     ...mapGetters(["getTeacherByTeacherId"]),
-  },
-  mounted: function () {
-    const id = this.$route.params.id;
-    //TODO: get teacher by teacher ID from the store
-    const data = this.getTeacherByTeacherId(id);
+    teacherData(){
+      const data = this.teacher
     //console.log(data);
-    const teacherObject = {
-      TeacherID: data.TeacherID,
-      PhoneNumber: data.PhoneNumber,
-      FullName: data.FullName,
-      Source: data.Source,
-      nativeLanguage: data.nativeLanguage,
-      secondLanguage: data.secondLanguage,
-      status: data.status,
-      Notes: data.Notes,
-      dateJoined: new Date(data.created_at).toDateString(),
-      EnglishProficiency: data.EnglishProficiency,
-      LanguageProficiency: data.LanguageProficiency,
-    };
-
-    const teacherHistory = data.statusUpdates.map((update) => {
+      const teacherObject = {
+        TeacherID: data.TeacherID,
+        PhoneNumber: data.PhoneNumber,
+        FullName: data.FullName,
+        Source: data.Source,
+        nativeLanguage: data.nativeLanguage,
+        secondLanguage: data.secondLanguage,
+        status: data.status,
+        Notes: data.Notes,
+        dateJoined: new Date(data.created_at).toDateString(),
+        EnglishProficiency: data.EnglishProficiency,
+        LanguageProficiency: data.LanguageProficiency,
+      };
+      return teacherObject
+    },
+    teacherHistory(){
+      const teacherHistory = this.teacher.statusUpdates.map(update => {
+      if (update.reason == null) {
+        update.reason = {
+          Reason: "_"
+        }
+      } 
       return {
+        id: update.StatusUpdateID,
         date: new Date(update.created_at).toDateString(),
         description: update.nextStatus.Description,
         status: update.nextStatus.StatusID,
+        reason: update.reason.Reason.split("_")[1],
       };
     });
-
-    this.teacherData = teacherObject;
-    this.teacherHistory = teacherHistory;
+    return teacherHistory.sort((a, b) => b.id - a.id)
+    },
+    latestReason(){
+      return this.teacherHistory[0].reason
+    },
+    teacher(){
+      const id = this.$route.params.id
+      const data = this.getTeacherByTeacherId(id)
+      return data 
+    }
   },
+  
 };
 </script>
 
