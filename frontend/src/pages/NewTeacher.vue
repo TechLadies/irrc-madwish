@@ -95,6 +95,7 @@
                 <b-field label="Second Language" class="half-width">
                   <b-autocomplete
                     v-model="SecondLanguage"
+                    @blur="checkSecondLanguage"
                     field="NativeLanguage"
                     ref="secondlanguagevalue"
                     :data="languages"
@@ -254,6 +255,27 @@ export default {
         }
       });
     },
+
+
+    checkSecondLanguage(){
+        this.languageExists = this.API_nativeLanguage.filter((option)=> {
+          return option.NativeLanguage.toLowerCase().includes(
+            this.SecondLanguage.toLowerCase()
+          );
+        });
+        this.checkLanguageExists = this.languageExists.length;
+        if(this.SecondLanguage !="" && this.checkLanguageExists !== 1){ 
+            this.$buefy.notification.open({
+            message: "Did you mean to add a new second language? Please use the 'Add New' function",
+            duration: 3000,
+            type: "is-warning",
+            position: "is-top",
+          });
+        }
+
+    },
+
+
 
     filteredLanguageDataArray(language = "") {
       this.languages = this.API_nativeLanguage.filter((option) => {
