@@ -11,16 +11,19 @@
           </b-taglist>
         </div>
         <div class="content">
-          <div class="content-title">MATCHED TO TEACHER</div>
-          <p>{{ teacherName }}</p>
+          <div v-if="isTeacher" class="content-title">MATCHED TO STUDENT</div>
+          <div v-else class="content-title">MATCHED TO TEACHER</div>
+          <p v-if="isTeacher">{{ studentName }}</p>
+          <p v-else>{{ teacherName }}</p>
         </div>
       </div>
 
       <div class="content">
         <div class="content-title">ACTION</div>
         <div class="buttons">
-          <Button label="Drop Out" @click.native="matchedToDroppedOut()"/>
-          <Button label="View Match" solid />
+          <Button label="Drop Out" @click.native="matchedToDroppedOut()" />
+          <Button v-if="isTeacher" label="Unmatch" solid />
+          <Button v-else label="View Match" solid />
         </div>
       </div>
     </div>
@@ -29,8 +32,8 @@
 
 <script>
 import Button from "./Button.vue";
-import ModalDroppedOut from "./../modals/ModalDroppedOut.vue"
-import { mapActions } from 'vuex'
+import ModalDroppedOut from "./../modals/ModalDroppedOut.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "StatusCardUnmatched",
@@ -43,28 +46,41 @@ export default {
       type: String,
       default: "No Teacher Assigned",
     },
+    studentName: {
+      type: String,
+      default: "No Student Assigned",
+    },
     studentID: {
       type: String,
-    }
+    },
+    teacherID: {
+      type: String,
+    },
+    isTeacher: {
+      type: Boolean,
+      default: false,
+    },
   },
-  methods: {   
-    ...mapActions([ 'updateStudentStatus' ]),
+  methods: {
+    ...mapActions(["updateStudentStatus"]),
     // TODO: Remove the Matched pair from the matching table (not created yet)
     matchedToDroppedOut() {
-      const previousStatusString = "MATCHED"
+      const previousStatusString = "MATCHED";
       this.$buefy.modal.open({
         parent: this,
         component: ModalDroppedOut,
         props: {
-          "studentID": this.studentID,
-          "previousStatusString": previousStatusString,
+          studentID: this.studentID,
+          teacherID: this.teacherID,
+          isTeacher: this.isTeacher,
+          previousStatusString: previousStatusString,
         },
         hasModalCard: true,
-        customClass: 'custom-class custom-class-2',
-        trapFocus: true
-      })
-    }
-  }
+        customClass: "custom-class custom-class-2",
+        trapFocus: true,
+      });
+    },
+  },
 };
 </script>
 

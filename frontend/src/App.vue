@@ -7,6 +7,7 @@
 <script>
 import Sidebar from "./components/Sidebar.vue";
 import { mapActions } from "vuex";
+import CreateNew from "./components/CreateNew.vue";
 
 const status = [
   { id: 1, label: "Screening", to: "/screening", active: false },
@@ -29,14 +30,19 @@ export default {
   },
   mounted() {
     this.getAllStudents();
-  },
-  mounted() {
-    this.getAllStudents();
+    this.getAllTeachers();
   },
   methods: {
-    ...mapActions(["getAllStudents"]),
+    ...mapActions(["getAllStudents", "getAllTeachers"]),
+    
     createNew() {
-      this.$router.push({ path: "/new-student" });
+      //this.$router.push({ path: "/new-student" });
+      this.$buefy.modal.open({
+                    parent: this,
+                    component: CreateNew,
+                    canCancel: [ 'escape', 'x' ],
+                    hasModalCard: true,
+                })
     },
   },
 };

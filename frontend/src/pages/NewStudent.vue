@@ -48,6 +48,7 @@
                   <b-field label="Native Language" class="half-width">
                      <b-autocomplete :value="nativeLanguage"
                         field= "NativeLanguage"
+                        v-model="NativeLanguage"
                         ref="languageComplete"
                         :data="languages"
                         placeholder="e.g. Bengali" 
@@ -106,6 +107,7 @@ export default {
           EnglishProficiency: '',
           file: null,
           Notes: '', 
+          NativeLanguage:'',
           selected: {
             NativeLanguage: ''
           },
@@ -222,6 +224,7 @@ export default {
         inputAttrs: {
           placeholder: 'e.g. Italian',
           maxlength: 255,
+          value: this.NativeLanguage,
         },
         confirmText: 'Add',
         onConfirm: async (value) => {

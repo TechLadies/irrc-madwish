@@ -1,22 +1,21 @@
 const express = require('express')
 const router = express.Router()
 // const debug = require('debug')('app:students')
-const students = require('../helpers/students')
 const statuses = require('../helpers/statuses.js')
 const statusUpdates = require('../helpers/statusUpdates.js')
 const { NotFoundError } = require('objection')
 
 // TODO: Handle errors
 
-/* POST multiple students to screening endpoint */
-// on Postman: http://localhost:3001/students/1
+/* POST multiple students to matching endpoint */
+// on Postman: http://localhost:3001/matching
 router.post('/', async (req, res) => {
   if (Array.isArray(req.body)) {
     // TODO: handle errors: Check if required fields are present
 
-    // All students have current status SCREENING and next status UNMATCHED
-    const currentStatus = await statuses.getStatusByStatusString('SCREENING')
-    const nextStatus = await statuses.getStatusByStatusString('UNMATCHED')
+    // All students have current status UNMATCHED and next status MATCHED
+    const currentStatus = await statuses.getStatusByStatusString('UNMATCHED')
+    const nextStatus = await statuses.getStatusByStatusString('MATCHED')
 
     const result = await Promise.all(req.body.map(async item => {
       // Check that item has UpdatedBy field
@@ -37,10 +36,7 @@ router.post('/', async (req, res) => {
       // Delete `UpdatedBy` field from each item
       delete item.UpdatedBy
 
-      statusUpdates.addStatusUpdate(statusUpdate)
-
-      // Update EnglishProficiency for each student asynchronously
-      return students.patchStudent(item.StudentID, item)
+      return statusUpdates.addStatusUpdate(statusUpdate)
     }))
 
     // Error handling
@@ -60,7 +56,7 @@ router.post('/', async (req, res) => {
     }
     return res.status(200).json(result)
   }
-  return res.status(500).send({
+  return res.status(422).send({
     message: 'Request should be an array',
     type: 'UnknownError'
   })
