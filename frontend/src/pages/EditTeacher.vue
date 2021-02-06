@@ -34,25 +34,25 @@
             <!--.prevent prevents the default submit behaviour and executes createTeacher instead -->
             <section>
               <b-field label="Name" class="half-width">
-                <b-input v-model="name" name="Name"></b-input>
+                <b-input v-model="teacherData.FullName" name="Name"></b-input>
               </b-field>
 
               <b-field label="Phone Number" class="half-width">
-                <b-input v-model="PhoneNumber" type="string" value="">
+                <b-input v-model="teacherData.PhoneNumber" type="string" value="">
                 </b-input>
               </b-field>
 
               <b-field label="Email Address" class="half-width">
-                <b-input v-model="Email" type="string" value=""> </b-input>
+                <b-input v-model="teacherData.Email" type="string" value=""> </b-input>
               </b-field>
 
               <b-field label="Source" class="half-width">
-                <b-input v-model="source" placeholder="Optional"> </b-input>
+                <b-input v-model="teacherData.Source" placeholder="Optional"> </b-input>
               </b-field>
               <b-field grouped>
                 <b-field label="Native Language" class="half-width">
                   <b-autocomplete
-                    v-model="nativeLanguage"
+                    v-model="teacherData.nativeLanguage.NativeLanguage"
                     field="NativeLanguage"
                     ref="languageComplete"
                     :data="languages"
@@ -60,7 +60,7 @@
                     @typing="filteredLanguageDataArray"
                     @select="
                       (option) =>
-                        (selected.NativeLanguage = option.NativeLanguage)
+                        (teacherData.nativeLanguage.NativeLanguage = option.NativeLanguage)
                     "
                   >
                     <template slot="header">
@@ -73,7 +73,7 @@
 
                 <b-field label="English Proficiency" class="half-width">
                   <b-select
-                    v-model="EnglishProficiency"
+                    v-model="teacherData.EnglishProficiency"
                     placeholder="Select one"
                     expanded
                   >
@@ -94,7 +94,7 @@
               <b-field grouped>
                 <b-field label="Second Language" class="half-width">
                   <b-autocomplete
-                    v-model="SecondLanguage"
+                    v-model="teacherData.secondLanguage.NativeLanguage"
                     field="NativeLanguage"
                     ref="secondlanguagevalue"
                     :data="languages"
@@ -102,7 +102,7 @@
                     @typing="filteredLanguageDataArray"
                     @select="
                       (option) =>
-                        (selected.SecondLanguage = option.NativeLanguage)
+                        (teacherData.secondLanguage.NativeLanguage = option.NativeLanguage)
                     "
                   >
                     <template slot="header">
@@ -115,7 +115,7 @@
 
                 <b-field label="Language Proficiency" class="half-width">
                   <b-select
-                    v-model="SecondLanguageProficiency"
+                    v-model="teacherData.LanguageProficiency"
                     placeholder="Select one"
                     expanded
                   >
@@ -135,7 +135,7 @@
 
               <b-field label="Notes" class="half-width">
                 <b-input
-                  v-model="Notes"
+                  v-model="teacherData.Notes"
                   maxlength="200"
                   type="textarea"
                   placeholder="Optional"
@@ -160,7 +160,7 @@
 
 <script>
 import Page from "../components/Page.vue";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {
   name: "NewTeacher",
@@ -170,33 +170,25 @@ export default {
 
   data() {
     return {
-      name: "",
-      PhoneNumber: "",
-      Email: "",
-      source: "",
-      EnglishProficiency: "",
-      SecondLanguageProficiency: "",
-      SecondLanguage: "",
-      Notes: "",
-      selected: {
-        NativeLanguage: "",
-        SecondLanguage: "",
-      },
-      nativeLanguage: "",
       languages: [],
       file: null,
+      teacherData: {
+        nativeLanguage: { NativeLanguage: '' },
+        secondLanguage: {NativeLanguage: ''}
+      }
+
     };
   },
   computed: {
-    ...mapGetters(["API_nativeLanguage"]),
-
+    ...mapGetters(["API_nativeLanguage", "getTeacherByTeacherId", "getAllTeachers"]),
+    ...mapState(["updateTeacherSuccess"]),
     // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
     formIsInvalid() {
-      const formFields = ["name", "PhoneNumber"].map((item) => this[item]);
       if (
-        this.selected === null ||
-        formFields.includes("") ||
-        this.selected?.NativeLanguage === ""
+        this.teacherData.nativeLanguage === null ||
+        this.teacherData.FullName === "" ||
+        this.teacherData.PhoneNumber === "" || 
+        this.teacherData.nativeLanguage.NativeLanguage === ""
       ) {
         return true;
       }
@@ -207,92 +199,9 @@ export default {
     file(val) {
       this.uploadFile();
     },
-  },
-
-  async mounted() {
-    this.getNativeLanguages();
-
-    // Fetch this teacher's data
-    const teacherData = {
-      TeacherID: 2,
-      PhoneNumber: "12345678",
-      Email: "email@email.com",
-      FullName: "Mrs. Teacher",
-      Source: "source",
-      NativeLanguageID: 35,
-      SecondLanguageID: 36,
-      EnglishProficiency: "Intermediate",
-      LanguageProficiency: "Intermediate",
-      Notes: "some notes here",
-      StatusID: 17,
-      created_at: "2020-12-05T06:46:54.761Z",
-      updated_at: "2020-12-05T06:46:54.761Z",
-      nativeLanguage: {
-        NativeLanguageID: 35,
-        NativeLanguage: "CHINESE",
-      },
-      status: {
-        StatusID: 17,
-        Description: "SCREENING",
-      },
-      statusUpdates: [
-        {
-          StatusUpdateID: 8,
-          StudentID: null,
-          PreviousStatusID: 18,
-          NextStatusID: 17,
-          UpdatedBy: "updatedbyXX",
-          created_at: "2020-12-05T06:46:54.770Z",
-          updated_at: "2020-12-05T06:46:54.770Z",
-          TeacherID: 2,
-          nextStatus: {
-            StatusID: 17,
-            Description: "SCREENING",
-          },
-        },
-      ],
-      secondLanguage: {
-        NativeLanguageID: 36,
-        NativeLanguage: "TAMIL",
-      },
-    };
-
-    // Prefill the form
-    this.prefillForm(teacherData);
-  },
-
-  methods: {
-    // Copies actions from store, allows you to use it as a native method in the component.
-    ...mapActions(["getNativeLanguages", "patchTeacher"]),
-    prefillForm(teacherData) {
-      this.name = teacherData.FullName;
-      this.PhoneNumber = teacherData.PhoneNumber;
-      this.Email = teacherData.Email;
-      this.source = teacherData.Source;
-      this.nativeLanguage = teacherData.nativeLanguage.NativeLanguage;
-      this.selected.NativeLanguage = teacherData.nativeLanguage.NativeLanguage;
-      this.SecondLanguage = teacherData.secondLanguage.NativeLanguage;
-      this.selected.SecondLanguage = teacherData.secondLanguage.NativeLanguage;
-      this.EnglishProficiency = teacherData.EnglishProficiency;
-      this.SecondLanguageProficiency = teacherData.LanguageProficiency;
-      this.Notes = teacherData.Notes;
-    },
-    updateTeacher() {
-      const teacherUpdate = {
-        PhoneNumber: this.PhoneNumber,
-        FullName: this.name,
-        Source: this.source,
-        Email: this.Email,
-        NativeLanguageString: this.selected.NativeLanguage,
-        SecondLanguageString: this.selected.SecondLanguage,
-        EnglishProficiency: this.EnglishProficiency,
-        LanguageProficiency: this.SecondLanguageProficiency,
-        Notes: this.Notes,
-      };
-
-      this.patchTeacher(teacherUpdate).then((response) => {
-        if (response.status < 400) {
-          this.$buefy.notification.open({
+    updateTeacherSuccess(value) {
+      if(value){
+        this.$buefy.notification.open({
             message: "Teacher Data Updated. <u>View profile</u>!",
             duration: 3000,
             type: "is-success",
@@ -302,16 +211,47 @@ export default {
           this.getNativeLanguages();
           setTimeout(() => {
             this.$router.push({ path: `/teachers` });
-          }, 5000);
-        } else {
-          this.$buefy.notification.open({
+          }, 2000);
+      }
+      else {
+        this.$buefy.notification.open({
             message: "Something went wrong. Please try again.",
             duration: 3000,
             type: "is-warning",
             position: "is-top",
           });
-        }
-      });
+      }
+    }
+  },
+
+  async mounted() {
+    // Fetch Native Languages
+    this.getNativeLanguages();
+    
+    // Fetch this teacher's data
+    const id = parseInt(this.$route.params.id)
+    this.teacherData = this.getTeacherByTeacherId(id)
+  },
+
+  methods: {
+    // Copies actions from store, allows you to use it as a native method in the component.
+    ...mapActions(["getNativeLanguages", "patchTeacher"]),
+    
+    updateTeacher() {
+      const teacherUpdate = {
+        TeacherID: this.teacherData.TeacherID,
+        PhoneNumber: this.teacherData.PhoneNumber,
+        FullName: this.teacherData.FullName,
+        Source: this.teacherData.Source,
+        Email: this.teacherData.Email,
+        NativeLanguageString: this.teacherData.nativeLanguage.NativeLanguage,
+        SecondLanguageString: this.teacherData.secondLanguage.NativeLanguage,
+        EnglishProficiency: this.teacherData.EnglishProficiency,
+        LanguageProficiency: this.teacherData.LanguageProficiency,
+        Notes: this.teacherData.Notes,
+      };
+
+      this.patchTeacher(teacherUpdate)
     },
 
     filteredLanguageDataArray(language = "") {
