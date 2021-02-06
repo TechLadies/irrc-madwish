@@ -4,7 +4,7 @@ const MUTATIONS = Object.freeze({
   SET_TEACHERS: "SET_TEACHERS",
   SET_UPDATE_TEACHER_SUCCESS: "SET_UPDATE_TEACHER_SUCCESS"
 });
-export const teacherState = { teachers: [], updateTeacherSuccess: false };
+export const teacherState = { teachers: [], updateTeacherSuccess: undefined };
 export const teacherActions = {
   async getAllTeachers({ commit }) {
     const response = await fetch("/api/teachers");
@@ -43,6 +43,9 @@ export const teacherActions = {
     else{
       commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, false)
     }
+  },
+  resetTeacherUpdateSuccess({commit}, value){
+    commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, value)
   },
 
   async updateTeacherStatus({ commit, dispatch }, { teacherID, previousStatusString, nextStatusString, updatedBy, reason }) {

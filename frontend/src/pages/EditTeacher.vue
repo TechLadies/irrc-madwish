@@ -200,7 +200,7 @@ export default {
       this.uploadFile();
     },
     updateTeacherSuccess(value) {
-      if(value){
+      if(value === true){
         this.$buefy.notification.open({
             message: "Teacher Data Updated. <u>View profile</u>!",
             duration: 3000,
@@ -213,7 +213,7 @@ export default {
             this.$router.push({ path: `/teachers` });
           }, 2000);
       }
-      else {
+      else if (value === false) {
         this.$buefy.notification.open({
             message: "Something went wrong. Please try again.",
             duration: 3000,
@@ -221,6 +221,8 @@ export default {
             position: "is-top",
           });
       }
+      this.resetTeacherUpdateSuccess(undefined)
+
     }
   },
 
@@ -235,7 +237,7 @@ export default {
 
   methods: {
     // Copies actions from store, allows you to use it as a native method in the component.
-    ...mapActions(["getNativeLanguages", "patchTeacher"]),
+    ...mapActions(["getNativeLanguages", "patchTeacher", "resetTeacherUpdateSuccess"]),
     
     updateTeacher() {
       const teacherUpdate = {
