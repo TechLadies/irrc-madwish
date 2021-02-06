@@ -9,9 +9,13 @@ const teacher = require("../models/teacher");
 
 router.get("/", async (req, res) => {
   const status = req.query.status;
+  const source = req.query.source;
+  const name = req.query.name;
   const result = await teachers.getAllTeachers({
     filters: {
       status,
+      source,
+      name
     },
   });
 

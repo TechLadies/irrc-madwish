@@ -14,14 +14,25 @@ const defaultOptions = {
 }
 exports.getAllTeachers = async function (options = defaultOptions) {
   const filterStatus = options.filters.status
+  const filterSource = options.filters.source
+  const filterName = options.filters.name
 
   let query = db.Teacher.query().withGraphJoined('[nativeLanguage, secondLanguage, status, statusUpdates.nextStatus]')
 
   if (filterStatus) {
     query = query
-      .where('status.Description', 'ilike', filterStatus)
+      .where('status.Description', 'ilike', `%${filterStatus}%`)
   }
 
+  if (filterSource){
+    query = query
+      .where('Source', 'ilike', `%${filterSource}%`)
+  }
+
+  if (filterName){
+    query = query
+      .where('FullName', 'ilike', `%${filterName}%`)
+  }
   try {
     const teachers = await query.select()
     return teachers
