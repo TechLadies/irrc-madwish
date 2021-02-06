@@ -27,7 +27,7 @@ export const studentActions = {
     },
 
     // Update student status
-    async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy, reason }) {
+    updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy, reason }) {
         // POST statusUpdate. Note that the POST statusUpdate endpoint also patches the student status
         // behind-the-scenes.
         const statusUpdateRequestOptions = {
@@ -50,10 +50,9 @@ export const studentActions = {
             if(response.status !== 200) {
                 throw new Error(response);
             }
-        })
-        .then(() => {
             dispatch('getAllStudents')
         })
+       
         .catch((err) => {
             console.error(err);
         });
