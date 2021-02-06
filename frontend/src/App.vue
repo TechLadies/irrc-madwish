@@ -32,13 +32,9 @@ export default {
     this.getAllStudents();
     this.getAllTeachers();
   },
-  // mounted() {
-  //   this.getAllStudents();
-  //   this.getAllTeachers();
-  // },
   methods: {
-    ...mapActions(["getAllStudents"]),
-    ...mapActions(["getAllTeachers"]),
+    ...mapActions(["getAllStudents", "getAllTeachers"]),
+    
     createNew() {
       //this.$router.push({ path: "/new-student" });
       this.$buefy.modal.open({

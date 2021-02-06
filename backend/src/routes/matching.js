@@ -7,8 +7,8 @@ const { NotFoundError } = require('objection')
 
 // TODO: Handle errors
 
-/* POST multiple students to screening endpoint */
-// on Postman: http://localhost:3001/students/1
+/* POST multiple students to matching endpoint */
+// on Postman: http://localhost:3001/matching
 router.post('/', async (req, res) => {
   if (Array.isArray(req.body)) {
     // TODO: handle errors: Check if required fields are present

@@ -446,9 +446,6 @@ export default {
       })
     }
   },
-  mounted() {
-    this.getAllTeachers()
-  }
 };
 
 </script>
