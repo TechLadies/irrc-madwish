@@ -30,12 +30,15 @@ export default {
   },
   mounted() {
     this.getAllStudents();
+    this.getAllTeachers();
   },
-  mounted() {
-    this.getAllStudents();
-  },
+  // mounted() {
+  //   this.getAllStudents();
+  //   this.getAllTeachers();
+  // },
   methods: {
     ...mapActions(["getAllStudents"]),
+    ...mapActions(["getAllTeachers"]),
     createNew() {
       //this.$router.push({ path: "/new-student" });
       this.$buefy.modal.open({
