@@ -21,8 +21,9 @@ export const teacherActions = {
 
       body: JSON.stringify(teacherData),
     };
-    await fetch("api/teachers", payload);
+    const response = await fetch("api/teachers", payload);
     dispatch("getAllTeachers");
+    return response
   },
   async patchTeacher({ dispatch }, teacherData){
 //to add PATCH endpoint when it is created in backend
