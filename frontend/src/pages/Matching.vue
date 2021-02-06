@@ -398,6 +398,10 @@ export default {
     },
     teachersData() {
       return this.teachers.map(teacher => {
+        if (teacher.secondLanguage === null) {
+          teacher.secondLanguage = {}
+          teacher.secondLanguage.SecondLanguage = ""
+        }
         return {
           ...teacher,
           NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
@@ -415,14 +419,14 @@ export default {
     PageHeader,
   },
   methods: {
-    ...mapActions(["getUnmatchedStudents", "getAllTeachers"]),
+    ...mapActions(["getUnmatchedStudents", "getAllTeachers", "patchUnmatchedStudents"]),
     addMatchedPair() {
       this.matchedPairs.push(
         {
           TeacherID: this.selectedTeacher.TeacherID,
           TeacherFullName: this.selectedTeacher.FullName,
           StudentID: this.selectedStudent.StudentID,
-          StudentFullName: this.selectedStudent.FullName,
+          StudentFullName: this.selectedStudent.FullName
         }
       )
       this.selectedStudent = {}
@@ -437,18 +441,48 @@ export default {
       this.$buefy.dialog.confirm({
         type: 'is-blue',
         message: 'The selected matches will be confirmed. All selected teachers matched will receive an email in their inbox',
+        onConfirm: () => {
+          const patchMatchesData = this.selectedMatches.map(item => {
+            return {
+              TeacherID: parseInt(item.TeacherID),
+              TeacherFullName: item.TeacherFullName,
+              StudentID: parseInt(item.StudentID),
+              StudentFullName: item.StudentFullName,
+              UpdatedBy: "IRRCAdmin",
+            }
+          })
+          this.patchUnmatchedStudents(patchMatchesData)
+        }
       })
     },
     confirmAll() {
       this.$buefy.dialog.confirm({
         type: 'is-blue',
         message: 'All matches will be confirmed. All teachers matched will receive an email in their inbox',
+        onConfirm: () => {
+          const patchMatchesData = this.matchedPairs.map(item => {
+            return {
+              TeacherID: parseInt(item.TeacherID),
+              TeacherFullName: item.TeacherFullName,
+              StudentID: parseInt(item.StudentID),
+              StudentFullName: item.StudentFullName,
+              UpdatedBy: "IRRCAdmin",
+              LastEmailDate: new Date('Feburary 17, 2021 03:24:00'),
+              MatchStatus: "Pending",
+              ConfirmedDate: new Date('Feburary 21, 2021 03:24:00'),
+            }
+          })
+          this.patchUnmatchedStudents(patchMatchesData)
+        }
       })
     }
   },
 };
 
 </script>
+
+
+
 
 
 

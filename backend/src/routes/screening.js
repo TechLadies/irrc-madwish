@@ -34,10 +34,11 @@ router.post('/', async (req, res) => {
         NextStatusID: nextStatus.StatusID,
         UpdatedBy: item.UpdatedBy
       }
-      // Delete `UpdatedBy` field from each item
-      delete item.UpdatedBy
 
       statusUpdates.addStatusUpdate(statusUpdate)
+
+      // Delete `UpdatedBy` field from each item so that `patchStudent` is valid
+      delete item.UpdatedBy
 
       // Update EnglishProficiency for each student asynchronously
       return students.patchStudent(item.StudentID, item)
