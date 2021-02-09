@@ -47,6 +47,7 @@ export const reasonActions = {
               return;
             }
             dispatch('getDroppedReasons')
+            dispatch('getAllStudents')
           }
         )
     },
