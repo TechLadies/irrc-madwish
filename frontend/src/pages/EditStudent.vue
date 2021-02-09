@@ -46,7 +46,7 @@
                 <b-field grouped>
 
                   <b-field label="Native Language" class="half-width">
-                     <b-autocomplete v-model="studentData.NativeLanguageString"
+                     <b-autocomplete :value="nativeLanguage"
                         field= "NativeLanguage"
                         ref="languageComplete"
                         :data="languages"
@@ -90,6 +90,8 @@
 <script>
 
 import Page from '../components/Page.vue'
+import {mapGetters, mapActions, mapState} from 'vuex'
+
 export default {
   name: 'EditStudent',
     components: {
@@ -109,82 +111,69 @@ export default {
           },
           studentData: {},
           languages: [],
-          API_nativeLanguage: []
-
       }
   },
-  computed: {
-    // If NativeLanguage is changed, we assign it this value 
+  computed: {    
+    ...mapGetters(['API_nativeLanguage', 'getStudentByStudentId']),
+    ...mapState(['updateStudentSuccess']),
     nativeLanguage(){
       return this.selected ? this.selected.NativeLanguage: ''
-    }
+    },
+
   },
   watch: {
     file (val){
       this.uploadFile() 
-    }
-  },
-
- async mounted() {
-    // Call API for Native Languages
-      await fetch("/api/nativeLanguages")
-        .then(response => response.json())
-        .then(result => this.API_nativeLanguage = result)
-      
-    // Call API for Student data
-      const id = this.$route.params.id
-      await fetch(`/api/students/${id}`)
-      .then(response => response.json())
-      .then(result => {
-        //transform Nativelanguage ID from int to string 
-        const value = {
-          FullName: result.FullName,
-          PhoneNumber: result.PhoneNumber,
-          Source: result.Source,
-          EnglishProficiency: result.EnglishProficiency,
-          Notes: result.Notes,
-          NativeLanguageString: result.nativeLanguage.NativeLanguage
-        }
-  
-
-        this.studentData = value;
-        });
-  },
-
-  methods: {
-    saveStudent(){
-      // HTTP PATCH to update student, changing specific field on backend.
-        const updateData = {...this.studentData}
-        const studentSave = {
-        method: "PATCH",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(
-          updateData 
-        )
-      }
-      const id = this.$route.params.id
-      fetch(`/api/students/${id}`, studentSave)
-        .then(response => {
-          if (response.status < 400) {
-            this.$buefy.notification.open({
+    },
+    updateStudentSuccess(value){
+      if(value === true){
+        this.$buefy.notification.open({
               message: 'Student saved. <u>View profile</u>!',
               duration: 3000,
               type: 'is-success',
               position: 'is-top',
             })
-            setTimeout(() => {this.$router.push({path: `/students/${id}`})}, 5000)} 
-          else {
-            this.$buefy.notification.open({ 
+        // Refresh NativeLanguage
+        this.getNativeLanguages()
+        setTimeout(() => {
+          this.$router.push(
+            {path: `/students/${this.studentData.StudentID}`})}, 3000)
+      } 
+      else if (value === false){
+         this.$buefy.notification.open({ 
               message: 'Something went wrong. Please try again.',
               duration: 3000, 
               type: 'is-warning',
               position: 'is-top'
             })
-          }
-       })
+      }
+      this.resetUpdateStudentSuccess(undefined)
+    }
+  },
+  async mounted(){
+   
+    // Call API for Native Languages
+      this.getNativeLanguages()
+    // Call API for Student data
+      const id = this.$route.params.id
+      const result = this.getStudentByStudentId(id)
+      this.studentData = {
+          FullName: result.FullName,
+          PhoneNumber: result.PhoneNumber,
+          Source: result.Source,
+          EnglishProficiency: result.EnglishProficiency,
+          Notes: result.Notes,
+          nativeLanguage: result.nativeLanguage.NativeLanguage,
+          StudentID: result.StudentID
+        }
+      this.selected.NativeLanguage = result.nativeLanguage.NativeLanguage
+  },
+
+  methods: {
+    ...mapActions(['getNativeLanguages', 'patchStudent', 'resetUpdateStudentSuccess']),
+    saveStudent(){
+        const updateData = {...this.studentData, NativeLanguageString: this.selected.NativeLanguage}
+        this.patchStudent(updateData)
     },
 
        
@@ -226,7 +215,7 @@ export default {
         },
         confirmText: 'Add',
         onConfirm: async (value) => {
-          this.studentData.NativeLanguage = value
+          this.selected.NativeLanguage = value
         }
       })
     },         

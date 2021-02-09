@@ -1,10 +1,10 @@
 const MUTATIONS = Object.freeze({
-    SET_STUDENTS: 'SET_STUDENTS'
+    SET_STUDENTS: 'SET_STUDENTS',
+    SET_UPDATE_STUDENT_SUCCESS: 'SET_UPDATE_STUDENT_SUCCESS'
   })
 
 
-
-export const studentState = {students: []} 
+export const studentState = {students: [], updateStudentSuccess: undefined} 
 export const studentActions = {
     async getAllStudents({commit}){
         const response = await fetch("/api/students")
@@ -26,6 +26,30 @@ export const studentActions = {
         return response     
     },
 
+    // PATCH Student Data to backend 
+    async patchStudent({dispatch, commit}, studentData){
+        const patchStudent = {
+            method: "PATCH",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+              studentData 
+            )
+          }
+        const response = await fetch(`/api/students/${studentData.StudentID}`, patchStudent)
+        if(response.status === 200){
+            dispatch("getAllStudents")
+            commit('SET_UPDATE_STUDENT_SUCCESS', true)
+        }
+        else{
+            commit('SET_UPDATE_STUDENT_SUCCESS', false)
+        }
+    },
+    resetUpdateStudentSuccess({commit}, value){
+        commit(MUTATIONS.SET_UPDATE_STUDENT_SUCCESS, value)
+    },
     // Update student status
     async updateStudentStatus({ commit, dispatch }, { studentID, previousStatusString, nextStatusString, updatedBy, reason }) {
         // POST statusUpdate. Note that the POST statusUpdate endpoint also patches the student status
@@ -86,13 +110,17 @@ export const studentActions = {
         )
     },
 }
-
 export const studentMutations = {
     [MUTATIONS.SET_STUDENTS](state, students){
         state.students = students
+    },
+    [MUTATIONS.SET_UPDATE_STUDENT_SUCCESS](state, value){
+        // sets updateStudentSuccess to true
+        state.updateStudentSuccess = value
     }
 } 
 export const studentGetters = {
     students: (state) => state.students
+
 } 
 
