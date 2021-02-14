@@ -472,7 +472,8 @@ export default {
               ConfirmedDate: new Date('Feburary 21, 2021 03:24:00'),
             }
           })
-          this.patchUnmatchedStudents(patchMatchesData)
+          this.patchUnmatchedStudents(patchMatchesData);
+          this.$router.go(0);
         }
       })
     }
