@@ -77,15 +77,15 @@
                     placeholder="Select one"
                     expanded
                   >
-                    <option value="No">No (Unable to understand at all)</option>
-                    <option value="Little">
-                      Little (Able to understand simple words)
-                    </option>
+                    <option value="Little">Little (Able to understand simple words)</option>
                     <option value="Simple">
                       Simple (Able to speak full sentences)
                     </option>
                     <option value="Intermediate">
                       Intermediate (Able to understand simple words)
+                    </option>
+                    <option value="Fluent">
+                      Fluent (Able to engage in a conversation)
                     </option>
                   </b-select>
                 </b-field>
@@ -119,15 +119,15 @@
                     placeholder="Select one"
                     expanded
                   >
-                    <option value="No">No (Unable to understand at all)</option>
-                    <option value="Little">
-                      Little (Able to understand simple words)
-                    </option>
+                    <option value="Little">Little (Able to understand simple words)</option>
                     <option value="Simple">
                       Simple (Able to speak full sentences)
                     </option>
                     <option value="Intermediate">
                       Intermediate (Able to understand simple words)
+                    </option>
+                    <option value="Fluent">
+                      Fluent (Able to engage in a conversation)
                     </option>
                   </b-select>
                 </b-field>
