@@ -49,6 +49,26 @@
               <b-field label="Source" class="half-width">
                 <b-input v-model="source" placeholder="Optional"> </b-input>
               </b-field>
+
+                <b-field label="English Proficiency" class="half-width">
+                  <b-select
+                    v-model="EnglishProficiency"
+                    placeholder="Select one"
+                    expanded
+                  >
+                    <option value="Little">Little (Able to understand simple words)</option>
+                    <option value="Simple">
+                      Simple (Able to speak full sentences)
+                    </option>
+                    <option value="Intermediate">
+                      Intermediate (Able to understand simple words)
+                    </option>
+                    <option value="Fluent">
+                      Fluent (Able to engage in a conversation)
+                    </option>
+                  </b-select>
+                </b-field>
+
               <b-field grouped>
                 <b-field label="Native Language" class="half-width">
                   <b-autocomplete
@@ -71,9 +91,9 @@
                   </b-autocomplete>
                 </b-field>
 
-                <b-field label="English Proficiency" class="half-width">
+                <b-field label="Native Language Proficiency" class="half-width">
                   <b-select
-                    v-model="EnglishProficiency"
+                    v-model="NativeLanguageProficiency"
                     placeholder="Select one"
                     expanded
                   >
@@ -89,6 +109,8 @@
                     </option>
                   </b-select>
                 </b-field>
+
+
               </b-field>
 
               <b-field grouped>
@@ -111,25 +133,6 @@
                       </a>
                     </template>
                   </b-autocomplete>
-                </b-field>
-
-                <b-field label="Language Proficiency" class="half-width">
-                  <b-select
-                    v-model="SecondLanguageProficiency"
-                    placeholder="Select one"
-                    expanded
-                  >
-                    <option value="Little">Little (Able to understand simple words)</option>
-                    <option value="Simple">
-                      Simple (Able to speak full sentences)
-                    </option>
-                    <option value="Intermediate">
-                      Intermediate (Able to understand simple words)
-                    </option>
-                    <option value="Fluent">
-                      Fluent (Able to engage in a conversation)
-                    </option>
-                  </b-select>
                 </b-field>
               </b-field>
 
@@ -175,7 +178,7 @@ export default {
       Email: "",
       source: "",
       EnglishProficiency: "",
-      SecondLanguageProficiency: "",
+      NativeLanguageProficiency: "",
       SecondLanguage: "",
       file: null,
       Notes: "",
@@ -226,7 +229,7 @@ export default {
         NativeLanguageString: this.selected.NativeLanguage,
         SecondLanguageString: this.selected.SecondLanguage,
         EnglishProficiency: this.EnglishProficiency,
-        LanguageProficiency: this.SecondLanguageProficiency,
+        LanguageProficiency: this.NativeLanguageProficiency,
         Notes: this.Notes,
         StatusString: "SCREENING",
       };
