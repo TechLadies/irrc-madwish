@@ -180,7 +180,7 @@ export default {
       Email: "",
       source: "",
       EnglishProficiency: "",
-      NativeLanguageProficiency: "",
+      SecondLanguageProficiency: "",
       SecondLanguage: "",
       file: null,
       Notes: "",
@@ -231,7 +231,7 @@ export default {
         NativeLanguageString: this.selected.NativeLanguage,
         SecondLanguageString: this.selected.SecondLanguage,
         EnglishProficiency: this.EnglishProficiency,
-        LanguageProficiency: this.NativeLanguageProficiency,
+        LanguageProficiency: this.SecondLanguageProficiency,
         Notes: this.Notes,
         StatusString: "SCREENING",
       };
