@@ -16,14 +16,14 @@ const deleteMatches = async ({field, id, nextStatusString})=>{
     const nextStatus = await statuses.getStatusByStatusString(nextStatusString)
     if (statusDeleteMatch.includes(nextStatus.Description)){
       await db.Match.query()
-        .patch({'isDeleted': true})
+        .delete()
         .where(field, id)
   }
 }
 // Req body should include TeacherID 
 router.post('/teacher', async (req, res) => {
     const body = req.body 
-    await deleteMatches({field: "TeacherID", id: body.TeacherID, nextStatusString: body.nextStatusString})
+    await deleteMatches({field: "TeacherID", id: body.TeacherID, nextStatusString: body.NextStatusString})
     return res.json(200, "successful")
 
 })
@@ -31,7 +31,7 @@ router.post('/teacher', async (req, res) => {
 // Delete student-teacher (1:1) match when you cilck Unmatch/Dropped Out from a student profile
 router.post('/student', async (req, res) => {
   const body = req.body 
-  await deleteMatches({field: "StudentID", id: body.StudentID, nextStatusString: body.nextStatusString})
+  await deleteMatches({field: "StudentID", id: body.StudentID, nextStatusString: body.NextStatusString})
   return res.json(200, "successful")
 
 })

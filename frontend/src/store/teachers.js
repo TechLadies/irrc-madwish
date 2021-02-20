@@ -82,6 +82,19 @@ export const teacherActions = {
             throw new Error(response);
         }
         dispatch('getAllTeachers')
+        // Call deletion API 
+        fetch('/api/matches/teacher', {
+          method: "POST",
+          headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+          TeacherID: teacherID,
+          NextStatusString: nextStatusString,
+          })
+        })
+        // TODO: Call matches API after this to refresh
     })
     .catch((err) => {
         console.error(err);
