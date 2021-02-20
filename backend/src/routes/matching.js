@@ -1,13 +1,14 @@
 const express = require('express')
 const router = express.Router()
 // const debug = require('debug')('app:students')
-const statuses = require('../helpers/statuses.js')
-const statusUpdates = require('../helpers/statusUpdates.js')
+const teachers = require('../helpers/teachers')
+const statuses = require('../helpers/statuses')
+const statusUpdates = require('../helpers/statusUpdates')
 const { NotFoundError } = require('objection')
 
 // TODO: Handle errors
 
-/* POST multiple students to matching endpoint */
+/* POST multiple student-teacher pairs to matching endpoint */
 // on Postman: http://localhost:3001/matching
 router.post('/', async (req, res) => {
   if (Array.isArray(req.body)) {
@@ -25,18 +26,32 @@ router.post('/', async (req, res) => {
         })
       }
 
-      // Update status for each student asynchronously
       // Construct statusUpdate
-      const statusUpdate = {
-        StudentID: item.StudentID,
+      const studentStatusUpdate = {
+        StudentID: parseInt(item.StudentID),
         PreviousStatusID: currentStatus.StatusID,
         NextStatusID: nextStatus.StatusID,
         UpdatedBy: item.UpdatedBy
       }
-      // Delete `UpdatedBy` field from each item
-      delete item.UpdatedBy
 
-      return statusUpdates.addStatusUpdate(statusUpdate)
+      const teacher = await teachers.getTeacherById(item.TeacherID)
+
+      const teacherStatusUpdate = {
+        TeacherID: parseInt(item.TeacherID),
+        PreviousStatusID: teacher.StatusID,
+        NextStatusID: nextStatus.StatusID,
+        UpdatedBy: item.UpdatedBy
+      }
+
+      const match = {
+        StudentStatusUpdate: studentStatusUpdate,
+        TeacherStatusUpdate: teacherStatusUpdate,
+        LastEmailDate: item.LastEmailDate,
+        MatchStatus: item.MatchStatus,
+        ConfirmedDate: item.ConfirmedDate
+      }
+
+      return statusUpdates.addMatchUpdate(match)
     }))
 
     // Error handling
