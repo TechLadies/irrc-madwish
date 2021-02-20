@@ -34,13 +34,20 @@ import {
   reasonMutations,
   reasonState
 } from "./store/reasons.js";
+import {
+  matchesGetters,
+  matchesActions,
+  matchesMutations,
+  matchesState
+} from "./store/matches.js";
 
 Vue.use(Vuex);
 
 // Create enum style variables (to reduce typo errors)
 const MUTATIONS = Object.freeze({
   SET_STUDENTS: "SET_STUDENTS",
-  SET_TEACHERS: "SET_TEACHERS"
+  SET_TEACHERS: "SET_TEACHERS",
+  SET_MATCHES: "SET_MATCHES",
 });
 
 export default new Vuex.Store({
@@ -50,7 +57,8 @@ export default new Vuex.Store({
     ...teacherState,
     ...screeningState,
     ...matchingState,
-    ...reasonState
+    ...reasonState,
+    ...matchesState,
   },
   mutations: {
     ...studentMutations,
@@ -58,7 +66,8 @@ export default new Vuex.Store({
     ...teacherMutations,
     ...screeningMutations,
     ...matchingMutations,
-    ...reasonMutations
+    ...reasonMutations,
+    ...matchesMutations,
   },
   actions: {
     ...studentActions,
@@ -66,13 +75,15 @@ export default new Vuex.Store({
     ...teacherActions,
     ...screeningActions,
     ...matchingActions,
-    ...reasonActions
+    ...reasonActions,
+    ...matchesActions
   },
   getters: {
     ...studentGetters,
     ...nativeLanguageGetters,
     ...teacherGetters,
     ...reasonGetters,
+    ...matchesGetters,
     screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING"),
     unmatchedStudents: (state) => state.students.filter((student) => student.status.Description === "UNMATCHED"),
     getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id),

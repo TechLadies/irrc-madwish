@@ -4,6 +4,8 @@ const db = require("../models/index");
 const statuses = require("../helpers/statuses");
 const statusUpdates = require("../helpers/statusUpdates.js");
 
+const matches = require('../helpers/matches')
+
 /* GET matches listing. */
 router.get("/", async (req, res) => {
   const matches = await db.Match.query().select(
