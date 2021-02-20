@@ -2,8 +2,9 @@ import Vuex from "vuex";
 
 const MUTATIONS = Object.freeze({
   SET_TEACHERS: "SET_TEACHERS",
+  SET_UPDATE_TEACHER_SUCCESS: "SET_UPDATE_TEACHER_SUCCESS"
 });
-export const teacherState = { teachers: [] };
+export const teacherState = { teachers: [], updateTeacherSuccess: undefined };
 export const teacherActions = {
   async getAllTeachers({ commit }) {
     const response = await fetch("/api/teachers");
@@ -25,8 +26,27 @@ export const teacherActions = {
     dispatch("getAllTeachers");
     return response
   },
-  async patchTeacher({ dispatch }, teacherData){
-//to add PATCH endpoint when it is created in backend
+  async patchTeacher({ dispatch, commit}, teacherData){
+    const payload = {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(teacherData),
+    };
+    const result = await fetch(`api/teachers/${teacherData.TeacherID}`, payload);
+    if(result.status < 400){
+      commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, true)
+      dispatch("getAllTeachers")
+
+    }
+    else{
+      commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, false)
+    }
+  },
+  resetTeacherUpdateSuccess({commit}, value){
+    commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, value)
   },
 
   async updateTeacherStatus({ commit, dispatch }, { teacherID, previousStatusString, nextStatusString, updatedBy, reason }) {
@@ -83,9 +103,16 @@ export const teacherMutations = {
   [MUTATIONS.SET_TEACHERS](state, teachers) {
     state.teachers = teachers;
   },
+  [MUTATIONS.SET_UPDATE_TEACHER_SUCCESS](state, value){
+    state.updateTeacherSuccess = value;
+  }
+
 };
 export const teacherGetters = {
   teachers(state) {
     return state.teachers;
   },
+  getTeacherByTeacherId:(state) => (id) => {
+    return state.teachers.find(teacher => teacher.TeacherID == id)
+  } 
 };
