@@ -90,27 +90,6 @@
                     </template>
                   </b-autocomplete>
                 </b-field>
-
-                <b-field label="Native Language Proficiency" class="half-width">
-                  <b-select
-                    v-model="NativeLanguageProficiency"
-                    placeholder="Select one"
-                    expanded
-                  >
-                    <option value="Little">Little (Able to understand simple words)</option>
-                    <option value="Simple">
-                      Simple (Able to speak full sentences)
-                    </option>
-                    <option value="Intermediate">
-                      Intermediate (Able to understand simple words)
-                    </option>
-                    <option value="Fluent">
-                      Fluent (Able to engage in a conversation)
-                    </option>
-                  </b-select>
-                </b-field>
-
-
               </b-field>
 
               <b-field grouped>
@@ -134,6 +113,29 @@
                     </template>
                   </b-autocomplete>
                 </b-field>
+
+
+                <b-field label="Second Language Proficiency" class="half-width">
+                  <b-select
+                    v-model="SecondLanguageProficiency"
+                    placeholder="Select one"
+                    expanded
+                  >
+                    <option value="Little">Little (Able to understand simple words)</option>
+                    <option value="Simple">
+                      Simple (Able to speak full sentences)
+                    </option>
+                    <option value="Intermediate">
+                      Intermediate (Able to understand simple words)
+                    </option>
+                    <option value="Fluent">
+                      Fluent (Able to engage in a conversation)
+                    </option>
+                  </b-select>
+                </b-field>
+
+
+
               </b-field>
 
               <b-field label="Notes" class="half-width">
