@@ -100,9 +100,8 @@ export default {
           nextStatusString: nextStatusString,
           updatedBy: updatedBy,
           reason: "DROPPED_" + this.reason,
-        }).then(() => {
-          +this.$emit("close");
         });
+        this.$emit("close")
       } else {
         this.updateStudentStatus({
           studentID: studentID,
@@ -128,18 +127,17 @@ export default {
         onConfirm: async (value) => {
           this.selected.Reason = value;
           this.addDroppedReason(this.selected.Reason);
-          // // TODO: notification on successful dispatch
-          // .then(() => {
-          //     this.$buefy.notification.open({
-          //         message: 'New reason added.',
-          //         duration: 3000,
-          //         type: 'is-success',
-          //         position: 'is-top',
-          //     })
-          // })
         },
       });
     },
   },
 };
 </script>
+<style>
+.modal-card-body{
+    width: auto
+}
+.modal-card-foot{
+    width: auto
+}
+</style>

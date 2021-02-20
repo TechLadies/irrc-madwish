@@ -61,6 +61,10 @@ router.get('/:id', async (req, res) => {
 
 /* POST students listing */
 router.post('/', async (req, res) => {
+  // If EnglishProficiency is empty
+  if (!req.body.EnglishProficiency || req.body.EnglishProficiency === "") {
+    delete req.body.EnglishProficiency
+  }
   // If request does not contain StatusID
   if (req.body.StatusID == null) {
     let statusString
@@ -142,7 +146,10 @@ router.patch('/:id', async (req, res) => {
       })
     }
   }
-
+  // If EnglishProficiency is empty, delete it from the request body
+  if (!req.body.EnglishProficiency || req.body.EnglishProficiency === "") {
+    delete req.body.EnglishProficiency
+  }
   // If request does not contain StatusID and contains a StatusString
   if (req.body.StatusID == null && req.body.StatusString != null) {
     const statusString = req.body.StatusString

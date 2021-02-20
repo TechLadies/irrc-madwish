@@ -217,7 +217,6 @@ export default {
     },
 
 
-
     showAddLanguage() {
       this.$buefy.dialog.prompt({
         message: `Add new language`,
