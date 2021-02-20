@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
       const teacher = await teachers.getTeacherById(item.TeacherID)
 
       const teacherStatusUpdate = {
-        TeacherID: item.TeacherID,
+        TeacherID: parseInt(item.TeacherID),
         PreviousStatusID: teacher.StatusID,
         NextStatusID: nextStatus.StatusID,
         UpdatedBy: item.UpdatedBy
