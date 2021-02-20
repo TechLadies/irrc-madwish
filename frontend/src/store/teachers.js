@@ -50,23 +50,9 @@ export const teacherActions = {
   },
 
   async updateTeacherStatus(
-    { commit, dispatch },
+    { dispatch },
     { teacherID, previousStatusString, nextStatusString, updatedBy, reason }
   ) {
-    // PATCH student
-    const teacherRequestOptions = {
-      method: "PATCH",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        TeacherID: teacherID,
-        PreviousStatusString: previousStatusString,
-        NextStatusString: nextStatusString,
-      }),
-    };
-
     // POST statusUpdate
     const statusUpdateRequestOptions = {
       method: "POST",
@@ -83,11 +69,13 @@ export const teacherActions = {
       }),
     };
 
-    fetch("/api/statusUpdates", statusUpdateRequestOptions)
+    return fetch("/api/statusUpdates", statusUpdateRequestOptions)
       .then((response) => {
         if (response.status !== 200) {
           throw new Error(response);
         }
+      })
+      .then(() => {
         dispatch("getAllTeachers");
         // Call deletion API
         fetch("/api/matches/unmatch-teacher", {

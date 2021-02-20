@@ -5,44 +5,6 @@
     </PageHeader>
 
     <section>
-      <b-table
-        :data="teachersData"
-        :selected.sync="selected"
-        @dblclick="goToTeacher"
-      >
-        <b-table-column
-          field="created_at"
-          label="Date Joined"
-          width="120"
-          searchable
-          sortable
-        >
-          <template slot="searchable" slot-scope="props">
-            <b-tooltip label="Search: YYYY-MM-DD">
-              <b-input
-                v-model="props.filters[props.column.field]"
-                icon="magnify"
-                size="is-small"
-              />
-            </b-tooltip>
-          </template>
-          <template v-slot="props">
-            <span style="font-size: 14px">
-              {{
-                new Date(props.row.created_at)
-                  .toLocaleDateString("en-US", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })
-                  .replace(",", " ")
-              }}
-            </span>
-          </template>
-        </b-table-column>
-      </b-table>
-    </section>
-    <section>
       <b-table :data="teachersData">
         <b-table-column
           field="created_at"
@@ -169,7 +131,7 @@ export default {
         };
       });
     },
-    ...mapGetters(["teachers", "suggestedTeachers"]),
+    ...mapGetters(["teachers"]),
     data() {
       return {
         selected: {},

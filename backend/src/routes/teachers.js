@@ -4,8 +4,7 @@ const router = express.Router();
 const students = require("../helpers/students");
 const teachers = require("../helpers/teachers");
 
-const { UniqueViolationError } = require("objection");
-const { NotFoundError } = require("objection");
+const { UniqueViolationError, NotFoundError } = require("objection");
 const teacher = require("../models/teacher");
 
 router.get("/", async (req, res) => {
