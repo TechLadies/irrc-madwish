@@ -2,7 +2,7 @@
   <Page>
     <div class="container">
       <div class="Title">
-        <b class="newStudent">All Students</b>
+        <b>All Students</b>
       </div>
       <!--start of table -->
       <section>
@@ -11,6 +11,8 @@
           :sort-icon="sortIcon"
           :sort-icon-size="sortIconSize"
           :sortDirection="sortDirection"
+          :selected.sync="selected"
+          @dblclick="goToStudent"
         >
           <!-- date column -->
 
@@ -176,7 +178,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      selected: null,
+      selected: {},
       sortIcon: "arrow-up",
       sortIconSize: "is-small",
       sortDirection: "asc",
@@ -229,6 +231,9 @@ export default {
   },
   methods: {
     ...mapActions(["getAllStudents"]),
+    goToStudent() {
+      this.$router.push({ path: `/students/${this.selected.StudentID}` })
+    }
   },
   mounted() {
     this.getAllStudents();
