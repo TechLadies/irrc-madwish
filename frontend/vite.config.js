@@ -1,6 +1,6 @@
-import { createVuePlugin } from 'vite-plugin-vue2'
+const { createVuePlugin } = require('vite-plugin-vue2')
 
-export default {
+module.exports = {
   alias: {
     'vue': 'vue/dist/vue.esm.js'
   },
