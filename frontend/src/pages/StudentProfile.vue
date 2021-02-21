@@ -4,6 +4,7 @@
       <div class="student-profile-left">
         <ProfileCard
           v-bind:profile="{
+            id: studentData.StudentID,
             name: studentData.FullName,
             contact: studentData.PhoneNumber,
             source: studentData.Source,

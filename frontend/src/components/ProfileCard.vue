@@ -1,6 +1,9 @@
 <template>
   <div class="card">
-    <div class="edit-container">Edit</div>
+    <div class="edit-container">
+      <router-link v-if="isTeacher" :to="'/edit-teacher/' + profile.id">Edit</router-link>
+      <router-link v-else :to="'/edit-student/' + profile.id">Edit</router-link>
+    </div>
     <div class="profile-grid">
       <img v-if="isTeacher" src="../assets/teacher.png" />
       <img v-else src="../assets/images/student.png" />
@@ -81,6 +84,7 @@ export default {
       type: Object,
       default: function () {
         return {
+          id: "0",
           name: "Default Name",
           contact: "9123 4567",
           dateJoined: "Sept 07 2020",
