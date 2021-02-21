@@ -127,8 +127,8 @@ export default {
     },
     updateStudentSuccess(value){
       if(value === true){
-        this.$buefy.notification.open({
-              message: 'Student saved. <u>View profile</u>!',
+        this.$buefy.toast.open({
+              message: `Student saved. <u><a href="/students/${this.studentData.StudentID}">View profile</a></u>!`,
               duration: 3000,
               type: 'is-success',
               position: 'is-top',
