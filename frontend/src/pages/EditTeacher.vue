@@ -210,7 +210,7 @@ export default {
           // refreshes state
           this.getNativeLanguages();
           setTimeout(() => {
-            this.$router.push({ path: `/teachers` });
+            this.$router.push({ path: `/teachers/${this.teacherData.TeacherID}` });
           }, 2000);
       }
       else if (value === false) {
