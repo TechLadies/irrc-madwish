@@ -1,32 +1,32 @@
 <template>
   <div class="card">
     <div class="edit-container">Edit</div>
-    <div class="student-grid">
+    <div class="profile-grid">
       <img v-if="isTeacher" src="../assets/teacher.png" />
       <img v-else src="../assets/images/student.png" />
-      <div class="student-label" v-if="isTeacher">Teacher</div>
-      <div class="student-label" v-else>Student</div>
-      <div class="student-main">{{ studentInfo.studentName }}</div>
-      <div class="student-main">{{ studentInfo.studentContact }}</div>
+      <div class="profile-label" v-if="isTeacher">Teacher</div>
+      <div class="profile-label" v-else>Student</div>
+      <div class="profile-main">{{ profile.name }}</div>
+      <div class="profile-main">{{ profile.contact }}</div>
       <div>
-        <div class="student-label-small padding-large">Date Joined</div>
-        <div class="student-detail">{{ studentInfo.dateJoined }}</div>
+        <div class="profile-label-small padding-large">Date Joined</div>
+        <div class="profile-detail">{{ profile.dateJoined }}</div>
       </div>
       <div>
-        <div class="student-label-small padding-large">Source</div>
-        <div class="student-detail">{{ studentInfo.source }}</div>
+        <div class="profile-label-small padding-large">Source</div>
+        <div class="profile-detail">{{ profile.source }}</div>
       </div>
       <div>
-        <div class="student-label-small padding-small">Native Language</div>
-        <div class="student-detail">{{ studentInfo.nativeLanguage }}</div>
+        <div class="profile-label-small padding-small">Native Language</div>
+        <div class="profile-detail">{{ profile.nativeLanguage }}</div>
       </div>
       <div>
-        <div class="student-label-small padding-small">English Proficiency</div>
+        <div class="profile-label-small padding-small">English Proficiency</div>
         <div>
           <b-select
             v-if="
-              studentInfo.status.toUpperCase() === 'SCREENING' &&
-              studentInfo.proficiencyLevel == null
+              profile.status.toUpperCase() === 'SCREENING' &&
+              profile.proficiencyLevel == null
             "
             placeholder="Select Proficiency"
             @change.native="selectedEnglishProficiency"
@@ -42,25 +42,25 @@
               Intermediate - Able to carry conversations
             </option>
           </b-select>
-          <div v-else class="student-detail">
-            {{ studentInfo.proficiencyLevel }}
+          <div v-else class="profile-detail">
+            {{ profile.proficiencyLevel }}
           </div>
         </div>
       </div>
       <div>
-        <div class="student-label-small padding-small" v-if="isTeacher">
+        <div class="profile-label-small padding-small" v-if="isTeacher">
           Second Language
         </div>
-        <div class="student-detail" v-if="isTeacher">
-          {{ teacherInfo.secondLanguage }}
+        <div class="profile-detail" v-if="isTeacher">
+          {{ profile.secondLanguage }}
         </div>
       </div>
       <div>
-        <div class="student-label-small padding-small" v-if="isTeacher">
+        <div class="profile-label-small padding-small" v-if="isTeacher">
           Language Proficiency
         </div>
-        <div class="student-detail" v-if="isTeacher">
-          {{ teacherInfo.languageProficiency }}
+        <div class="profile-detail" v-if="isTeacher">
+          {{ profile.languageProficiency }}
         </div>
       </div>
     </div>
@@ -68,34 +68,27 @@
     <hr />
     <div class="notes-label">Notes</div>
     <div class="notes-text">
-      {{ studentInfo.notes }}
+      {{ profile.notes }}
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "StudentProfileCard",
+  name: "ProfileCard",
   props: {
-    studentInfo: {
+    profile: {
       type: Object,
       default: function () {
         return {
-          studentName: "Default Name",
-          studentContact: "9123 4567",
+          name: "Default Name",
+          contact: "9123 4567",
           dateJoined: "Sept 07 2020",
           source: "Rotary",
           nativeLanguage: "Bangla",
           notes: "Dummy Text",
           status: "Screening",
           proficiencyLevel: "Little (able to understand simple words)",
-        };
-      },
-    },
-    teacherInfo: {
-      type: Object,
-      default: function () {
-        return {
           secondLanguage: "Bangla",
           languageProficiency: "Intermediate",
         };
@@ -123,7 +116,7 @@ export default {
   text-align: right;
   color: #00488f;
 }
-.student-grid {
+.profile-grid {
   display: grid;
   grid-template-columns: 180px 1fr;
   grid-template-rows: min-content 38px repeat(3, min-content);
@@ -133,7 +126,7 @@ export default {
     grid-row: span 3;
   }
 
-  .student-label {
+  .profile-label {
     font-size: 12px;
     color: #59666e;
     text-transform: uppercase;
@@ -141,7 +134,7 @@ export default {
     padding-bottom: 12px;
   }
 
-  .student-main {
+  .profile-main {
     font-size: 24px;
     font-weight: 700;
     color: #12171a;
@@ -154,7 +147,7 @@ export default {
   .padding-small {
     padding-top: 24px;
   }
-  .student-label-small {
+  .profile-label-small {
     font-size: 14px;
     font-weight: 500;
     color: #59666e;
@@ -163,7 +156,7 @@ export default {
     padding-bottom: 2px;
   }
 
-  .student-detail {
+  .profile-detail {
     font-size: 16px;
     font-weight: 400;
     color: #12171a;
