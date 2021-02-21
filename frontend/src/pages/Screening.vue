@@ -37,6 +37,8 @@
           checkable
           :checkbox-position="checkboxPosition"
           :is-row-checkable="(row) => row.EnglishProficiency !== null"
+          :selected.sync="selected"
+          @dblclick="goToStudent"
         >
           <!-- Student ID column -->
 
@@ -106,7 +108,7 @@ import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
-      selected: null,
+      selected: {},
       sortIcon: "arrow-up",
       sortIconSize: "is-small",
       sortDirection: "asc",
@@ -182,6 +184,9 @@ export default {
           this.patchScreeningStudents(patchStudentsData)
         }
       }) 
+    },
+    goToStudent() {
+      this.$router.push({ path: `/students/${this.selected.StudentID}` })
     }
   }
 };
