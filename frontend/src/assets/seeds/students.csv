@@ -1,0 +1,7 @@
+FullName,PhoneNumber,Source,Notes,NativeLanguageString
+student1,90000001,source1,notes1,Malayalam
+student2,90000002,source2,notes2,Hindi
+student3,90000003,source3,,Chinese
+student4,90000004,source1,notes4,Malayalam
+student5,90000005,source2,notes5,Hindi
+student6,90000006,source3,,Chinese
