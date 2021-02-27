@@ -50,24 +50,26 @@
                 <b-input v-model="source" placeholder="Optional"> </b-input>
               </b-field>
 
-                <b-field label="English Proficiency" class="half-width">
-                  <b-select
-                    v-model="EnglishProficiency"
-                    placeholder="Select one"
-                    expanded
-                  >
-                    <option value="Little">Little (Able to understand simple words)</option>
-                    <option value="Simple">
-                      Simple (Able to speak full sentences)
-                    </option>
-                    <option value="Intermediate">
-                      Intermediate (Able to understand simple words)
-                    </option>
-                    <option value="Fluent">
-                      Fluent (Able to engage in a conversation)
-                    </option>
-                  </b-select>
-                </b-field>
+              <b-field label="English Proficiency" class="half-width">
+                <b-select
+                  v-model="EnglishProficiency"
+                  placeholder="Select one"
+                  expanded
+                >
+                  <option value="Little">
+                    Little (Able to understand simple words)
+                  </option>
+                  <option value="Simple">
+                    Simple (Able to speak full sentences)
+                  </option>
+                  <option value="Intermediate">
+                    Intermediate (Able to understand simple words)
+                  </option>
+                  <option value="Fluent">
+                    Fluent (Able to engage in a conversation)
+                  </option>
+                </b-select>
+              </b-field>
 
               <b-field grouped>
                 <b-field label="Native Language" class="half-width">
@@ -115,14 +117,15 @@
                   </b-autocomplete>
                 </b-field>
 
-
                 <b-field label="Second Language Proficiency" class="half-width">
                   <b-select
                     v-model="SecondLanguageProficiency"
                     placeholder="Select one"
                     expanded
                   >
-                    <option value="Little">Little (Able to understand simple words)</option>
+                    <option value="Little">
+                      Little (Able to understand simple words)
+                    </option>
                     <option value="Simple">
                       Simple (Able to speak full sentences)
                     </option>
@@ -134,9 +137,6 @@
                     </option>
                   </b-select>
                 </b-field>
-
-
-
               </b-field>
 
               <b-field label="Notes" class="half-width">
@@ -234,7 +234,7 @@ export default {
         EnglishProficiency: this.EnglishProficiency,
         LanguageProficiency: this.SecondLanguageProficiency,
         Notes: this.Notes,
-        StatusString: "SCREENING",
+        StatusString: "UNMATCHED",
       };
 
       this.createTeacher(teacherData).then((response) => {
@@ -261,26 +261,23 @@ export default {
       });
     },
 
-
-    checkSecondLanguage(){
-        this.languageExists = this.API_nativeLanguage.filter((option)=> {
-          return option.NativeLanguage.toLowerCase().includes(
-            this.SecondLanguage.toLowerCase()
-          );
+    checkSecondLanguage() {
+      this.languageExists = this.API_nativeLanguage.filter((option) => {
+        return option.NativeLanguage.toLowerCase().includes(
+          this.SecondLanguage.toLowerCase()
+        );
+      });
+      this.checkLanguageExists = this.languageExists.length;
+      if (this.SecondLanguage != "" && this.checkLanguageExists !== 1) {
+        this.$buefy.notification.open({
+          message:
+            "Did you mean to add a new second language? Please use the 'Add New' function",
+          duration: 3000,
+          type: "is-warning",
+          position: "is-top",
         });
-        this.checkLanguageExists = this.languageExists.length;
-        if(this.SecondLanguage !="" && this.checkLanguageExists !== 1){ 
-            this.$buefy.notification.open({
-            message: "Did you mean to add a new second language? Please use the 'Add New' function",
-            duration: 3000,
-            type: "is-warning",
-            position: "is-top",
-          });
-        }
-
+      }
     },
-
-
 
     filteredLanguageDataArray(language = "") {
       this.languages = this.API_nativeLanguage.filter((option) => {
