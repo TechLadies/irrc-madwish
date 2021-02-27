@@ -179,16 +179,6 @@ body {
   padding-bottom: 20px;
   vertical-align: bottom !important;
 }
-span.tag {
-  font-size: 1em;
-  justify-content: left;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  width: 185px;
-}
-span.idStyle {
-  font-size: 0.8em;
-}
 .table td,
 .table th {
   color: #59666e;
