@@ -1,149 +1,121 @@
 <template>
   <Page>
-    <div class="container">
-      <div class="Title">
-        <b class="newStudent">All Students</b>
-      </div>
-      <!--start of table -->
-      <section>
-        <b-table
-          :data="tableData"
-          :sort-icon="sortIcon"
-          :sort-icon-size="sortIconSize"
-          :sortDirection="sortDirection"
-        >
-          <!-- date column -->
+    <PageHeader slot="header">
+    <a class="logo">All Students</a>
+    </PageHeader>   
+    <!--start of table -->
+    <section>
+      <b-table
+        :data="studentData"
+        :sort-icon="sortIcon"
+        :sort-icon-size="sortIconSize"
+        :sortDirection="sortDirection"
+        :paginated="isPaginated"
+        :per-page="perPage"
+        :current-page.sync="currentPage"
+      >
+        <!-- date column -->
 
-          <template v-for="(column, index) in columns" v-if="index == 0">
-            <b-table-column :key="column.id" v-bind="column" sortable>
+        <b-table-column field="CreatedAt" label="Date Joined" width="120" searchable sortable>
+            <template
+          slot="searchable"
+          slot-scope="props"
+          >
+          <b-tooltip label="Search: YYYY-MM-DD">
+              <b-input
+              v-model="props.filters[props.column.field]"
+              icon="magnify"
+              size="is-small"
+              />
+          </b-tooltip>
+          
+          </template>
+          <template v-slot="props">
+              
+              <span style="font-size: 14px">
+              {{
+                  new Date(props.row.CreatedAt)
+                  .toLocaleDateString("en-US", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                  })
+                  .replace(",", " ")
+              }}
+              </span>
+          </template>
+        </b-table-column>
+
+        <!-- Student Name/ID column -->
+
+        <b-table-column field="FullNameID" label="Student Name/ID" searchable sortable>
               <template
-                v-if="column.searchable"
-                slot="searchable"
-                slot-scope="props"
-              >
-                <b-tooltip label="Search: YYYY-MM-DD">
-                  <b-input
-                    v-model="props.filters[props.column.field]"
-                    icon="magnify"
-                    size="is-small"
-                  />
-                </b-tooltip>
-              </template>
-              <template v-slot="props">
-                <span :class="['idStyle']">
-                  {{
-                    new Date(props.row.CreatedAt)
-                      .toLocaleDateString("en-US", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })
-                      .replace(",", " ")
-                  }}
+            slot="searchable"
+            slot-scope="props"
+            >
+            <b-input
+            v-model="props.filters[props.column.field]"
+            icon="magnify"
+            size="is-small"
+            />
+            </template>
+            <template v-slot="props">
+                <span class="name">
+                    {{props.row.FullName}}
                 </span>
-              </template>
-            </b-table-column>
-          </template>
-
-          <!-- Student ID column -->
-
-          <template v-for="(column, index) in columns" v-if="index == 1">
-            <b-table-column :key="column.id" v-bind="column" sortable>
-              <template
-                v-if="column.searchable"
-                slot="searchable"
-                slot-scope="props"
-              >
-                <b-input
-                  v-model="props.filters[props.column.field]"
-                  icon="magnify"
-                  size="is-small"
-                />
-              </template>
-              <template v-slot="props">
-                <span>
-                  {{ props.row.StudentID }}
+                <br>
+                <span class="ID">
+                    {{props.row.StudentID}}
                 </span>
-              </template>
-            </b-table-column>
+            </template> 
+         </b-table-column>
+
+
+        <!-- status column -->
+
+        <b-table-column field="Status" label="Status" searchable sortable>
+          <template
+          slot="searchable"
+          slot-scope="props"
+          >
+          <b-input
+          v-model="props.filters[props.column.field]"
+          icon="magnify"
+          size="is-small"
+          />
           </template>
-
-          <!-- Student Name column -->
-
-          <template v-for="(column, index) in columns" v-if="index == 2">
-            <b-table-column :key="column.id" v-bind="column" sortable>
-              <template
-                v-if="column.searchable"
-                slot="searchable"
-                slot-scope="props"
-              >
-                <b-input
-                  v-model="props.filters[props.column.field]"
-                  icon="magnify"
-                  size="is-small"
-                />
-              </template>
-              <template v-slot="props">
-                <span :class="['nameStyle']">
-                  {{ props.row.FullName }}
-                </span>
-                <br />
-              </template>
-            </b-table-column>
+          <template v-slot="props">
+              <Status :status="props.row.Status"></Status>
           </template>
+        </b-table-column>
 
-          <!-- status column -->
+        <!-- phone column -->
 
-          <template v-for="(column, index) in columns" v-if="index == 3">
-            <b-table-column :key="column.id" v-bind="column" sortable>
-              <template
-                v-if="column.searchable"
-                slot="searchable"
-                slot-scope="props"
-              >
-                <b-input
-                  v-model="props.filters[props.column.field]"
-                  icon="magnify"
-                  size="is-small"
-                />
-              </template>
-              <template v-slot="props">
-                <Status :status="props.row.Status"></Status>
-              </template>
-            </b-table-column>
+        <b-table-column field="PhoneNumber" label="Phone Number" searchable sortable>
+          <template
+          slot="searchable"
+          slot-scope="props"
+          >
+          <b-input
+          v-model="props.filters[props.column.field]"
+          icon="magnify"
+          size="is-small"
+          />
           </template>
-
-          <!-- phone column -->
-
-          <template v-for="(column, index) in columns" v-if="index == 4">
-            <b-table-column :key="column.id" v-bind="column" sortable>
-              <template
-                v-if="column.searchable"
-                slot="searchable"
-                slot-scope="props"
-              >
-                <b-input
-                  v-model="props.filters[props.column.field]"
-                  icon="magnify"
-                  size="is-small"
-                />
-              </template>
-              <template v-slot="props">
-                {{ props.row.PhoneNumber }}
-              </template>
-            </b-table-column>
+          <template v-slot="props">
+              {{ props.row.PhoneNumber }}
           </template>
-        </b-table>
-      </section>
-    </div>
+        </b-table-column>
+      </b-table>
+    </section>
   </Page>
 </template>
 
 <script>
-const API_URL = "/api/students";
 
 import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
+import Status from "../components/Status.vue"
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import Status from "../components/Status.vue"
@@ -155,45 +127,24 @@ export default {
       sortIcon: "arrow-up",
       sortIconSize: "is-small",
       sortDirection: "asc",
-      columns: [
-        {
-          field: "CreatedAt",
-          label: "Date Joined",
-          searchable: true,
-        },
-        {
-          field: "StudentID",
-          label: "Student ID",
-          searchable: true,
-        },
-        {
-          field: "FullName",
-          label: "Student Name",
-          searchable: true,
-        },
-        {
-          field: "Status",
-          label: "Status",
-          searchable: true,
-        },
-        {
-          field: "PhoneNumber",
-          label: "Phone Number",
-          searchable: true,
-        },
-      ],
+      isPaginated: true,
+      paginationPosition:'bottom',
+      currentPage: 1,
+      perPage: 10,
     };
   },
   computed: {
     ...mapGetters(["students"]),
-    tableData() {
+    studentData() {
       return this.students.map((student) => {
         return {
+          ...student,
           StudentID: `${student.StudentID}`,
           FullName: `${student.FullName}`,
           CreatedAt: `${student.created_at}`,
           Status: `${student.status.Description}`,
           PhoneNumber: `${student.PhoneNumber}`,
+          FullNameID: `${student.FullName} <br> ${student.StudentID}`
         };
       });
     },
@@ -231,26 +182,6 @@ span.tag {
   padding-bottom: 25px;
   width: 185px;
 }
-span.tag.is-info {
-  background-color: rgba(159, 207, 255, 0.15);
-  color: #00488f;
-  font-size: 1em;
-  justify-content: left;
-  padding-top: 25px;
-  padding-bottom: 25px;
-}
-span.tag.is-success {
-  background-color: rgba(84, 140, 47, 0.15);
-  color: #255307;
-}
-span.tag.is-danger {
-  background-color: rgba(255, 166, 165, 0.15);
-  color: #be0e00;
-}
-span.tag.is-warning {
-  background-color: rgba(246, 174, 45, 0.08);
-  color: #f6ae2d;
-}
 span.idStyle {
   font-size: 0.8em;
 }
@@ -258,9 +189,13 @@ span.idStyle {
 .table th {
   color: #59666e;
 }
-span.nameStyle {
+span.name {
   color: #3c4f76 !important;
 }
+span.id{
+  color:#59666E !important;
+}
+
 table td:not([align]),
 table th:not([align]) {
   vertical-align: middle;
@@ -268,4 +203,14 @@ table th:not([align]) {
 .b-table .table th.is-current-sort .b-table .table th.is-sortable:hover {
   border-color: white !important;
 }
+
+.content ul{
+  list-style:none;
+}
+
+ul.pagination-list{
+  margin: 0 auto;
+}
+
+
 </style>
