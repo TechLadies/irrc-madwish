@@ -125,14 +125,6 @@ export default {
           label: "Last Email Sent",
           searchable: true,
         },
-        {
-          field: "Dummy1",
-          label: "",
-        },
-        {
-          field: "Dummy2",
-          label: "",
-        },
       ],
     };
   },
@@ -144,17 +136,21 @@ export default {
     ...mapGetters(["matches"]),
     tableData() {
       return this.matches.map((match) => {
+        let DateMatched, ConfirmedDate, LastEmailDate = "";
+        DateMatched = new Date(match.studentStatusUpdate.updated_at).toLocaleDateString("en-US",{day: "2-digit", month: "short", year: "numeric",}).replace(",", " ");
+        ConfirmedDate = new Date(match.ConfirmedDate).toLocaleDateString("en-US",{day: "2-digit", month: "short", year: "numeric",}).replace(",", " ");
+        LastEmailDate = new Date(match.LastEmailDate).toLocaleDateString("en-US",{day: "2-digit", month: "short", year: "numeric",}).replace(",", " ");
+
         return {
-            DateMatched: `${match.studentStatusUpdate.updated_at}`,
+            DateMatched: DateMatched,
             TeacherName: `${match.teacher.FullName}`,
             TeacherID: `${match.teacher.TeacherID}`,
             StudentName: `${match.student.FullName}`,
             StudentID: `${match.student.StudentID}`,
             MatchStatus: `${match.MatchStatus}`,
-            ConfirmedDate: `${match.ConfirmedDate}`,
-            LastEmailDate: `${match.LastEmailDate}`,
-            Dummy1: "", // TODO: 'Unmatch' icon
-            Dummy2: "" // TODO: 'Resend email' icon
+            ConfirmedDate: ConfirmedDate,
+            LastEmailDate: LastEmailDate,
+
         }
       });
     },
