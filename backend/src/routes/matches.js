@@ -13,7 +13,15 @@ router.get('/', async (req, res) => {
 
 /* POST Delete matches from teacher profile */
 const deleteMatches = async ({field, id, nextStatusString, res})=>{ 
-  // Check if id or nextStatusString are null/undefined/empty
+// ERROR HANDLING
+    // nextStatusString must be UNMATCHED/DROPPED OUT, or else request will not be accepted.
+    const statusDeleteMatch = ["UNMATCHED", "DROPPED OUT"]
+    if (!statusDeleteMatch.includes(nextStatusString)){
+      return res.status(200).send({
+        message: `${nextStatusString} must be "UNMATCHED" or "DROPPED OUT"`,
+      })
+    }
+    // Check if id or nextStatusString are null/undefined/empty
     if (id == null || id == undefined) {
       return res.status(500).send({
         message: `${field} is undefined or null`,
@@ -27,16 +35,37 @@ const deleteMatches = async ({field, id, nextStatusString, res})=>{
         type: 'UnknownError'
       })
     }
-/* Check if field is TeacherID */ 
+    // Asynchronously get current status in any order - used for both TeacherID and StudentID scenarios
+    const [currentStatus, nextStatus] = await Promise.all([
+      statuses.getStatusByStatusString('MATCHED'),
+      statuses.getStatusByStatusString('UNMATCHED')
+    ])
+    if (field === "StudentID") {
+      // select(1) returns an object instead of an array. Only one result is expected as one student has one teacher
+      // Note: teacherMatched returns an array
+      const teacherMatched = await db.Match.query().select("TeacherID").where(field, id)
+      const teacherMatchedID = teacherMatched[0].TeacherID
+      console.log(teacherMatched[0])
+      // Count number of students the teacher has 
+      const studentsCount = await db.Match.query().select("StudentID").where("TeacherID", teacherMatchedID)
+      
+      // Change teacher's status only if this student is their only student. 
+      if (studentsCount.length == 1){
+        const teacherStatusUpdate = {
+          TeacherID: teacherMatchedID,
+          PreviousStatusID: currentStatus.StatusID,
+          NextStatusID: nextStatus.StatusID,
+          UpdatedBy: "IRRCAdmin"
+        }
+        await statusUpdates.addStatusUpdate(teacherStatusUpdate)
+      }
+    } 
+    /* Check if field is TeacherID */ 
     if (field === "TeacherID") {
       // Query for studentIDs linked to the TeacherID
       const studentsMatched = await db.Match.query().select("StudentID").where(field, id)
       // Update status of all students linked to the TeacherID 
-      // Asynchronously get current status in any order 
-      const [currentStatus, nextStatus] = await Promise.all([
-        statuses.getStatusByStatusString('MATCHED'),
-        statuses.getStatusByStatusString('UNMATCHED')
-      ])
+      
       // TODO: Implement status updates for students as a transaction to avoid cases where status is changed only for some 
       await Promise.all(studentsMatched.map(async student => {
         // Construct statusUpdate
@@ -49,14 +78,9 @@ const deleteMatches = async ({field, id, nextStatusString, res})=>{
         await statusUpdates.addStatusUpdate(statusUpdate)
       }))
     }
-    const statusDeleteMatch = ["UNMATCHED", "DROPPED OUT"]
-    
-    const nextStatus = await statuses.getStatusByStatusString(nextStatusString)
-    if (statusDeleteMatch.includes(nextStatus.Description)){
-      await db.Match.query()
-        .delete()
-        .where(field, id)
-  }
+    await db.Match.query()
+      .delete()
+      .where(field, id)
 }
 // Req body should include TeacherID 
 router.post('/teacher', async (req, res) => {
