@@ -18,6 +18,9 @@
           :sort-icon="sortIcon"
           :sort-icon-size="sortIconSize"
           :sortDirection="sortDirection"
+          :selected.sync="selected"
+          selectable
+          @select="selected"
         >
           <template v-for="column in columns">
             <b-table-column :key="column.field" v-bind="column" sortable>
@@ -59,19 +62,73 @@
               </template>
             </b-table-column>
           </template>
+          <b-table-column label=" ">
+                <b-button>
+                  <b-icon icon="email-outline"></b-icon>
+                  <span>Resend</span>
+                </b-button>
+          </b-table-column>
+          <b-table-column label=" ">
+                <b-button @click="clickUnmatch()">
+                  <b-icon icon="account-multiple-check"></b-icon>
+                  <span>Unmatch</span>
+                </b-button>
+          </b-table-column>
         </b-table>
 
-        <!-- notification -->
-        <b-notification
-          v-model="isActive"
-          aria-close-label="Close notification"
-        >
-          <b>Students ready to be matched?</b><br />
-          Confirming will add these students to the page for them to be matched
-          with teachers.<br />
-          <button class="button field is-white">Cancel</button
-          ><button class="button field is-blue">Confirm</button>
-        </b-notification>
+        <!-- Unmatching modal  -->
+
+         <b-modal v-model="isComponentModalActive" :width="640" scroll="keep">
+            <div class="card">
+              <h2>Are you sure you want to unmatch?</h2>
+                <h4>Unmatching a pair would put students and teachers back to the matching process or dropped out section depending on the change in status</h4>
+                <h4>Student Name: {{selected.StudentName}}</h4>
+                <b-field grouped> 
+                  <b-field label="Status">
+                        <b-select placeholder="Select a status">
+                            <option value="1">Unmatched</option>
+                            <option value="2">Dropped out</option>
+                        </b-select>
+                  </b-field>
+                <!-- Dropped out reason --> 
+                  <b-field label="Reason">
+                    <b-autocomplete
+                      v-model="selectedStudent.Reason"
+                      :value="selectedStudent.Reason"
+                      field="Reason"
+                      ref="reasonComplete"
+                      :data="filteredReasonDataArray"
+                      placeholder="Select reason"
+                      @select="(option) => (selectedStudent = option)"
+                      :open-on-focus="true"
+                    >
+                      <template slot="header">
+                        <a @click="showAddReason">
+                          <span> Add new... </span>
+                        </a>
+                      </template>
+                    </b-autocomplete>
+                  </b-field>
+                </b-field>
+                <h4>Teacher Name: {{selected.TeacherName}}</h4>
+                  <span class="buttons">
+                    <b-button
+                    class="button field is-white"
+                    @click="close()"
+                    >
+                      <span>Cancel</span>
+                    </b-button>
+
+                    <b-button
+                    class="button field is-blue"
+                    @click="unmatch()"
+                    >
+                      <span>Confirm</span>
+                    </b-button>
+                  </span>
+            </div>
+        </b-modal>
+
       </section>
     </div>
   </Page>
@@ -85,7 +142,12 @@ import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
-      selected: null,
+      selected: {},
+      reasons: [],
+      selectedStudent: {
+        Reason: "",
+      },
+      isComponentModalActive: false,
       sortIcon: "arrow-up",
       sortIconSize: "is-small",
       sortDirection: "asc",
@@ -133,7 +195,17 @@ export default {
     PageHeader,
   },
   computed: {
-    ...mapGetters(["matches"]),
+    ...mapGetters(["matches", "API_droppedReason"]),
+    reason() {
+      return this.selectedStudent ? this.selectedStudent.Reason : "";
+    },
+    filteredReasonDataArray() {
+      return this.API_droppedReason.filter((option) => {
+        return option.Reason.toLowerCase().includes(
+          this.selectedStudent.Reason.toString().toLowerCase()
+        );
+      });
+    },
     tableData() {
       return this.matches.map((match) => {
         let DateMatched, ConfirmedDate, LastEmailDate = "";
@@ -157,7 +229,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['patchScreeningStudents', 'getAllStudents', 'getAllMatches']),
+    ...mapActions(['patchScreeningStudents', 'getAllStudents', 'getAllMatches', 'updateStudentStatus', 'getDroppedReasons']),
     cardModal() {
       this.$buefy.dialog.confirm({
         type: 'is-blue',
@@ -174,10 +246,32 @@ export default {
           this.patchScreeningStudents(patchStudentsData)
         }
       }) 
-    }
+    },
+    clickUnmatch(){
+      this.isComponentModalActive = true;
+    },
+    close(){
+      this.isComponentModalActive = false;
+    },
+    showAddReason() {
+      this.$buefy.dialog.prompt({
+        message: `Add new reason`,
+        inputAttrs: {
+          placeholder: "e.g. Course was too challenging",
+          value: this.selectedStudent.Reason,
+          maxlength: 255,
+        },
+        confirmText: "Add",
+        onConfirm: async (value) => {
+          this.selectedStudent.Reason = value;
+          this.addDroppedReason(this.selectedStudent.Reason);
+        },
+      });
+    },
   },
   mounted() {
       this.getAllMatches();
+      this.getDroppedReasons();
   }
 };
 </script>
@@ -261,16 +355,15 @@ button.is-blue {
   color: white !important;
 }
 
-/* table tr:FIRST-CHILD
-{
-    display:none;
-} */
 
 .header {
   background: none !important;
 }
 
-button.button.field.is-white {
-  background: none !important;
+
+.card {
+  padding: 30px;
+  padding-bottom: 40px;
 }
+
 </style>
