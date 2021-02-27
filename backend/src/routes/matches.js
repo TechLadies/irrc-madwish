@@ -78,6 +78,7 @@ const deleteMatches = async ({field, id, nextStatusString, res})=>{
         await statusUpdates.addStatusUpdate(statusUpdate)
       }))
     }
+    // Delete match
     await db.Match.query()
       .delete()
       .where(field, id)

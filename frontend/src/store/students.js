@@ -75,7 +75,8 @@ export const studentActions = {
                 throw new Error(response);
             }
             dispatch('getAllStudents')
-            // Call deletion API to delete matches if moving from MATCHED -> UNMATCHED/DROPPED OUT
+
+            // Calls deletion API to delete matches if moving from MATCHED -> UNMATCHED/DROPPED OUT
             fetch('/api/matches/student', {
                 method: "POST",
                 headers: {
@@ -88,6 +89,7 @@ export const studentActions = {
                 })
             })
             // TODO: Call matches API after this to refresh
+            // fetch('api/matches').then(response => response.json) ? 
         })
        
         .catch((err) => {
