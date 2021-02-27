@@ -405,7 +405,7 @@ export default {
         return {
           ...teacher,
           NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
-          SecondLanguage: `${teacher.secondLanguage.SecondLanguage}`,
+          SecondLanguage: `${teacher.secondLanguage.NativeLanguage}`,
           Status: `${teacher.status.Description}`,
         }
       })
