@@ -44,7 +44,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["updateStudentStatus"]),
+    ...mapActions(["updateStudentStatus", "updateTeacherStatus"]),
     // TODO: Remove the Matched pair from the matching table (not created yet)
     unmatchedToDroppedOut() {
       const previousStatusString = "UNMATCHED";

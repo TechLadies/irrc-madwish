@@ -57,7 +57,7 @@ export const teacherActions = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
         },
-        body: JSON.stringify({TeacherID: teacherID, StatusString: nextStatusString})
+        body: JSON.stringify({TeacherID: teacherID, PreviousStatusString: previousStatusString, NextStatusString: nextStatusString})
     }
 
     // POST statusUpdate
@@ -76,26 +76,29 @@ export const teacherActions = {
         })
     }
 
-    // fetch("/api/statusUpdates", statusUpdateRequestOptions)
-    // .then((response) => {
-    //     if(response.status !== 200) {
-    //         throw new Error(response);
-    //     }
-    // })
-    // .then(() => {
-    //     fetch("/api/teachers/" + teacherID, teacherRequestOptions)
-    //     .then((response) => {
-    //     if(response.status !== 200) {
-    //         throw new Error(response);
-    //     }
-    //     })
-    // })
-    // .then(() => {
-    //     dispatch('getAllTeachers')
-    // })
-    // .catch((err) => {
-    //     console.error(err);
-    // });
+    fetch("/api/statusUpdates", statusUpdateRequestOptions)
+    .then((response) => {
+        if(response.status !== 200) {
+            throw new Error(response);
+        }
+        dispatch('getAllTeachers')
+        // Call deletion API 
+        fetch('/api/matches/teacher', {
+          method: "POST",
+          headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+          TeacherID: teacherID,
+          NextStatusString: nextStatusString,
+          })
+        })
+        // TODO: Call matches API after this to refresh
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 },
 
 };

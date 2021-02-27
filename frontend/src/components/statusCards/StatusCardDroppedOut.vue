@@ -48,14 +48,17 @@ export default {
       default: "No Reason Stated",
     },
     isTeacher: {
-      type: String,
+      type: Boolean,
     },
     studentID: {
       type: String,
     },
+    teacherID: {
+      type: String,
+    },
   },
   methods: {
-    ...mapActions(["updateStudentStatus"]),
+    ...mapActions(["updateStudentStatus", "updateTeacherStatus"]),
     droppedOutToScreening() {
       const studentID = parseInt(this.studentID);
       const previousStatusString = "DROPPED OUT";

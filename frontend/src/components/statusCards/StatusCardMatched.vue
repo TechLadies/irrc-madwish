@@ -22,7 +22,7 @@
         <div class="content-title">ACTION</div>
         <div class="buttons">
           <Button label="Drop Out" @click.native="matchedToDroppedOut()" />
-          <Button v-if="isTeacher" label="Unmatch" solid />
+          <Button v-if="isTeacher" label="Unmatch" solid @click.native="matchedToUnmatched()"/>
           <Button v-else label="View Match" solid />
         </div>
       </div>
@@ -62,10 +62,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["updateStudentStatus"]),
+    ...mapActions(["updateStudentStatus", "updateTeacherStatus"]),
     // TODO: Remove the Matched pair from the matching table (not created yet)
     matchedToDroppedOut() {
       const previousStatusString = "MATCHED";
+      const nextStatusString = "DROPPED OUT";
       this.$buefy.modal.open({
         parent: this,
         component: ModalDroppedOut,
@@ -73,13 +74,27 @@ export default {
           studentID: this.studentID,
           teacherID: this.teacherID,
           isTeacher: this.isTeacher,
-          previousStatusString: previousStatusString,
+          previousStatusString,
+          nextStatusString
         },
         hasModalCard: true,
         customClass: "custom-class custom-class-2",
         trapFocus: true,
       });
+    
     },
+    matchedToUnmatched() {
+      const teacherID = parseInt(this.teacherID);
+      const previousStatusString = "MATCHED";
+      const nextStatusString = "UNMATCHED";
+      const updatedBy = "IRRCAdmin";
+      this.updateTeacherStatus({
+        teacherID: teacherID,
+        previousStatusString: previousStatusString,
+        nextStatusString: nextStatusString,
+        updatedBy: updatedBy,
+      });
+    }
   },
 };
 </script>
