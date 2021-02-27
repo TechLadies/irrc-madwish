@@ -108,33 +108,7 @@
                 />
               </template>
               <template v-slot="props">
-                <span
-                  v-if="props.row.Status.toUpperCase() == 'SCREENING'"
-                  :class="['tag is-info']"
-                >
-                  <li>Screening</li>
-                </span>
-
-                <span
-                  v-if="props.row.Status.toUpperCase() == 'MATCHED'"
-                  :class="['tag is-success']"
-                >
-                  <li>Matched</li>
-                </span>
-
-                <span
-                  v-if="props.row.Status.toUpperCase() == 'DROPPED OUT'"
-                  :class="['tag is-danger']"
-                >
-                  <li>Dropped Out</li>
-                </span>
-
-                <span
-                  v-if="props.row.Status.toUpperCase() == 'UNMATCHED'"
-                  :class="['tag is-warning']"
-                >
-                  <li>Unmatched</li>
-                </span>
+                <Status :status="props.row.Status"></Status>
               </template>
             </b-table-column>
           </template>
@@ -172,6 +146,7 @@ import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
+import Status from "../components/Status.vue"
 
 export default {
   data() {
@@ -226,6 +201,7 @@ export default {
   components: {
     Page,
     PageHeader,
+    Status
   },
   methods: {
     ...mapActions(["getAllStudents"]),
