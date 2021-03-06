@@ -2,7 +2,7 @@ import Vuex from "vuex";
 
 const MUTATIONS = Object.freeze({
   SET_TEACHERS: "SET_TEACHERS",
-  SET_UPDATE_TEACHER_SUCCESS: "SET_UPDATE_TEACHER_SUCCESS"
+  SET_UPDATE_TEACHER_SUCCESS: "SET_UPDATE_TEACHER_SUCCESS",
 });
 export const teacherState = { teachers: [], updateTeacherSuccess: undefined };
 export const teacherActions = {
@@ -10,7 +10,6 @@ export const teacherActions = {
     const response = await fetch("/api/teachers");
     const teacherData = await response.json();
     commit(MUTATIONS.SET_TEACHERS, teacherData);
-    
   },
   async createTeacher({ dispatch }, teacherData) {
     const payload = {
@@ -24,9 +23,9 @@ export const teacherActions = {
     };
     const response = await fetch("api/teachers", payload);
     dispatch("getAllTeachers");
-    return response
+    return response;
   },
-  async patchTeacher({ dispatch, commit}, teacherData){
+  async patchTeacher({ dispatch, commit }, teacherData) {
     const payload = {
       method: "PATCH",
       headers: {
@@ -35,87 +34,93 @@ export const teacherActions = {
       },
       body: JSON.stringify(teacherData),
     };
-    const result = await fetch(`api/teachers/${teacherData.TeacherID}`, payload);
-    if(result.status < 400){
-      commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, true)
-      dispatch("getAllTeachers")
-
-    }
-    else{
-      commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, false)
+    const result = await fetch(
+      `api/teachers/${teacherData.TeacherID}`,
+      payload
+    );
+    if (result.status < 400) {
+      commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, true);
+      dispatch("getAllTeachers");
+    } else {
+      commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, false);
     }
   },
-  resetTeacherUpdateSuccess({commit}, value){
-    commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, value)
+  resetTeacherUpdateSuccess({ commit }, value) {
+    commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, value);
   },
 
-  async updateTeacherStatus({ commit, dispatch }, { teacherID, previousStatusString, nextStatusString, updatedBy, reason }) {
+  async updateTeacherStatus(
+    { commit, dispatch },
+    { teacherID, previousStatusString, nextStatusString, updatedBy, reason }
+  ) {
     // PATCH student
     const teacherRequestOptions = {
-        method: "PATCH",
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({TeacherID: teacherID, PreviousStatusString: previousStatusString, NextStatusString: nextStatusString})
-    }
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        TeacherID: teacherID,
+        PreviousStatusString: previousStatusString,
+        NextStatusString: nextStatusString,
+      }),
+    };
 
     // POST statusUpdate
     const statusUpdateRequestOptions = {
-        method: "POST",
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
         TeacherID: teacherID,
         PreviousStatusString: previousStatusString,
         NextStatusString: nextStatusString,
         UpdatedBy: updatedBy,
-        ReasonString: reason
-        })
-    }
+        ReasonString: reason,
+      }),
+    };
 
     fetch("/api/statusUpdates", statusUpdateRequestOptions)
-    .then((response) => {
-        if(response.status !== 200) {
-            throw new Error(response);
+      .then((response) => {
+        if (response.status !== 200) {
+          throw new Error(response);
         }
-        dispatch('getAllTeachers')
-        // Call deletion API 
-        fetch('/api/matches/teacher', {
+        dispatch("getAllTeachers");
+        // Call deletion API
+        fetch("/api/matches/unmatch-teacher", {
           method: "POST",
           headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+            Accept: "application/json",
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
-          TeacherID: teacherID,
-          NextStatusString: nextStatusString,
-          })
-        })
+            TeacherID: teacherID,
+            NextStatusString: nextStatusString,
+          }),
+        });
         // TODO: Call matches API after this to refresh
-    })
-    .catch((err) => {
+      })
+      .catch((err) => {
         console.error(err);
-    });
-},
-
+      });
+  },
 };
 export const teacherMutations = {
   [MUTATIONS.SET_TEACHERS](state, teachers) {
     state.teachers = teachers;
   },
-  [MUTATIONS.SET_UPDATE_TEACHER_SUCCESS](state, value){
+  [MUTATIONS.SET_UPDATE_TEACHER_SUCCESS](state, value) {
     state.updateTeacherSuccess = value;
-  }
-
+  },
 };
 export const teacherGetters = {
   teachers(state) {
     return state.teachers;
   },
-  getTeacherByTeacherId:(state) => (id) => {
-    return state.teachers.find(teacher => teacher.TeacherID == id)
-  } 
+  getTeacherByTeacherId: (state) => (id) => {
+    return state.teachers.find((teacher) => teacher.TeacherID == id);
+  },
 };
