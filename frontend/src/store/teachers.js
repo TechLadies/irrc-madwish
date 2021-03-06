@@ -123,4 +123,58 @@ export const teacherGetters = {
   getTeacherByTeacherId: (state) => (id) => {
     return state.teachers.find((teacher) => teacher.TeacherID == id);
   },
+
+  suggestedTeachers(state) {
+    return (studentId) => {
+      // 1. Find the student using the ID
+      const student = state.students.find(
+        (student) => student.StudentID === studentId
+      );
+      if (!student) {
+        return [];
+      }
+      // 2. Find their native language
+      const studentNativeLanguage = student.NativeLanguageID;
+
+      // 3. Get unmatched teachers whose first or second language equals student's native language
+      const relevantTeachers = state.teachers.filter((teacher) => {
+        const doesNativeLanguageMatch =
+          teacher.NativeLanguageID === studentNativeLanguage;
+        const doesSecondLanguageMatch =
+          teacher.SecondLanguageID === studentNativeLanguage;
+
+        return doesNativeLanguageMatch || doesSecondLanguageMatch;
+      });
+
+      // 4. Sort teachers by date joined AND status
+      relevantTeachers.sort((t1, t2) => {
+        if (
+          t1.status.Description === "UNMATCHED" &&
+          t2.status.Description === "MATCHED"
+        ) {
+          return -1;
+        }
+        if (
+          t2.status.Description === "UNMATCHED" &&
+          t1.status.Description === "MATCHED"
+        ) {
+          return 1;
+        }
+        if (t2.status.Description === t1.status.Description) {
+          if (t1.created_at === t2.created_at) {
+            return 0;
+          }
+          if (t1.created_at > t2.created_at) {
+            return 1;
+          }
+          if (t1.created_at < t2.created_at) {
+            return -1;
+          }
+        }
+      });
+
+      // 5. Take the top 5
+      return relevantTeachers.slice(0, 5);
+    };
+  },
 };
