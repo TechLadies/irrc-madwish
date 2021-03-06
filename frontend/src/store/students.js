@@ -63,7 +63,7 @@ export const studentActions = {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        StudentID: studentID,
+        StudentID: parseInt(studentID),
         PreviousStatusString: previousStatusString,
         NextStatusString: nextStatusString,
         UpdatedBy: updatedBy,

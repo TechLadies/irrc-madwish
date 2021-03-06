@@ -20,7 +20,6 @@
           :sortDirection="sortDirection"
           :selected.sync="selected"
           selectable
-          @select="selected"
         >
           <template v-for="column in columns">
             <b-table-column :key="column.field" v-bind="column" sortable>
@@ -83,11 +82,16 @@
               <h2>Are you sure you want to unmatch?</h2>
                 <h4>Unmatching a pair would put students and teachers back to the matching process or dropped out section depending on the change in status</h4>
                 <h4>Student Name: {{selected.StudentName}}</h4>
-                <b-field grouped> 
                   <b-field label="Status">
-                        <b-select placeholder="Select a status">
-                            <option value="1">Unmatched</option>
-                            <option value="2">Dropped out</option>
+                        <b-select
+                          placeholder="Select a status"
+                          v-model="selectedStudent.Status"
+                          :value="selectedStudent.Status"
+                          expanded
+                          :open-on-focus="true"
+                        >
+                            <option value="UNMATCHED">Unmatched</option>
+                            <option value="DROPPED OUT">Dropped out</option>
                         </b-select>
                   </b-field>
                 <!-- Dropped out reason --> 
@@ -99,7 +103,6 @@
                       ref="reasonComplete"
                       :data="filteredReasonDataArray"
                       placeholder="Select reason"
-                      @select="(option) => (selectedStudent = option)"
                       :open-on-focus="true"
                     >
                       <template slot="header">
@@ -109,7 +112,6 @@
                       </template>
                     </b-autocomplete>
                   </b-field>
-                </b-field>
                 <h4>Teacher Name: {{selected.TeacherName}}</h4>
                   <span class="buttons">
                     <b-button
@@ -121,7 +123,7 @@
 
                     <b-button
                     class="button field is-blue"
-                    @click="unmatch()"
+                    @click="unmatch"
                     >
                       <span>Confirm</span>
                     </b-button>
@@ -146,6 +148,7 @@ export default {
       reasons: [],
       selectedStudent: {
         Reason: "",
+        Status: "",
       },
       isComponentModalActive: false,
       sortIcon: "arrow-up",
@@ -227,26 +230,8 @@ export default {
       });
     },
   },
-
   methods: {
     ...mapActions(['patchScreeningStudents', 'getAllStudents', 'getAllMatches', 'updateStudentStatus', 'getDroppedReasons']),
-    cardModal() {
-      this.$buefy.dialog.confirm({
-        type: 'is-blue',
-        message: '<b> Students ready to be matched?</b> <br> Confirming will add these students to the page for them to be matched with teachers.',
-        onConfirm: () => {
-          const patchStudentsData = this.checkedRows.map(item => {
-            return {
-              StudentID: item.StudentID,
-              EnglishProficiency: item.EnglishProficiency,
-              // TODO: Make dynamic with account management
-              UpdatedBy: "IRRCAdmin"
-            }
-          })
-          this.patchScreeningStudents(patchStudentsData)
-        }
-      }) 
-    },
     clickUnmatch(){
       this.isComponentModalActive = true;
     },
@@ -265,15 +250,33 @@ export default {
         onConfirm: async (value) => {
           this.selectedStudent.Reason = value;
           this.addDroppedReason(this.selectedStudent.Reason);
+          if (this.selectedStudent.Status === "UNMATCHED") {
+            this.addUnmatchedReason(this.selectedStudent.Reason);
+          } else if (this.selectedStudent.Status === "DROPPED OUT") {
+            this.addDroppedReason(this.selectedStudent.Reason);
+          }
         },
-      });
+      })
     },
+    unmatch() {
+      this.updateStudentStatus({
+        studentID: this.selected.StudentID,
+        previousStatusString: "MATCHED",
+        nextStatusString: this.selectedStudent.Status,
+        updatedBy: "IRRCAdmin",
+        reason: "DROPPED_" + this.selectedStudent.Reason,
+      }).then(() => {
+        this.isComponentModalActive = false
+        this.getAllStudents().then(()=> this.$router.go(0))
+      });
+    }
   },
   mounted() {
+      this.getAllStudents();
       this.getAllMatches();
       this.getDroppedReasons();
-  }
-};
+  },
+}
 </script>
 
 <style>
