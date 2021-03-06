@@ -238,7 +238,7 @@ export default {
         }),
         EnglishProficiency: this.EnglishProficiency,
         Notes: this.Notes,
-        StatusString: "SCREENING",
+        StatusString: "UNMATCHED",
       };
 
       this.createTeacher(teacherData).then((response) => {
