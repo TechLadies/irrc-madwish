@@ -49,19 +49,9 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  computed: {
-    suggestedTeachersData() {
-      return this.teachers.map((teacher) => {
-        return {
-          ...teacher,
-          NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
-          SecondLanguage: `${teacher.secondLanguage.NativeLanguage}`,
-          Status: `${teacher.status.Description}`,
-        };
-      });
+    studentName: {
+      type: String,
     },
-    ...mapGetters(["teachers"]), // TODO: Change this to suggestedTeachers getter
   },
   methods: {
     ...mapActions(["updateStudentStatus", "updateTeacherStatus"]),
@@ -72,6 +62,7 @@ export default {
         props: {
           teachersData: this.suggestedTeachersData,
           matchButtonText: "Confirm Match",
+          studentName: this.studentName,
         },
         events: {
           selectTeacher: (teacher) => this.unmatchedToMatched(teacher),
@@ -114,11 +105,32 @@ export default {
           nextStatusString: nextStatusString,
           updatedBy: "IRRCAdmin",
         });
-        // TODO: Display notification
+        this.$buefy.toast.open({
+          duration: 5000,
+          message: `${teacher.FullName} and ${this.studentName} have been successfully matched!`,
+          type: "is-success",
+        });
       } catch (e) {
-        // TODO: Display notification
+        this.$buefy.toast.open({
+          duration: 5000,
+          message: `Something went wrong, couldn't match.`,
+          type: "is-danger",
+        });
       }
     },
+  },
+  computed: {
+    suggestedTeachersData() {
+      return this.suggestedTeachers(this.studentID).map((teacher) => {
+        return {
+          ...teacher,
+          NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
+          SecondLanguage: `${teacher.secondLanguage.NativeLanguage}`,
+          Status: `${teacher.status.Description}`,
+        };
+      });
+    },
+    ...mapGetters(["suggestedTeachers"]),
   },
 };
 </script>

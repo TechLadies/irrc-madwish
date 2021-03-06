@@ -116,7 +116,7 @@ export const teacherGetters = {
     return (studentId) => {
       // 1. Find the student using the ID
       const student = state.students.find(
-        (student) => student.StudentID === studentId
+        (student) => parseInt(student.StudentID) === parseInt(studentId)
       );
       if (!student) {
         return [];
@@ -160,7 +160,6 @@ export const teacherGetters = {
           }
         }
       });
-
       // 5. Take the top 5
       return relevantTeachers.slice(0, 5);
     };

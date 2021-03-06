@@ -1,8 +1,12 @@
 <template>
   <div class="card">
     <h2>Select a teacher for student:</h2>
-    <h4>Student Name: {{ studentName }}</h4>
-    <h4>Teacher Name: {{ teacherName }}</h4>
+    <h4>
+      Student Name: <strong>{{ studentName }}</strong>
+    </h4>
+    <h4>
+      Teacher Name: <strong>{{ selectedTeacher.FullName }}</strong>
+    </h4>
     <div class="card-image">
       <b-table
         v-bind:data="teachersData"
@@ -22,10 +26,6 @@ export default {
   name: "SuggestedTeachersModal",
   props: {
     studentName: {
-      type: String,
-      default: "",
-    },
-    teacherName: {
       type: String,
       default: "",
     },
@@ -76,9 +76,19 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .b-table .table th.is-current-sort .b-table .table th.is-sortable:hover {
   border-color: white !important;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+  padding: 12px 0px;
+}
+
+h4 {
+  font-size: 14px;
 }
 
 button.button.field.is-blue {
