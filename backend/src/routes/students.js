@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 // const debug = require('debug')('app:students')
+const nativeLanguages = require("../helpers/nativeLanguages");
 const students = require("../helpers/students");
 const statuses = require("../helpers/statuses");
 
@@ -86,7 +87,7 @@ router.post("/", async (req, res) => {
         nativeLanguageString = req.body.NativeLanguageString;
         delete req.body.NativeLanguageString;
       }
-      const nativeLanguage = await students.getNativeLanguagePromise(
+      const nativeLanguage = await nativeLanguages.getNativeLanguagePromise(
         nativeLanguageString
       );
       req.body.NativeLanguageID = nativeLanguage.NativeLanguageID;
@@ -133,7 +134,7 @@ router.post("/", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   if (req.body.NativeLanguageString) {
     try {
-      const nativeLanguage = await students.getNativeLanguagePromise(
+      const nativeLanguage = await nativeLanguages.getNativeLanguagePromise(
         req.body.NativeLanguageString
       );
       req.body.NativeLanguageID = nativeLanguage.NativeLanguageID;

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const statuses = require("../helpers/statuses");
-const students = require("../helpers/students");
+const nativeLanguages = require("../helpers/nativeLanguages");
 const teachers = require("../helpers/teachers");
 
 const { UniqueViolationError } = require("objection");
@@ -55,7 +55,7 @@ router.post("/", async (req, res) => {
         nativeLanguageString = req.body.NativeLanguageString;
         delete req.body.NativeLanguageString;
       }
-      const nativeLanguage = await students.getNativeLanguagePromise(
+      const nativeLanguage = await nativeLanguages.getNativeLanguagePromise(
         nativeLanguageString
       );
       req.body.NativeLanguageID = nativeLanguage.NativeLanguageID;
@@ -76,7 +76,7 @@ router.post("/", async (req, res) => {
       if (req.body.SecondLanguageString != null) {
         secondLanguageString = req.body.SecondLanguageString;
         delete req.body.SecondLanguageString;
-        const secondLanguage = await students.getNativeLanguagePromise(
+        const secondLanguage = await nativeLanguages.getNativeLanguagePromise(
           secondLanguageString
         );
         req.body.SecondLanguageID = secondLanguage.NativeLanguageID;
@@ -122,7 +122,7 @@ router.post("/", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   if (req.body.NativeLanguageString) {
     try {
-      const nativeLanguage = await students.getNativeLanguagePromise(
+      const nativeLanguage = await nativeLanguages.getNativeLanguagePromise(
         req.body.NativeLanguageString
       );
       req.body.NativeLanguageID = nativeLanguage.NativeLanguageID;
@@ -138,7 +138,7 @@ router.patch("/:id", async (req, res) => {
 
   if (req.body.SecondLanguageString) {
     try {
-      const secondLanguage = await students.getNativeLanguagePromise(
+      const secondLanguage = await nativeLanguages.getNativeLanguagePromise(
         req.body.SecondLanguageString
       );
       req.body.SecondLanguageID = secondLanguage.NativeLanguageID;
