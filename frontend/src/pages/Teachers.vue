@@ -7,7 +7,10 @@
         
         <section>
             <b-table
-            :data="teachersData">
+            :data="teachersData"
+            :selected.sync="selected"
+            @dblclick="goToTeacher"
+            >
                 <b-table-column field="created_at" label="Date Joined" width="120" searchable sortable>
                      <template
                     slot="searchable"
@@ -139,9 +142,16 @@ export default {
         },
         ...mapGetters(['teachers'])
     },
+    data() {
+        return {
+          selected: {},
+        }
+    },
     methods: {
-        ...mapActions(['getAllTeachers'])
-
+        ...mapActions(['getAllTeachers']),
+        goToTeacher() {
+          this.$router.push({ path: `/teachers/${this.selected.TeacherID}` })
+        }
     },
     mounted() {
         this.getAllTeachers()
