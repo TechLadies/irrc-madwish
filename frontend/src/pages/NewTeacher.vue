@@ -302,14 +302,57 @@ export default {
     },
 
     uploadFile() {
-      this.$buefy.notification.open({
-        message: "The file was uploaded successfully!",
-        duration: 5000,
-        type: "is-success",
-        position: "is-top",
+      // Parse the file client-side
+      this.file.text().then((f) => {
+        // Initialise array of Teacher Objects
+        var teachers = [];
+        // Assume first row of .csv contains headers
+        f = f.split("\n");
+        const headers = f.shift().split(",");
+        // Use headers as object fields for cells in each row
+        f.forEach(function (d) {
+          // Loop through each row
+          var tmp = {};
+          const row = d.split(",");
+          for (var i = 0; i < headers.length; i++) {
+            tmp[headers[i]] = row[i];
+          }
+          // Add object to list
+          teachers.push(tmp);
+        });
+        teachers.pop();
+        const teacherBatchCreate = {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(teachers),
+        };
+        fetch("/api/teachers", teacherBatchCreate).then((response) => {
+          if (response.status < 400) {
+            this.$buefy.notification.open({
+              message: "The file was uploaded successfully!",
+              duration: 5000,
+              type: "is-success",
+              position: "is-top",
+            });
+            // refreshes state
+            this.getNativeLanguages();
+            setTimeout(() => {
+              this.$router.push({ path: `/teachers` });
+            }, 5000);
+          } else {
+            this.$buefy.notification.open({
+              message: "Something went wrong. Please try again.",
+              duration: 3000,
+              type: "is-warning",
+              position: "is-top",
+            });
+          }
+        });
       });
     },
-
     errorUpload() {
       this.$buefy.notification.open({
         message:
