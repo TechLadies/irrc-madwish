@@ -2,10 +2,10 @@
   <Page blueBg>
     <div class="student-profile-container">
       <div class="student-profile-left">
-        <StudentProfileCard
-          v-bind:studentInfo="{
-            studentName: studentData.FullName,
-            studentContact: studentData.PhoneNumber,
+        <ProfileCard
+          v-bind:profile="{
+            name: studentData.FullName,
+            contact: studentData.PhoneNumber,
             source: studentData.Source,
             dateJoined: studentData.dateJoined,
             nativeLanguage: studentData.nativeLanguage.NativeLanguage,
@@ -33,7 +33,7 @@
 
 <script>
 import Page from "../components/Page.vue";
-import StudentProfileCard from "../components/StudentProfileCard.vue";
+import ProfileCard from "../components/ProfileCard.vue";
 import StudentHistory from "../components/StudentHistory/StudentHistory.vue";
 import StatusCardMatched from "../components/statusCards/StatusCardMatched.vue";
 import StatusCardDroppedOut from "../components/statusCards/StatusCardDroppedOut.vue";
@@ -45,7 +45,7 @@ export default {
   name: "StudentProfile",
   components: {
     Page,
-    StudentProfileCard,
+    ProfileCard,
     StudentHistory,
     StatusCardMatched,
     StatusCardDroppedOut,

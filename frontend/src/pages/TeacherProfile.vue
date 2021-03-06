@@ -2,18 +2,16 @@
   <Page blueBg>
     <div class="teacher-profile-container">
       <div class="teacher-profile-left">
-        <StudentProfileCard
-          v-bind:studentInfo="{
-            studentName: teacherData.FullName,
-            studentContact: teacherData.PhoneNumber,
+        <ProfileCard
+          v-bind:profile="{
+            name: teacherData.FullName,
+            contact: teacherData.PhoneNumber,
             source: teacherData.Source,
             dateJoined: teacherData.dateJoined,
             nativeLanguage: teacherData.nativeLanguage.NativeLanguage,
             notes: teacherData.Notes,
             status: teacherData.status.Description,
             proficiencyLevel: teacherData.EnglishProficiency,
-          }"
-          v-bind:teacherInfo="{
             secondLanguage: teacherData.secondLanguage.NativeLanguage,
             languageProficiency: teacherData.LanguageProficiency,
           }"
@@ -56,7 +54,7 @@
 
 <script>
 import Page from "../components/Page.vue";
-import StudentProfileCard from "../components/StudentProfileCard.vue";
+import ProfileCard from "../components/ProfileCard.vue";
 import StudentHistory from "../components/StudentHistory/StudentHistory.vue";
 import StatusCardMatched from "../components/statusCards/StatusCardMatched.vue";
 import StatusCardDroppedOut from "../components/statusCards/StatusCardDroppedOut.vue";
@@ -69,7 +67,7 @@ export default {
   name: "TeacherProfile",
   components: {
     Page,
-    StudentProfileCard,
+    ProfileCard,
     StudentHistory,
     StatusCardMatched,
     StatusCardDroppedOut,
