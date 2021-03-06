@@ -2,9 +2,10 @@
   <Page>
     <div class="container">
       <PageHeader slot="header">
-        <a class="logo">Matching<br>
-        <span class="subtitle">All Students To Be Matched</span></a>
-
+        <a class="logo"
+          >Matching<br />
+          <span class="subtitle">All Students To Be Matched</span></a
+        >
       </PageHeader>
       <!--start of table -->
       <section>
@@ -18,7 +19,10 @@
         >
           <!-- date column -->
 
-          <template v-for="(column, index) in studentsColumns" v-if="index == 0">
+          <template
+            v-for="(column, index) in studentsColumns"
+            v-if="index == 0"
+          >
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -51,7 +55,10 @@
 
           <!-- Student ID column -->
 
-          <template v-for="(column, index) in studentsColumns" v-if="index == 1">
+          <template
+            v-for="(column, index) in studentsColumns"
+            v-if="index == 1"
+          >
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -74,7 +81,10 @@
 
           <!-- Student Name column -->
 
-          <template v-for="(column, index) in studentsColumns" v-if="index == 2">
+          <template
+            v-for="(column, index) in studentsColumns"
+            v-if="index == 2"
+          >
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -98,7 +108,10 @@
 
           <!-- status column -->
 
-          <template v-for="(column, index) in studentsColumns" v-if="index == 3">
+          <template
+            v-for="(column, index) in studentsColumns"
+            v-if="index == 3"
+          >
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -112,42 +125,17 @@
                 />
               </template>
               <template v-slot="props">
-                <span
-                  v-if="props.row.Status.toUpperCase() == 'SCREENING'"
-                  :class="['tag is-info']"
-                >
-                  <li>Screening</li>
-                </span>
-
-                <span
-                  v-if="props.row.Status.toUpperCase() == 'MATCHED'"
-                  :class="['tag is-success']"
-                >
-                  <li>Matched</li>
-                </span>
-
-                <span
-                  v-if="props.row.Status.toUpperCase() == 'DROPPED OUT'"
-                  :class="['tag is-danger']"
-                >
-                  <li>Dropped Out</li>
-                </span>
-
-                <span
-                  v-if="props.row.Status.toUpperCase() == 'UNMATCHED'"
-                  :class="['tag is-warning']"
-                >
-                  <li>Unmatched</li>
-                </span>
+                <Status :status="props.row.Status"> </Status>
               </template>
             </b-table-column>
           </template>
-
-
 
           <!-- Native Language -->
 
-          <template v-for="(column, index) in studentsColumns" v-if="index == 5">
+          <template
+            v-for="(column, index) in studentsColumns"
+            v-if="index == 5"
+          >
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -161,15 +149,17 @@
                 />
               </template>
               <template v-slot="props">
-                {{ props.row.NativeLanguage  }}
+                {{ props.row.NativeLanguage }}
               </template>
             </b-table-column>
           </template>
 
-
           <!-- English Proficiency -->
 
-          <template v-for="(column, index) in studentsColumns" v-if="index == 4">
+          <template
+            v-for="(column, index) in studentsColumns"
+            v-if="index == 4"
+          >
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -188,11 +178,12 @@
             </b-table-column>
           </template>
 
-
-
           <!-- Source -->
 
-          <template v-for="(column, index) in studentsColumns" v-if="index == 6">
+          <template
+            v-for="(column, index) in studentsColumns"
+            v-if="index == 6"
+          >
             <b-table-column :key="column.id" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -210,40 +201,35 @@
               </template>
             </b-table-column>
           </template>
-
-
         </b-table>
       </section>
-            <!--start of table 2 -->
+      <!--start of table 2 -->
 
       <PageHeader slot="header" class="mid-white">
-          <div class="header-right">
-             <div class="subheader-left">Matches in progress</div>
-              <div class="subheader-right">
-                <button
-                  class="button field is-white"
-                  @click="unmatchSelected()"
-                  :disabled="!selectedMatches.length"
-                >
-                  <span>Unmatch Selected </span> ({{ selectedMatches.length }})
-                </button>
-                <div class="divider"/>
-                <button
-                  class="button field is-white"
-                  @click="confirmSelected()"
-                  :disabled="!selectedMatches.length"
-                >
-                  <span>Confirm selected </span> ({{ selectedMatches.length }})
-                </button>
-                <div class="divider"/>
-                <b-button 
-                class="button field is-blue"
-                @click="confirmAll()"
-                >
-                  <span>Confirm all</span>
-                </b-button>
-              </div>
+        <div class="header-right">
+          <div class="subheader-left">Matches in progress</div>
+          <div class="subheader-right">
+            <button
+              class="button field is-white"
+              @click="unmatchSelected()"
+              :disabled="!selectedMatches.length"
+            >
+              <span>Unmatch Selected </span> ({{ selectedMatches.length }})
+            </button>
+            <div class="divider" />
+            <button
+              class="button field is-white"
+              @click="confirmSelected()"
+              :disabled="!selectedMatches.length"
+            >
+              <span>Confirm selected </span> ({{ selectedMatches.length }})
+            </button>
+            <div class="divider" />
+            <b-button class="button field is-blue" @click="confirmAll()">
+              <span>Confirm all</span>
+            </b-button>
           </div>
+        </div>
       </PageHeader>
 
       <section>
@@ -259,40 +245,35 @@
         >
         </b-table>
       </section>
-    <section>
-
-         <b-modal v-model="isComponentModalActive" :width="640" scroll="keep">
-            <div class="card">
-              <h2>Select a teacher for student:</h2>
-                <h4>Student Name: {{selectedStudent.FullName}}</h4>
-                <h4>Teacher Name: {{selectedTeacher.FullName}}</h4>
-                <div class="card-image">
-                  <b-table
-                    :data="teachersData"
-                    :columns="teachersColumns"
-                    :selected.sync="selectedTeacher"
-                  >
-                  </b-table>
-                    <b-button
-                    class="button field is-blue"
-                    @click="addMatchedPair()"
-                    >
-                      <span>Match temporarily</span>
-                    </b-button>
-                </div>
+      <section>
+        <b-modal v-model="isComponentModalActive" :width="640" scroll="keep">
+          <div class="card">
+            <h2>Select a teacher for student:</h2>
+            <h4>Student Name: {{ selectedStudent.FullName }}</h4>
+            <h4>Teacher Name: {{ selectedTeacher.FullName }}</h4>
+            <div class="card-image">
+              <b-table
+                :data="teachersData"
+                :columns="teachersColumns"
+                :selected.sync="selectedTeacher"
+              >
+              </b-table>
+              <b-button class="button field is-blue" @click="addMatchedPair()">
+                <span>Match temporarily</span>
+              </b-button>
             </div>
+          </div>
         </b-modal>
-    </section>
+      </section>
     </div>
   </Page>
 </template>
 
 <script>
-
-
 import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
+import Status from "../components/Status.vue";
 
 export default {
   data() {
@@ -326,13 +307,13 @@ export default {
         {
           field: "EnglishProficiency",
           label: "English Proficiency",
-          searchable: true
+          searchable: true,
         },
 
         {
           field: "NativeLanguage",
           label: "Native Language",
-          searchable: true
+          searchable: true,
         },
 
         {
@@ -341,7 +322,7 @@ export default {
           searchable: true,
         },
       ],
-      teachersColumns:[
+      teachersColumns: [
         {
           field: "FullName",
           label: "Teacher Name",
@@ -361,7 +342,7 @@ export default {
           searchable: true,
         },
       ],
-      matchedColumns:[
+      matchedColumns: [
         {
           field: "StudentFullName",
           label: "Student Name",
@@ -380,113 +361,118 @@ export default {
 
   computed: {
     ...mapGetters(["unmatchedStudents", "teachers"]),
-    ...mapState(['matchingSuccess']),
+    ...mapState(["matchingSuccess"]),
     studentsData() {
-      return this.unmatchedStudents.map(student => {
-        return {
-          StudentID: `${student.StudentID}`,
-          FullName: `${student.FullName}`,
-          CreatedAt: `${student.created_at}`,
-          Status: `${student.status.Description}`,
-          PhoneNumber: `${student.PhoneNumber}`,
-          NativeLanguage: `${student.nativeLanguage.NativeLanguage}`,
-          EnglishProficiency: `${student.EnglishProficiency}`,
-          Source: `${student.Source}`,
-        };
-      })
-      .filter(({ StudentID: id1 }) => !this.matchedPairs.some(({ StudentID: id2 }) => id2 === id1));
+      return this.unmatchedStudents
+        .map((student) => {
+          return {
+            StudentID: `${student.StudentID}`,
+            FullName: `${student.FullName}`,
+            CreatedAt: `${student.created_at}`,
+            Status: `${student.status.Description}`,
+            PhoneNumber: `${student.PhoneNumber}`,
+            NativeLanguage: `${student.nativeLanguage.NativeLanguage}`,
+            EnglishProficiency: `${student.EnglishProficiency}`,
+            Source: `${student.Source}`,
+          };
+        })
+        .filter(
+          ({ StudentID: id1 }) =>
+            !this.matchedPairs.some(({ StudentID: id2 }) => id2 === id1)
+        );
     },
     teachersData() {
-      return this.teachers.map(teacher => {
+      return this.teachers.map((teacher) => {
         if (teacher.secondLanguage === null) {
-          teacher.secondLanguage = {}
-          teacher.secondLanguage.SecondLanguage = ""
+          teacher.secondLanguage = {};
+          teacher.secondLanguage.SecondLanguage = "";
         }
         return {
           ...teacher,
           NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
           SecondLanguage: `${teacher.secondLanguage.NativeLanguage}`,
           Status: `${teacher.status.Description}`,
-        }
-      })
+        };
+      });
     },
-    isDisabled(){
+    isDisabled() {
       return this.selectedStudent === null;
     },
   },
   components: {
     Page,
     PageHeader,
+    Status,
   },
   methods: {
-    ...mapActions(["getUnmatchedStudents", "getAllTeachers", "patchUnmatchedStudents"]),
+    ...mapActions([
+      "getUnmatchedStudents",
+      "getAllTeachers",
+      "patchUnmatchedStudents",
+    ]),
     addMatchedPair() {
-      this.matchedPairs.push(
-        {
-          TeacherID: this.selectedTeacher.TeacherID,
-          TeacherFullName: this.selectedTeacher.FullName,
-          StudentID: this.selectedStudent.StudentID,
-          StudentFullName: this.selectedStudent.FullName
-        }
-      )
-      this.selectedStudent = {}
-      this.selectedTeacher = {}
+      this.matchedPairs.push({
+        TeacherID: this.selectedTeacher.TeacherID,
+        TeacherFullName: this.selectedTeacher.FullName,
+        StudentID: this.selectedStudent.StudentID,
+        StudentFullName: this.selectedStudent.FullName,
+      });
+      this.selectedStudent = {};
+      this.selectedTeacher = {};
       this.isComponentModalActive = false;
     },
     unmatchSelected() {
-      this.matchedPairs = this.matchedPairs.filter(({ StudentID: id1 }) => !this.selectedMatches.some(({ StudentID: id2 }) => id2 === id1))
-      this.selectedMatches = []
+      this.matchedPairs = this.matchedPairs.filter(
+        ({ StudentID: id1 }) =>
+          !this.selectedMatches.some(({ StudentID: id2 }) => id2 === id1)
+      );
+      this.selectedMatches = [];
     },
     confirmSelected() {
       this.$buefy.dialog.confirm({
-        type: 'is-blue',
-        message: 'The selected matches will be confirmed. All selected teachers matched will receive an email in their inbox',
+        type: "is-blue",
+        message:
+          "The selected matches will be confirmed. All selected teachers matched will receive an email in their inbox",
         onConfirm: () => {
-          const patchMatchesData = this.selectedMatches.map(item => {
+          const patchMatchesData = this.selectedMatches.map((item) => {
             return {
               TeacherID: parseInt(item.TeacherID),
               TeacherFullName: item.TeacherFullName,
               StudentID: parseInt(item.StudentID),
               StudentFullName: item.StudentFullName,
               UpdatedBy: "IRRCAdmin",
-            }
-          })
-          this.patchUnmatchedStudents(patchMatchesData)
-        }
-      })
+            };
+          });
+          this.patchUnmatchedStudents(patchMatchesData);
+        },
+      });
     },
     confirmAll() {
       this.$buefy.dialog.confirm({
-        type: 'is-blue',
-        message: 'All matches will be confirmed. All teachers matched will receive an email in their inbox',
+        type: "is-blue",
+        message:
+          "All matches will be confirmed. All teachers matched will receive an email in their inbox",
         onConfirm: () => {
-          const patchMatchesData = this.matchedPairs.map(item => {
+          const patchMatchesData = this.matchedPairs.map((item) => {
             return {
               TeacherID: parseInt(item.TeacherID),
               TeacherFullName: item.TeacherFullName,
               StudentID: parseInt(item.StudentID),
               StudentFullName: item.StudentFullName,
               UpdatedBy: "IRRCAdmin",
-              LastEmailDate: new Date('Feburary 17, 2021 03:24:00'),
+              LastEmailDate: new Date("Feburary 17, 2021 03:24:00"),
               MatchStatus: "Pending",
-              ConfirmedDate: new Date('Feburary 21, 2021 03:24:00'),
-            }
-          })
+              ConfirmedDate: new Date("Feburary 21, 2021 03:24:00"),
+            };
+          });
           this.patchUnmatchedStudents(patchMatchesData);
           this.$router.go(0);
-        }
-      })
-    }
+        },
+      });
+    },
   },
 };
-
 </script>
-
-
-
-
-
-
 
 <style>
 body {
@@ -545,25 +531,23 @@ table th:not([align]) {
   border-color: white !important;
 }
 
-.header a.logo{
-  text-align:left;
+.header a.logo {
+  text-align: left;
 }
 
 .header.mid-white {
-  background-color:#fff;
-  padding-bottom:0px;
+  background-color: #fff;
+  padding-bottom: 0px;
 }
-.subheader-left{
-  padding-left:12px;
-  font-size:1.25rem;
-  float:left;
-}
-
-.subheader-right{
-  float:right;
+.subheader-left {
+  padding-left: 12px;
+  font-size: 1.25rem;
+  float: left;
 }
 
-
+.subheader-right {
+  float: right;
+}
 
 button.button.field.is-blue {
   background: #3c4f76;
@@ -575,22 +559,17 @@ button.is-blue {
   color: white !important;
 }
 
-
-
-button.button.field.is-white{
-  border-color:rgb(60, 79, 118);
+button.button.field.is-white {
+  border-color: rgb(60, 79, 118);
 }
 
-.divider{
-    width:5px;
-    height:auto;
-    display:inline-block;
+.divider {
+  width: 5px;
+  height: auto;
+  display: inline-block;
 }
 
 .card {
   padding: 30px;
 }
-
-
-
 </style>
