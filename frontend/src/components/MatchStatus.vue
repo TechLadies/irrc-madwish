@@ -39,7 +39,6 @@ export default {
   props: ["status"],
   methods: {
     changeMatchStatus(value) {
-      console.log(value);
       // Emits value to the parent component and changes value
       this.$emit("change", value);
       this.value = "Active";
