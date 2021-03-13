@@ -5,7 +5,11 @@
     </PageHeader>
 
     <section>
-      <b-table :data="teachersData">
+      <b-table
+        :data="teachersData"
+        :selected.sync="selected"
+        @dblclick="goToTeacher"
+      >
         <b-table-column
           field="created_at"
           label="Date Joined"
@@ -132,20 +136,20 @@ export default {
       });
     },
     ...mapGetters(["teachers"]),
-    data() {
-      return {
-        selected: {},
-      };
+  },
+  data() {
+    return {
+      selected: {},
+    };
+  },
+  methods: {
+    ...mapActions(["getAllTeachers"]),
+    goToTeacher() {
+      this.$router.push({ path: `/teachers/${this.selected.TeacherID}` });
     },
-    methods: {
-      ...mapActions(["getAllTeachers"]),
-      goToTeacher() {
-        this.$router.push({ path: `/teachers/${this.selected.TeacherID}` });
-      },
-    },
-    mounted() {
-      this.getAllTeachers();
-    },
+  },
+  mounted() {
+    this.getAllTeachers();
   },
 };
 </script>
@@ -191,15 +195,21 @@ span.tag.is-warning {
 }
 span.ID {
   font-size: 14px;
+}
+span.ID :not(.is-selected) {
   color: #59666e;
 }
 .table td,
 .table th {
   color: #59666e;
 }
+
 span.name {
-  color: #3c4f76 !important;
   font-size: 16px;
+}
+
+span.name :not(.is-selected) {
+  color: #3c4f76;
 }
 
 table td:not([align]),
