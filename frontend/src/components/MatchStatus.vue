@@ -2,7 +2,7 @@
   <div>
     <!-- Display dropdown if MatchStatus is Pending. -->
     <b-dropdown
-      v-if="status == 'Pending'"
+      v-if="value == 'Pending'"
       :triggers="['hover']"
       aria-role="list"
     >
@@ -10,7 +10,9 @@
         <b-button label="Pending" type="is-warning" icon-right="menu-down" />
       </template>
       <!-- Displays option to change status to Active -->
-      <b-dropdown-item :value="Active">{{ Active.label }}</b-dropdown-item>
+      <b-dropdown-item :value="Active" @click="changeMatchStatus('Active')">{{
+        Active.label
+      }}</b-dropdown-item>
     </b-dropdown>
     <!-- If MatchStatus is Active, show only the tag with no dropdown -->
     <span v-else :class="['tag', Active.style]">
@@ -24,20 +26,37 @@ export default {
   name: "Status",
   data() {
     return {
+      value: "",
       Pending: { label: "Pending", style: "is-warning" },
       Active: { label: "Active", style: "is-success" },
     };
   },
+  watch: {
+    status(value) {
+      this.value = value;
+    },
+  },
   props: ["status"],
+  methods: {
+    changeMatchStatus(value) {
+      console.log(value);
+      // Emits value to the parent component and changes value
+      this.$emit("change", value);
+      this.value = "Active";
+    },
+  },
+  mounted() {
+    this.value = this.status;
+  },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
 span.tag {
   font-size: 1em;
   justify-content: left;
   padding-top: 25px;
   padding-bottom: 25px;
-  width: 185px;
+  width: 100%;
 }
 span.tag.is-info {
   background-color: rgba(159, 207, 255, 0.15);
@@ -54,5 +73,22 @@ span.tag.is-danger {
 span.tag.is-warning {
   background-color: rgba(246, 174, 45, 0.08);
   color: #f6ae2d;
+}
+
+.dropdown-content {
+  // color:black !important
+  a {
+    color: black !important;
+  }
+  width: 100%;
+}
+.dropdown {
+  width: 100% !important;
+}
+.dropdown-trigger {
+  width: 100% !important;
+}
+button {
+  width: 100% !important;
 }
 </style>

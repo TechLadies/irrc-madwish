@@ -22,7 +22,7 @@
           selectable
         >
           <template v-for="column in columns">
-            <b-table-column
+            <!-- <b-table-column
               v-if="column.field == 'MatchStatus'"
               :key="column.field"
               v-bind="column"
@@ -30,10 +30,10 @@
             >
               <template v-slot="props">
                 <MatchStatus :status="props.row.MatchStatus" />
-                <!-- {{props.row.MatchStatus}} -->
+                {{props.row.MatchStatus}}
               </template>
-            </b-table-column>
-            <b-table-column v-else :key="column.field" v-bind="column" sortable>
+            </b-table-column> -->
+            <b-table-column :key="column.field" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
                 slot="searchable"
@@ -46,7 +46,7 @@
                 />
               </template>
               <template v-slot="props" v-if="column.select">
-                <b-field>
+                <!-- <b-field>
                   <b-select
                     :placeholder="column.select.placeholder"
                     v-model="props.row[props.column.field]"
@@ -59,7 +59,13 @@
                       {{ option }}
                     </option>
                   </b-select>
-                </b-field>
+                </b-field> -->
+
+                <MatchStatus
+                  :status="props.row.MatchStatus"
+                  @change="changeStatus(props.row)"
+                />
+                {{ props.row.MatchStatus }}
               </template>
               <template v-slot="props" v-else>
                 <span>
@@ -188,6 +194,7 @@ export default {
           field: "MatchStatus",
           label: "Confirmation",
           searchable: true,
+          select: true,
         },
         {
           field: "ConfirmedDate",
@@ -255,6 +262,7 @@ export default {
           MatchStatus: `${match.MatchStatus}`,
           ConfirmedDate: ConfirmedDate,
           LastEmailDate: LastEmailDate,
+          MatchID: `${match.MatchID}`,
         };
       });
     },
@@ -272,6 +280,10 @@ export default {
     },
     close() {
       this.isComponentModalActive = false;
+    },
+    changeStatus(row) {
+      const index = this.tableData.indexOf(row);
+      this.tableData[index].MatchStatus = "Active";
     },
     showAddReason() {
       this.$buefy.dialog.prompt({
