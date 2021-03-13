@@ -35,13 +35,19 @@ router.post("/", async (req, res) => {
     async function processLanguageStrings(array) {
       var languageSet = new Set(
         array.map((teacher) => {
-          if (teacher.NativeLanguageString != undefined) {
+          if (
+            teacher.NativeLanguageString &&
+            teacher.NativeLanguageString != undefined
+          ) {
             return teacher.NativeLanguageString.toUpperCase();
           }
         })
       );
       array.forEach((teacher) => {
-        if (teacher.SecondLanguageString != undefined) {
+        if (
+          teacher.SecondLanguageString &&
+          teacher.SecondLanguageString != undefined
+        ) {
           languageSet.add(teacher.SecondLanguageString.toUpperCase());
         }
       });
@@ -65,6 +71,15 @@ router.post("/", async (req, res) => {
                   delete teacher.NativeLanguageString;
                 }
               }
+              if (teacher.SecondLanguageString) {
+                if (
+                  teacher.SecondLanguageString.toUpperCase() ===
+                  nativeLanguage.NativeLanguage.toUpperCase()
+                ) {
+                  teacher.SecondLanguageID = nativeLanguage.NativeLanguageID;
+                  delete teacher.SecondLanguageString;
+                }
+              }
             });
           }
           return array;
@@ -76,6 +91,9 @@ router.post("/", async (req, res) => {
     const processedArray = await processLanguageStrings(req.body);
     const result = await Promise.all(
       processedArray[0].map(async (teacher) => {
+        Object.keys(teacher).forEach(
+          (k) => !teacher[k] && teacher[k] !== undefined && delete teacher[k]
+        );
         return await addSingleTeacher(teacher);
       })
     );
