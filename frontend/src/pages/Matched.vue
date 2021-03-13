@@ -256,8 +256,7 @@ export default {
       this.isComponentModalActive = false;
     },
     changeStatus(row) {
-      const index = this.tableData.indexOf(row);
-      const matchID = parseInt(this.tableData[index].MatchID);
+      const matchID = parseInt(row.MatchID);
       // this.tableData[index].MatchStatus = "Active";
       this.patchMatchStatus(matchID);
     },
