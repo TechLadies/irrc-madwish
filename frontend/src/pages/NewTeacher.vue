@@ -216,8 +216,7 @@ export default {
       this.uploadFile();
     },
 
-    SecondLanguage: function (newVal, oldVal) {
-      console.log(this.SecondLanguage);
+    SecondLanguage: function () {
       if (this.SecondLanguage != "") {
         this.isDisabled = false;
       }
