@@ -215,6 +215,13 @@ export default {
     file(val) {
       this.uploadFile();
     },
+
+    SecondLanguage: function (newVal, oldVal) {
+      console.log(this.SecondLanguage);
+      if (this.SecondLanguage != "") {
+        this.isDisabled = false;
+      }
+    },
   },
 
   async mounted() {
@@ -272,9 +279,6 @@ export default {
         );
       });
       this.checkLanguageExists = this.languageExists.length;
-      if (this.SecondLanguage != "") {
-        this.isDisabled = !this.isDisabled;
-      }
       if (this.SecondLanguage != "" && this.checkLanguageExists !== 1) {
         this.$buefy.notification.open({
           message:
