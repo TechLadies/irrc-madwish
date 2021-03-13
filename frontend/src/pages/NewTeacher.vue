@@ -121,6 +121,7 @@
                   <b-select
                     v-model="SecondLanguageProficiency"
                     placeholder="Select one"
+                    :disabled="isDisabled"
                     expanded
                   >
                     <option value="Little">
@@ -185,6 +186,7 @@ export default {
       SecondLanguage: "",
       file: null,
       Notes: "",
+      isDisabled: true,
       selected: {
         NativeLanguage: "",
         SecondLanguage: "",
@@ -230,9 +232,11 @@ export default {
         Source: this.source,
         Email: this.Email,
         NativeLanguageString: this.selected.NativeLanguage,
-        SecondLanguageString: this.selected.SecondLanguage,
+        ...(this.selected.SecondLanguage && {
+          SecondLanguageString: this.selected.SecondLanguage,
+          LanguageProficiency: this.SecondLanguageProficiency,
+        }),
         EnglishProficiency: this.EnglishProficiency,
-        LanguageProficiency: this.SecondLanguageProficiency,
         Notes: this.Notes,
         StatusString: "UNMATCHED",
       };
@@ -268,6 +272,9 @@ export default {
         );
       });
       this.checkLanguageExists = this.languageExists.length;
+      if (this.SecondLanguage != "") {
+        this.isDisabled = !this.isDisabled;
+      }
       if (this.SecondLanguage != "" && this.checkLanguageExists !== 1) {
         this.$buefy.notification.open({
           message:
