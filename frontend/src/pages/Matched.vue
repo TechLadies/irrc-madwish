@@ -22,17 +22,6 @@
           selectable
         >
           <template v-for="column in columns">
-            <!-- <b-table-column
-              v-if="column.field == 'MatchStatus'"
-              :key="column.field"
-              v-bind="column"
-              sortable
-            >
-              <template v-slot="props">
-                <MatchStatus :status="props.row.MatchStatus" />
-                {{props.row.MatchStatus}}
-              </template>
-            </b-table-column> -->
             <b-table-column :key="column.field" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
@@ -46,26 +35,10 @@
                 />
               </template>
               <template v-slot="props" v-if="column.select">
-                <!-- <b-field>
-                  <b-select
-                    :placeholder="column.select.placeholder"
-                    v-model="props.row[props.column.field]"
-                  >
-                    <option
-                      v-for="option in column.select.options"
-                      :key="option"
-                      :value="option"
-                    >
-                      {{ option }}
-                    </option>
-                  </b-select>
-                </b-field> -->
-
                 <MatchStatus
                   :status="props.row.MatchStatus"
                   @change="changeStatus(props.row)"
                 />
-                {{ props.row.MatchStatus }}
               </template>
               <template v-slot="props" v-else>
                 <span>
@@ -274,6 +247,7 @@ export default {
       "getAllMatches",
       "updateStudentStatus",
       "getDroppedReasons",
+      "patchMatchStatus",
     ]),
     clickUnmatch() {
       this.isComponentModalActive = true;
@@ -283,7 +257,9 @@ export default {
     },
     changeStatus(row) {
       const index = this.tableData.indexOf(row);
-      this.tableData[index].MatchStatus = "Active";
+      const matchID = parseInt(this.tableData[index].MatchID);
+      // this.tableData[index].MatchStatus = "Active";
+      this.patchMatchStatus(matchID);
     },
     showAddReason() {
       this.$buefy.dialog.prompt({

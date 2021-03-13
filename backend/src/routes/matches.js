@@ -133,11 +133,13 @@ router.post("/unmatch-student", async (req, res) => {
   return res.json(200, "successful");
 });
 
-// Patch status: Pass Match ID and MatchStatus
-router.patch("/:id", async (req, res) => {
+// Patch status: Pass Match ID and MatchStatus.
+router.patch("/:id/:status?", async (req, res) => {
   // e.g. status/2/. full api URL is api/matches/2
+  // If no status passed, status will be active. Status is optional.
+  const status = req.params.status || "Active";
   const id = req.params.id;
-  await matches.patchMatchStatus(id, "Active");
+  await matches.patchMatchStatus(id, status);
   return res.json(200, "successful");
 });
 
