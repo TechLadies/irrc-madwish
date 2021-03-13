@@ -22,7 +22,18 @@
           selectable
         >
           <template v-for="column in columns">
-            <b-table-column :key="column.field" v-bind="column" sortable>
+            <b-table-column
+              v-if="column.field == 'MatchStatus'"
+              :key="column.field"
+              v-bind="column"
+              sortable
+            >
+              <template v-slot="props">
+                <MatchStatus :status="props.row.MatchStatus" />
+                <!-- {{props.row.MatchStatus}} -->
+              </template>
+            </b-table-column>
+            <b-table-column v-else :key="column.field" v-bind="column" sortable>
               <template
                 v-if="column.searchable"
                 slot="searchable"
@@ -62,75 +73,72 @@
             </b-table-column>
           </template>
           <b-table-column label=" ">
-                <b-button>
-                  <b-icon icon="email-outline"></b-icon>
-                  <span>Resend</span>
-                </b-button>
+            <b-button>
+              <b-icon icon="email-outline"></b-icon>
+              <span>Resend</span>
+            </b-button>
           </b-table-column>
           <b-table-column label=" ">
-                <b-button @click="clickUnmatch()">
-                  <b-icon icon="account-multiple-check"></b-icon>
-                  <span>Unmatch</span>
-                </b-button>
+            <b-button @click="clickUnmatch()">
+              <b-icon icon="account-multiple-check"></b-icon>
+              <span>Unmatch</span>
+            </b-button>
           </b-table-column>
         </b-table>
 
         <!-- Unmatching modal  -->
 
-         <b-modal v-model="isComponentModalActive" :width="640" scroll="keep">
-            <div class="card">
-              <h2>Are you sure you want to unmatch?</h2>
-                <h4>Unmatching a pair would put students and teachers back to the matching process or dropped out section depending on the change in status</h4>
-                <h4>Student Name: {{selected.StudentName}}</h4>
-                  <b-field label="Status">
-                        <b-select
-                          placeholder="Select a status"
-                          v-model="selectedStudent.Status"
-                          :value="selectedStudent.Status"
-                          expanded
-                          :open-on-focus="true"
-                        >
-                            <option value="UNMATCHED">Unmatched</option>
-                            <option value="DROPPED OUT">Dropped out</option>
-                        </b-select>
-                  </b-field>
-                <!-- Dropped out reason --> 
-                  <b-field label="Reason">
-                    <b-autocomplete
-                      v-model="selectedStudent.Reason"
-                      :value="selectedStudent.Reason"
-                      field="Reason"
-                      ref="reasonComplete"
-                      :data="filteredReasonDataArray"
-                      placeholder="Select reason"
-                      :open-on-focus="true"
-                    >
-                      <template slot="header">
-                        <a @click="showAddReason">
-                          <span> Add new... </span>
-                        </a>
-                      </template>
-                    </b-autocomplete>
-                  </b-field>
-                <h4>Teacher Name: {{selected.TeacherName}}</h4>
-                  <span class="buttons">
-                    <b-button
-                    class="button field is-white"
-                    @click="close()"
-                    >
-                      <span>Cancel</span>
-                    </b-button>
+        <b-modal v-model="isComponentModalActive" :width="640" scroll="keep">
+          <div class="card">
+            <h2>Are you sure you want to unmatch?</h2>
+            <h4>
+              Unmatching a pair would put students and teachers back to the
+              matching process or dropped out section depending on the change in
+              status
+            </h4>
+            <h4>Student Name: {{ selected.StudentName }}</h4>
+            <b-field label="Status">
+              <b-select
+                placeholder="Select a status"
+                v-model="selectedStudent.Status"
+                :value="selectedStudent.Status"
+                expanded
+                :open-on-focus="true"
+              >
+                <option value="UNMATCHED">Unmatched</option>
+                <option value="DROPPED OUT">Dropped out</option>
+              </b-select>
+            </b-field>
+            <!-- Dropped out reason -->
+            <b-field label="Reason">
+              <b-autocomplete
+                v-model="selectedStudent.Reason"
+                :value="selectedStudent.Reason"
+                field="Reason"
+                ref="reasonComplete"
+                :data="filteredReasonDataArray"
+                placeholder="Select reason"
+                :open-on-focus="true"
+              >
+                <template slot="header">
+                  <a @click="showAddReason">
+                    <span> Add new... </span>
+                  </a>
+                </template>
+              </b-autocomplete>
+            </b-field>
+            <h4>Teacher Name: {{ selected.TeacherName }}</h4>
+            <span class="buttons">
+              <b-button class="button field is-white" @click="close()">
+                <span>Cancel</span>
+              </b-button>
 
-                    <b-button
-                    class="button field is-blue"
-                    @click="unmatch"
-                    >
-                      <span>Confirm</span>
-                    </b-button>
-                  </span>
-            </div>
+              <b-button class="button field is-blue" @click="unmatch">
+                <span>Confirm</span>
+              </b-button>
+            </span>
+          </div>
         </b-modal>
-
       </section>
     </div>
   </Page>
@@ -140,6 +148,7 @@
 import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
+import MatchStatus from "../components/MatchStatus.vue";
 
 export default {
   data() {
@@ -196,6 +205,7 @@ export default {
   components: {
     Page,
     PageHeader,
+    MatchStatus,
   },
   computed: {
     ...mapGetters(["matches", "API_droppedReason"]),
@@ -211,31 +221,56 @@ export default {
     },
     tableData() {
       return this.matches.map((match) => {
-        let DateMatched, ConfirmedDate, LastEmailDate = "";
-        DateMatched = new Date(match.studentStatusUpdate.updated_at).toLocaleDateString("en-US",{day: "2-digit", month: "short", year: "numeric",}).replace(",", " ");
-        ConfirmedDate = new Date(match.ConfirmedDate).toLocaleDateString("en-US",{day: "2-digit", month: "short", year: "numeric",}).replace(",", " ");
-        LastEmailDate = new Date(match.LastEmailDate).toLocaleDateString("en-US",{day: "2-digit", month: "short", year: "numeric",}).replace(",", " ");
+        let DateMatched,
+          ConfirmedDate,
+          LastEmailDate = "";
+        DateMatched = new Date(match.studentStatusUpdate.updated_at)
+          .toLocaleDateString("en-US", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })
+          .replace(",", " ");
+        ConfirmedDate = new Date(match.ConfirmedDate)
+          .toLocaleDateString("en-US", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })
+          .replace(",", " ");
+        LastEmailDate = new Date(match.LastEmailDate)
+          .toLocaleDateString("en-US", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })
+          .replace(",", " ");
 
         return {
-            DateMatched: DateMatched,
-            TeacherName: `${match.teacher.FullName}`,
-            TeacherID: `${match.teacher.TeacherID}`,
-            StudentName: `${match.student.FullName}`,
-            StudentID: `${match.student.StudentID}`,
-            MatchStatus: `${match.MatchStatus}`,
-            ConfirmedDate: ConfirmedDate,
-            LastEmailDate: LastEmailDate,
-
-        }
+          DateMatched: DateMatched,
+          TeacherName: `${match.teacher.FullName}`,
+          TeacherID: `${match.teacher.TeacherID}`,
+          StudentName: `${match.student.FullName}`,
+          StudentID: `${match.student.StudentID}`,
+          MatchStatus: `${match.MatchStatus}`,
+          ConfirmedDate: ConfirmedDate,
+          LastEmailDate: LastEmailDate,
+        };
       });
     },
   },
   methods: {
-    ...mapActions(['patchScreeningStudents', 'getAllStudents', 'getAllMatches', 'updateStudentStatus', 'getDroppedReasons']),
-    clickUnmatch(){
+    ...mapActions([
+      "patchScreeningStudents",
+      "getAllStudents",
+      "getAllMatches",
+      "updateStudentStatus",
+      "getDroppedReasons",
+    ]),
+    clickUnmatch() {
       this.isComponentModalActive = true;
     },
-    close(){
+    close() {
       this.isComponentModalActive = false;
     },
     showAddReason() {
@@ -256,7 +291,7 @@ export default {
             this.addDroppedReason(this.selectedStudent.Reason);
           }
         },
-      })
+      });
     },
     unmatch() {
       this.updateStudentStatus({
@@ -266,17 +301,17 @@ export default {
         updatedBy: "IRRCAdmin",
         reason: "DROPPED_" + this.selectedStudent.Reason,
       }).then(() => {
-        this.isComponentModalActive = false
-        this.getAllStudents().then(()=> this.$router.go(0))
+        this.isComponentModalActive = false;
+        this.getAllStudents().then(() => this.$router.go(0));
       });
-    }
+    },
   },
   mounted() {
-      this.getAllStudents();
-      this.getAllMatches();
-      this.getDroppedReasons();
+    this.getAllStudents();
+    this.getAllMatches();
+    this.getDroppedReasons();
   },
-}
+};
 </script>
 
 <style>
@@ -358,15 +393,12 @@ button.is-blue {
   color: white !important;
 }
 
-
 .header {
   background: none !important;
 }
-
 
 .card {
   padding: 30px;
   padding-bottom: 40px;
 }
-
 </style>
