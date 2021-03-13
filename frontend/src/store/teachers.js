@@ -136,14 +136,18 @@ export const teacherGetters = {
       // 2. Find their native language
       const studentNativeLanguage = student.NativeLanguageID;
 
-      // 3. Get unmatched teachers whose first or second language equals student's native language
+      // 3. Get unmatched teachers whose first or second language equals student's native language, and teacher is not dropped out
       const relevantTeachers = state.teachers.filter((teacher) => {
         const doesNativeLanguageMatch =
           teacher.NativeLanguageID === studentNativeLanguage;
         const doesSecondLanguageMatch =
           teacher.SecondLanguageID === studentNativeLanguage;
+        const isNotDroppedOut = teacher.status.Description !== "DROPPED OUT";
 
-        return doesNativeLanguageMatch || doesSecondLanguageMatch;
+        return (
+          isNotDroppedOut &&
+          (doesNativeLanguageMatch || doesSecondLanguageMatch)
+        );
       });
 
       // 4. Sort teachers by date joined AND status
