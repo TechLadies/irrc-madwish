@@ -306,14 +306,17 @@ export default {
       this.file.text().then((f) => {
         // Initialise array of Teacher Objects
         var teachers = [];
+
+        // Split by newline, handling the Windows '\r' break as well
+        f = f.replace("\r", "").split("\n");
+
         // Assume first row of .csv contains headers
-        f = f.split("\n");
         const headers = f.shift().split(",");
         // Use headers as object fields for cells in each row
         f.forEach(function (d) {
           // Loop through each row
           var tmp = {};
-          const row = d.split(",");
+          const row = d.replace("\r", "").split(",");
           for (var i = 0; i < headers.length; i++) {
             tmp[headers[i]] = row[i];
           }
