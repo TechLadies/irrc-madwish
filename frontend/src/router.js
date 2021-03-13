@@ -14,6 +14,7 @@ const NewTeacher = () => import("./pages/NewTeacher.vue");
 const EditTeacher = () => import("./pages/EditTeacher.vue");
 const AllTeachers = () => import ("./pages/Teachers.vue")
 const TeacherProfile = () => import("./pages/TeacherProfile.vue");
+const Matched = () => import("./pages/Matched.vue")
 
 const router = new VueRouter({
   mode: "history",
@@ -30,6 +31,7 @@ const router = new VueRouter({
     { path: "/edit-student/:id", component: EditStudent },
     { path: "/edit-teacher/:id", component: EditTeacher },
     { path: "/teachers/:id", component: TeacherProfile },
+    { path: "/matched", component: Matched },
   ],
 });
 

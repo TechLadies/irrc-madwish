@@ -30,7 +30,7 @@ class Match extends Model {
         modelClass: Teacher.model,
         join: {
           from: 'matches.TeacherID',
-          to: 'teacher.TeacherID'
+          to: 'teachers.TeacherID'
         }
       },
 
