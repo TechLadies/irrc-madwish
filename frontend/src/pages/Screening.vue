@@ -17,7 +17,7 @@
             @click="cardModal()"
             :disabled="!checkedRows.length"
           >
-            <span>Matched selected</span>: {{ checkedRows.length }}
+            <span>Ready to match</span>: {{ checkedRows.length }}
           </button>
           <b-button class="button field is-blue">
             <b-icon icon="download"></b-icon>
@@ -149,7 +149,7 @@ export default {
   },
   computed: {
     ...mapGetters(["screeningStudents"]),
-    ...mapState(['screeningSuccess']),
+    ...mapState(["screeningSuccess"]),
     tableData() {
       return this.screeningStudents.map((student) => {
         return {
@@ -162,33 +162,36 @@ export default {
   watch: {
     screeningSuccess() {
       if (this.screeningSuccess) {
-        this.getAllStudents()
+        this.getAllStudents();
       }
-    }
+    },
   },
   methods: {
-    ...mapActions(['patchScreeningStudents', 'getAllStudents']),
+    ...mapActions(["patchScreeningStudents", "getAllStudents"]),
     cardModal() {
       this.$buefy.dialog.confirm({
-        type: 'is-blue',
-        message: '<b> Students ready to be matched?</b> <br> Confirming will add these students to the page for them to be matched with teachers.',
+        type: "is-blue",
+        message:
+          "<b> Students ready to be matched?</b> <br> Confirming will add these students to the page for them to be matched with teachers.",
         onConfirm: () => {
-          const patchStudentsData = this.checkedRows.map(item => {
+          const patchStudentsData = this.checkedRows.map((item) => {
             return {
               StudentID: item.StudentID,
               EnglishProficiency: item.EnglishProficiency,
               // TODO: Make dynamic with account management
-              UpdatedBy: "IRRCAdmin"
-            }
-          })
-          this.patchScreeningStudents(patchStudentsData)
-        }
-      }) 
+              UpdatedBy: "IRRCAdmin",
+            };
+          });
+          this.patchScreeningStudents(patchStudentsData).then(() =>
+            this.$router.go(0)
+          );
+        },
+      });
     },
     goToStudent() {
-      this.$router.push({ path: `/students/${this.selected.StudentID}` })
-    }
-  }
+      this.$router.push({ path: `/students/${this.selected.StudentID}` });
+    },
+  },
 };
 </script>
 
