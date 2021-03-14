@@ -61,7 +61,7 @@ router.post("/", async (req, res) => {
   // handle error
   if (result.err) {
     const err = result.err;
-    res.status(err.code).send({
+    res.status(500).send({
       message: err.message,
       type: err.type,
       data: err.data,

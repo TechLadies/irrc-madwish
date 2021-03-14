@@ -71,7 +71,7 @@ export const studentActions = {
       }),
     };
 
-    fetch("/api/statusUpdates", statusUpdateRequestOptions)
+    return fetch("/api/statusUpdates", statusUpdateRequestOptions)
       .then((response) => {
         if (response.status !== 200) {
           throw new Error(response);
