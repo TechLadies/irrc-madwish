@@ -443,9 +443,14 @@ export default {
               StudentID: parseInt(item.StudentID),
               StudentFullName: item.StudentFullName,
               UpdatedBy: "IRRCAdmin",
+              LastEmailDate: new Date(),
+              MatchStatus: "Pending",
+              ConfirmedDate: new Date(),
             };
           });
-          this.patchUnmatchedStudents(patchMatchesData);
+          this.patchUnmatchedStudents(patchMatchesData).then(() =>
+            this.$router.go(0)
+          );
         },
       });
     },
@@ -462,13 +467,14 @@ export default {
               StudentID: parseInt(item.StudentID),
               StudentFullName: item.StudentFullName,
               UpdatedBy: "IRRCAdmin",
-              LastEmailDate: new Date("Feburary 17, 2021 03:24:00"),
+              LastEmailDate: new Date(),
               MatchStatus: "Pending",
-              ConfirmedDate: new Date("Feburary 21, 2021 03:24:00"),
+              ConfirmedDate: new Date(),
             };
           });
-          this.patchUnmatchedStudents(patchMatchesData);
-          this.$router.go(0);
+          this.patchUnmatchedStudents(patchMatchesData).then(() =>
+            this.$router.go(0)
+          );
         },
       });
     },
