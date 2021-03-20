@@ -1,4 +1,5 @@
 require("dotenv").config();
+const parse = require("pg-connection-string").parse;
 
 module.exports = {
   development: {
@@ -22,7 +23,12 @@ module.exports = {
   production: {
     client: "pg",
     useNullAsDefault: true,
-    connection: `${process.env.DATABASE_URL}?ssl=true`,
+    connection: {
+      ...parse(process.env.DATABASE_URL),
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
     migrations: {
       directory: "./migrations",
     },
