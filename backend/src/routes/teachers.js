@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const students = require("../helpers/students");
+const statuses = require("../helpers/statuses");
+const nativeLanguages = require("../helpers/nativeLanguages");
 const teachers = require("../helpers/teachers");
 
 const { UniqueViolationError, NotFoundError } = require("objection");
@@ -40,7 +41,7 @@ router.post("/", async (req, res) => {
       statusString = req.body.StatusString;
       delete req.body.StatusString;
     }
-    const status = await students.getStatusPromise(statusString);
+    const status = await statuses.getStatusPromise(statusString);
     req.body.StatusID = status.StatusID;
   }
 
@@ -53,7 +54,7 @@ router.post("/", async (req, res) => {
         nativeLanguageString = req.body.NativeLanguageString;
         delete req.body.NativeLanguageString;
       }
-      const nativeLanguage = await students.getNativeLanguagePromise(
+      const nativeLanguage = await nativeLanguages.getNativeLanguagePromise(
         nativeLanguageString
       );
       req.body.NativeLanguageID = nativeLanguage.NativeLanguageID;
@@ -74,7 +75,7 @@ router.post("/", async (req, res) => {
       if (req.body.SecondLanguageString != null) {
         secondLanguageString = req.body.SecondLanguageString;
         delete req.body.SecondLanguageString;
-        const secondLanguage = await students.getNativeLanguagePromise(
+        const secondLanguage = await nativeLanguages.getNativeLanguagePromise(
           secondLanguageString
         );
         req.body.SecondLanguageID = secondLanguage.NativeLanguageID;
@@ -117,65 +118,61 @@ router.post("/", async (req, res) => {
   res.status(200).json(result);
 });
 
-
-router.patch('/:id', async (req, res) => {
+router.patch("/:id", async (req, res) => {
   if (req.body.NativeLanguageString) {
     try {
-      const nativeLanguage = await students.getNativeLanguagePromise(
+      const nativeLanguage = await nativeLanguages.getNativeLanguagePromise(
         req.body.NativeLanguageString
-      )
-      req.body.NativeLanguageID = nativeLanguage.NativeLanguageID
-      delete req.body.NativeLanguageString
-    
+      );
+      req.body.NativeLanguageID = nativeLanguage.NativeLanguageID;
+      delete req.body.NativeLanguageString;
     } catch (err) {
       return res.status(500).send({
         message: err.message,
-        type: 'UnknownError with NativeLanguage',
-        data: {}
-      })
+        type: "UnknownError with NativeLanguage",
+        data: {},
+      });
     }
   }
 
   if (req.body.SecondLanguageString) {
     try {
-      const secondLanguage = await students.getNativeLanguagePromise(
+      const secondLanguage = await nativeLanguages.getNativeLanguagePromise(
         req.body.SecondLanguageString
-      )
-      req.body.SecondLanguageID = secondLanguage.NativeLanguageID
-      delete req.body.SecondLanguageString
-    
+      );
+      req.body.SecondLanguageID = secondLanguage.NativeLanguageID;
+      delete req.body.SecondLanguageString;
     } catch (err) {
       return res.status(500).send({
         message: err.message,
-        type: 'UnknownError with SecondLanguage',
-        data: {}
-      })
+        type: "UnknownError with SecondLanguage",
+        data: {},
+      });
     }
   }
 
-  const result = await teachers.patchTeacher(req.params.id, req.body)
+  const result = await teachers.patchTeacher(req.params.id, req.body);
 
   // handle error
   if (result.err) {
-    const err = result.err
+    const err = result.err;
     if (err instanceof NotFoundError) {
       res.status(409).send({
         message: err.message,
-        type: 'TeacherNotFound',
-        data: {}
-      })
+        type: "TeacherNotFound",
+        data: {},
+      });
     } else {
       res.status(500).send({
         message: err.message,
-        type: 'UnknownError. Database contraints may be violated',
-        data: {}
-      })
+        type: "UnknownError. Database contraints may be violated",
+        data: {},
+      });
     }
 
-    return
+    return;
   }
   res.status(200).json(result);
 });
-
 
 module.exports = router;
