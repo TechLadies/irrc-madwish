@@ -22,7 +22,12 @@
         <div class="content-title">ACTION</div>
         <div class="buttons">
           <Button label="Drop Out" @click.native="matchedToDroppedOut()" />
-          <Button v-if="isTeacher" label="Unmatch" solid @click.native="matchedToUnmatched()"/>
+          <Button
+            v-if="isTeacher"
+            label="Unmatch"
+            solid
+            @click.native="matchedToUnmatched()"
+          />
           <Button v-else label="View Match" solid />
         </div>
       </div>
@@ -33,7 +38,7 @@
 <script>
 import Button from "./Button.vue";
 import ModalDroppedOut from "./../modals/ModalDroppedOut.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "StatusCardUnmatched",
@@ -42,10 +47,6 @@ export default {
     ModalDroppedOut,
   },
   props: {
-    teacherName: {
-      type: String,
-      default: "No Teacher Assigned",
-    },
     studentName: {
       type: String,
       default: "No Student Assigned",
@@ -59,6 +60,17 @@ export default {
     isTeacher: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    ...mapGetters(["getMatchByStudentID"]),
+    teacherName() {
+      const matchObject = this.getMatchByStudentID(this.studentID);
+      if (matchObject) {
+        return matchObject.teacher.FullName;
+      } else {
+        return "";
+      }
     },
   },
   methods: {
@@ -75,13 +87,12 @@ export default {
           teacherID: this.teacherID,
           isTeacher: this.isTeacher,
           previousStatusString,
-          nextStatusString
+          nextStatusString,
         },
         hasModalCard: true,
         customClass: "custom-class custom-class-2",
         trapFocus: true,
       });
-    
     },
     matchedToUnmatched() {
       const teacherID = parseInt(this.teacherID);
@@ -94,7 +105,7 @@ export default {
         nextStatusString: nextStatusString,
         updatedBy: updatedBy,
       });
-    }
+    },
   },
 };
 </script>
