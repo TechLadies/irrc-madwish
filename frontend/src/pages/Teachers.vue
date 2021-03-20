@@ -9,6 +9,9 @@
         :data="teachersData"
         :selected.sync="selected"
         @dblclick="goToTeacher"
+        :paginated="isPaginated"
+        :pagination-position="bottom"
+        :per-page="perPage"
       >
         <b-table-column
           field="created_at"
@@ -140,6 +143,8 @@ export default {
   data() {
     return {
       selected: {},
+      isPaginated: true,
+      perPage: 10,
     };
   },
   methods: {
@@ -165,6 +170,12 @@ body {
 .Title {
   padding-bottom: 20px;
   vertical-align: bottom !important;
+}
+ul.pagination-list {
+  margin: 0 auto;
+}
+.content ul {
+  list-style: none;
 }
 span.tag {
   font-size: 1em;

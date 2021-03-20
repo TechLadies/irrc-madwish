@@ -66,7 +66,6 @@ router.post("/", async (req, res) => {
       type: err.type,
       data: err.data,
     });
-    console.log(err);
     return;
   }
 
