@@ -1,6 +1,7 @@
 const db = require("../models/nativeLanguage");
+const { get } = require("../routes/teachers");
 
-exports.addNativeLanguage = async function (nativeLanguage) {
+const addNativeLanguage = async function (nativeLanguage) {
   try {
     const response = await db.NativeLanguage.query().insert(nativeLanguage);
     return response;
@@ -8,8 +9,9 @@ exports.addNativeLanguage = async function (nativeLanguage) {
     return { err };
   }
 };
+exports.addNativeLanguage = addNativeLanguage;
 
-exports.getNativeLanguageByString = async function (nativeLanguageString) {
+const getNativeLanguageByString = async function (nativeLanguageString) {
   try {
     const response = await db.NativeLanguage.query().findOne(
       "NativeLanguage",
@@ -21,16 +23,17 @@ exports.getNativeLanguageByString = async function (nativeLanguageString) {
     return { err };
   }
 };
+exports.getNativeLanguageByString = getNativeLanguageByString;
 
 exports.getNativeLanguagePromise = async function (nativeLanguageString) {
   if (nativeLanguageString != null) {
-    const nativeLanguageResponse = await nativeLanguages.getNativeLanguageByString(
+    const nativeLanguageResponse = await getNativeLanguageByString(
       nativeLanguageString
     );
     if (nativeLanguageResponse && !nativeLanguageResponse.err) {
       return nativeLanguageResponse;
     } else if (!nativeLanguageResponse) {
-      const newNativeLanguage = await nativeLanguages.addNativeLanguage({
+      const newNativeLanguage = await addNativeLanguage({
         NativeLanguage: nativeLanguageString.toUpperCase(),
       });
       return newNativeLanguage;

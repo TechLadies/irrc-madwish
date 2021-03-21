@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const statuses = require("../helpers/statuses");
 const nativeLanguages = require("../helpers/nativeLanguages");
 const teachers = require("../helpers/teachers");
@@ -60,7 +59,7 @@ router.post("/", async (req, res) => {
       req.body.NativeLanguageID = nativeLanguage.NativeLanguageID;
     }
   } catch (err) {
-    res.status(400).send({
+    return res.status(400).send({
       message: err.message,
       type: "MissingParams",
       data: {},
@@ -82,7 +81,7 @@ router.post("/", async (req, res) => {
       }
     }
   } catch (err) {
-    res.status(400).send({
+    return res.status(400).send({
       message: err.message,
       type: "MissingParams",
       data: {},
@@ -90,12 +89,13 @@ router.post("/", async (req, res) => {
   }
 
   const result = await teachers.addTeacher(req.body);
-
+  console.log(result.err);
+  console.log(result);
   // handle error
   if (result.err) {
     const err = result.err;
     if (err instanceof UniqueViolationError) {
-      res.status(409).send({
+      return res.status(409).send({
         message: err.message,
         type: "UniqueViolation",
         data: {
@@ -105,17 +105,15 @@ router.post("/", async (req, res) => {
         },
       });
     } else {
-      res.status(500).send({
+      return res.status(500).send({
         message: err.message,
         type: "UnknownError",
         data: {},
       });
     }
-
-    return;
   }
 
-  res.status(200).json(result);
+  return res.status(200).json(result);
 });
 
 router.patch("/:id", async (req, res) => {
