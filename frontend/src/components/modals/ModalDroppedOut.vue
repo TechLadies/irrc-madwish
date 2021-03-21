@@ -101,7 +101,7 @@ export default {
           updatedBy: updatedBy,
           reason: "DROPPED_" + this.reason,
         });
-        this.$emit("close")
+        this.$emit("close");
       } else {
         this.updateStudentStatus({
           studentID: studentID,
@@ -134,10 +134,10 @@ export default {
 };
 </script>
 <style>
-.modal-card-body{
-    width: auto
+.modal-card-body {
+  width: auto;
 }
-.modal-card-foot{
-    width: auto
+.modal-card-foot {
+  width: auto;
 }
 </style>

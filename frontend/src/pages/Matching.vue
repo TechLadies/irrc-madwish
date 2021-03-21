@@ -410,7 +410,7 @@ export default {
     ...mapActions([
       "getUnmatchedStudents",
       "getAllTeachers",
-      "patchUnmatchedStudents",
+      "matchStudentTeacherPairs",
     ]),
     addMatchedPair() {
       this.matchedPairs.push({
@@ -448,7 +448,7 @@ export default {
               ConfirmedDate: new Date(),
             };
           });
-          this.patchUnmatchedStudents(patchMatchesData).then(() =>
+          this.matchStudentTeacherPairs(patchMatchesData).then(() =>
             this.$router.go(0)
           );
         },
@@ -472,7 +472,7 @@ export default {
               ConfirmedDate: new Date(),
             };
           });
-          this.patchUnmatchedStudents(patchMatchesData).then(() =>
+          this.matchStudentTeacherPairs(patchMatchesData).then(() =>
             this.$router.go(0)
           );
         },

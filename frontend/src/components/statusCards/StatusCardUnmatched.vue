@@ -54,7 +54,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["updateStudentStatus", "updateTeacherStatus"]),
+    ...mapActions(["matchStudentTeacherPairs"]),
     toggleSuggestedTeachersModal() {
       this.$buefy.modal.open({
         parent: this,
