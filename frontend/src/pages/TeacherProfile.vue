@@ -76,14 +76,19 @@ export default {
   },
   data: function () {
     return {
-      teacherID: ""
+      teacherID: "",
     };
   },
   computed: {
     ...mapGetters(["getTeacherByTeacherId"]),
-    teacherData(){
-      const data = this.teacher
-    //console.log(data);
+    teacherData() {
+      const data = this.teacher;
+      if (!data.secondLanguage) {
+        data.secondLanguage = {
+          NativeLanguageID: "",
+          NativeLanguage: "",
+        };
+      }
       const teacherObject = {
         TeacherID: data.TeacherID,
         PhoneNumber: data.PhoneNumber,
