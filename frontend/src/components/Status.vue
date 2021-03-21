@@ -1,34 +1,39 @@
 <template>
-    <div> 
-        <span
-        :class="['tag', stat.style]"
-        > 
-        <li>{{stat.label}}</li>
-        </span>      
-    </div>
+  <div>
+    <span :class="['tag', stat.style]">
+      <li>{{ stat.label }}</li>
+      <slot></slot>
+    </span>
+    <!-- slot -->
+  </div>
 </template>
 
 <script>
 export default {
-    name: "Status",
-    data(){
-        return {
-            statuses: [ 
-            {"label": "Screening", "value": "SCREENING", "style": "is-info" },
-            {"label": "Unmatched", "value": "UNMATCHED", "style": "is-warning"},
-            {"label": "Matched", "value": "MATCHED", "style": "is-success"},
-            {"label": "Dropped Out", "value": "DROPPED OUT", "style": "is-danger"}
-            ]
+  name: "Status",
+  data() {
+    return {
+      statuses: [
+        { label: "Screening", value: "SCREENING", style: "is-info" },
+        { label: "Unmatched", value: "UNMATCHED", style: "is-warning" },
+        { label: "Matched", value: "MATCHED", style: "is-success" },
+        { label: "Dropped Out", value: "DROPPED OUT", style: "is-danger" },
+      ],
+    };
+  },
+  props: ["status"],
+  computed: {
+    stat() {
+      return (
+        this.statuses.find((item) => item.value === this.status) || {
+          label: "",
+          value: "",
+          style: "",
         }
+      );
     },
-    props: ["status"],
-    computed: {
-        stat() {
-            return this.statuses.find(item => item.value === this.status) || { label: "", value: "", style: "" }
-        } 
-
-    }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -55,5 +60,4 @@ span.tag.is-warning {
   background-color: rgba(246, 174, 45, 0.08);
   color: #f6ae2d;
 }
-
 </style>

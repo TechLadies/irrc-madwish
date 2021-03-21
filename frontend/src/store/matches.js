@@ -9,6 +9,14 @@ export const matchesActions = {
     const matchesData = await response.json();
     commit(MUTATIONS.SET_MATCHES, matchesData);
   },
+  async patchMatchStatus({ dispatch }, id) {
+    const response = await fetch(`/api/matches/${id}`, { method: "PATCH" });
+    await response.json();
+    if (response.status == 200) {
+      dispatch("getAllMatches");
+    }
+  },
+
 };
 
 export const matchesMutations = {

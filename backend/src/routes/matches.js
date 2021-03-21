@@ -3,23 +3,22 @@ const router = express.Router();
 const db = require("../models/index");
 const statuses = require("../helpers/statuses");
 const statusUpdates = require("../helpers/statusUpdates.js");
-
-const matches = require('../helpers/matches')
+const matches = require("../helpers/matches");
 
 /* GET matches listing. */
 router.get("/", async (req, res) => {
   const my_matches = await matches.getAllMatches();
-  
+
   // handle error
   if (my_matches.err) {
     // console.log('entered result.err')
-    const err = my_matches.err
+    const err = my_matches.err;
     res.status(500).send({
       message: err.message,
-      type: 'UnknownError',
-      data: {}
-    })
-    return
+      type: "UnknownError",
+      data: {},
+    });
+    return;
   }
 
   res.json(my_matches);
@@ -131,6 +130,16 @@ router.post("/unmatch-student", async (req, res) => {
     nextStatusString: body.NextStatusString,
     res,
   });
+  return res.json(200, "successful");
+});
+
+// Patch status: Pass Match ID and MatchStatus.
+router.patch("/:id/:status?", async (req, res) => {
+  // e.g. status/2/. full api URL is api/matches/2
+  // If no status passed, status will be active. Status is optional.
+  const status = req.params.status || "Active";
+  const id = req.params.id;
+  await matches.patchMatchStatus(id, status);
   return res.json(200, "successful");
 });
 
