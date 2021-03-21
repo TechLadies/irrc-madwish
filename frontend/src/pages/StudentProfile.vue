@@ -76,7 +76,7 @@ export default {
     studentData() {
       const data = this.student;
       const studentObject = {
-        StudentID: data.StudentID.toString(),
+        StudentID: data.StudentID,
         PhoneNumber: data.PhoneNumber,
         FullName: data.FullName,
         Source: data.Source,

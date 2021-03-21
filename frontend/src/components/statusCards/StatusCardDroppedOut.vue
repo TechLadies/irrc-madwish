@@ -51,16 +51,16 @@ export default {
       type: Boolean,
     },
     studentID: {
-      type: String,
+      type: Number,
     },
     teacherID: {
-      type: String,
+      type: Number,
     },
   },
   methods: {
     ...mapActions(["updateStudentStatus", "updateTeacherStatus"]),
     droppedOutToScreening() {
-      const studentID = parseInt(this.studentID);
+      const studentID = this.studentID;
       const previousStatusString = "DROPPED OUT";
       const nextStatusString = "SCREENING";
       const updatedBy = "IRRCAdmin";
@@ -73,7 +73,7 @@ export default {
       });
     },
     droppedOutToMatching() {
-      const teacherID = parseInt(this.teacherID);
+      const teacherID = this.teacherID;
       const previousStatusString = "DROPPED OUT";
       const nextStatusString = "UNMATCHED";
       const updatedBy = "IRRCAdmin";
