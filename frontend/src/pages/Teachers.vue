@@ -9,41 +9,10 @@
         :data="teachersData"
         :selected.sync="selected"
         @dblclick="goToTeacher"
+        :paginated="isPaginated"
+        :pagination-position="bottom"
+        :per-page="perPage"
       >
-        <b-table-column
-          field="created_at"
-          label="Date Joined"
-          width="120"
-          searchable
-          sortable
-        >
-          <template slot="searchable" slot-scope="props">
-            <b-tooltip label="Search: YYYY-MM-DD">
-              <b-input
-                v-model="props.filters[props.column.field]"
-                icon="magnify"
-                size="is-small"
-              />
-            </b-tooltip>
-          </template>
-          <template v-slot="props">
-            <span style="font-size: 14px">
-              {{
-                new Date(props.row.created_at)
-                  .toLocaleDateString("en-US", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })
-                  .replace(",", " ")
-              }}
-            </span>
-          </template>
-        </b-table-column>
-      </b-table>
-    </section>
-    <section>
-      <b-table :data="teachersData">
         <b-table-column
           field="created_at"
           label="Date Joined"
@@ -169,21 +138,23 @@ export default {
         };
       });
     },
-    ...mapGetters(["teachers", "suggestedTeachers"]),
-    data() {
-      return {
-        selected: {},
-      };
+    ...mapGetters(["teachers"]),
+  },
+  data() {
+    return {
+      selected: {},
+      isPaginated: true,
+      perPage: 10,
+    };
+  },
+  methods: {
+    ...mapActions(["getAllTeachers"]),
+    goToTeacher() {
+      this.$router.push({ path: `/teachers/${this.selected.TeacherID}` });
     },
-    methods: {
-      ...mapActions(["getAllTeachers"]),
-      goToTeacher() {
-        this.$router.push({ path: `/teachers/${this.selected.TeacherID}` });
-      },
-    },
-    mounted() {
-      this.getAllTeachers();
-    },
+  },
+  mounted() {
+    this.getAllTeachers();
   },
 };
 </script>
@@ -199,6 +170,12 @@ body {
 .Title {
   padding-bottom: 20px;
   vertical-align: bottom !important;
+}
+ul.pagination-list {
+  margin: 0 auto;
+}
+.content ul {
+  list-style: none;
 }
 span.tag {
   font-size: 1em;
@@ -229,15 +206,21 @@ span.tag.is-warning {
 }
 span.ID {
   font-size: 14px;
+}
+span.ID :not(.is-selected) {
   color: #59666e;
 }
 .table td,
 .table th {
   color: #59666e;
 }
+
 span.name {
-  color: #3c4f76 !important;
   font-size: 16px;
+}
+
+span.name :not(.is-selected) {
+  color: #3c4f76;
 }
 
 table td:not([align]),

@@ -360,7 +360,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["unmatchedStudents", "teachers"]),
+    ...mapGetters(["unmatchedStudents", "teachers", "suggestedTeachers"]),
     ...mapState(["matchingSuccess"]),
     studentsData() {
       return this.unmatchedStudents
@@ -382,18 +382,20 @@ export default {
         );
     },
     teachersData() {
-      return this.teachers.map((teacher) => {
-        if (teacher.secondLanguage === null) {
-          teacher.secondLanguage = {};
-          teacher.secondLanguage.SecondLanguage = "";
+      return this.suggestedTeachers(this.selectedStudent.StudentID).map(
+        (teacher) => {
+          if (teacher.secondLanguage === null) {
+            teacher.secondLanguage = {};
+            teacher.secondLanguage.SecondLanguage = "";
+          }
+          return {
+            ...teacher,
+            NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
+            SecondLanguage: `${teacher.secondLanguage.NativeLanguage}`,
+            Status: `${teacher.status.Description}`,
+          };
         }
-        return {
-          ...teacher,
-          NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
-          SecondLanguage: `${teacher.secondLanguage.NativeLanguage}`,
-          Status: `${teacher.status.Description}`,
-        };
-      });
+      );
     },
     isDisabled() {
       return this.selectedStudent === null;

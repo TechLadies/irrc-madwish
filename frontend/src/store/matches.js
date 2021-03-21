@@ -16,6 +16,7 @@ export const matchesActions = {
       dispatch("getAllMatches");
     }
   },
+
 };
 
 export const matchesMutations = {
@@ -27,5 +28,12 @@ export const matchesMutations = {
 export const matchesGetters = {
   matches(state) {
     return state.matches;
+  },
+  getMatchByStudentID(state) {
+    return function (studentID) {
+      return state.matches.find(
+        (match) => parseInt(match.StudentID) == parseInt(studentID)
+      );
+    };
   },
 };

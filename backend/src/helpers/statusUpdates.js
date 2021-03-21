@@ -60,14 +60,14 @@ exports.addStatusUpdate = async function (statusUpdate) {
 
       // Then patch teacher or student status ('status')
       const updateStdOrTeacher = 
-      isTeacher ? await dbTeacher.Teacher.query(trx).findById(statusUpdate.TeacherID).patch(
+      isTeacher ? dbTeacher.Teacher.query(trx).findById(statusUpdate.TeacherID).patch(
         { StatusID: statusUpdate.NextStatusID }
       )
       :
-      await dbStudent.Student.query(trx).findById(statusUpdate.StudentID).patch(
+      dbStudent.Student.query(trx).findById(statusUpdate.StudentID).patch(
         { StatusID: statusUpdate.NextStatusID }
       )
-      return updateStdOrTeacher;
+      return await updateStdOrTeacher;
     })
     return response
   } catch (err) {

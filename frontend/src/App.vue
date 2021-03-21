@@ -31,18 +31,19 @@ export default {
   mounted() {
     this.getAllStudents();
     this.getAllTeachers();
+    this.getAllMatches();
   },
   methods: {
-    ...mapActions(["getAllStudents", "getAllTeachers"]),
-    
+    ...mapActions(["getAllStudents", "getAllTeachers", "getAllMatches"]),
+
     createNew() {
       //this.$router.push({ path: "/new-student" });
       this.$buefy.modal.open({
-                    parent: this,
-                    component: CreateNew,
-                    canCancel: [ 'escape', 'x' ],
-                    hasModalCard: true,
-                })
+        parent: this,
+        component: CreateNew,
+        canCancel: ["escape", "x"],
+        hasModalCard: true,
+      });
     },
   },
 };

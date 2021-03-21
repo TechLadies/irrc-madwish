@@ -183,11 +183,11 @@ body {
 .table th {
   color: #59666e;
 }
-span.name {
-  color: #3c4f76 !important;
+span.name :not(.is-selected) {
+  color: #3c4f76;
 }
-span.id {
-  color: #59666e !important;
+span.id :not(.is-selected) {
+  color: #59666e;
 }
 
 table td:not([align]),

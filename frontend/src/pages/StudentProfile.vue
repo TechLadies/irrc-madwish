@@ -13,15 +13,34 @@
             status: studentData.status.Description,
             proficiencyLevel: studentData.EnglishProficiency,
           }"
-          v-on:englishProficiencyIsSelected="studentData.EnglishProficiency = $event"
+          v-on:englishProficiencyIsSelected="
+            studentData.EnglishProficiency = $event
+          "
         />
       </div>
       <div class="student-profile-right">
         <section class="student-status-section">
-          <StatusCardScreening :studentID="studentData.StudentID" :englishProficiency="studentData.EnglishProficiency" v-if="studentData.status.Description.toUpperCase() === 'SCREENING'" />
-          <StatusCardUnmatched :studentID="studentData.StudentID" v-if="studentData.status.Description.toUpperCase() === 'UNMATCHED'" />
-          <StatusCardMatched :studentID="studentData.StudentID" v-if="studentData.status.Description.toUpperCase() === 'MATCHED'" />
-          <StatusCardDroppedOut :studentID="studentData.StudentID" :latestReason="latestReason" v-if="studentData.status.Description.toUpperCase() === 'DROPPED OUT'" />
+          <StatusCardScreening
+            :studentID="studentData.StudentID"
+            :englishProficiency="studentData.EnglishProficiency"
+            v-if="studentData.status.Description.toUpperCase() === 'SCREENING'"
+          />
+          <StatusCardUnmatched
+            :studentID="studentData.StudentID"
+            :studentName="studentData.FullName"
+            v-if="studentData.status.Description.toUpperCase() === 'UNMATCHED'"
+          />
+          <StatusCardMatched
+            :studentID="studentData.StudentID"
+            v-if="studentData.status.Description.toUpperCase() === 'MATCHED'"
+          />
+          <StatusCardDroppedOut
+            :studentID="studentData.StudentID"
+            :latestReason="latestReason"
+            v-if="
+              studentData.status.Description.toUpperCase() === 'DROPPED OUT'
+            "
+          />
         </section>
         <section class="student-history-section">
           <StudentHistory v-bind:items="studentHistory" />
@@ -53,49 +72,48 @@ export default {
     StatusCardUnmatched,
   },
   computed: {
-    ...mapGetters([ 'getStudentByStudentId' ]),
-    studentData(){
-      const data = this.student
+    ...mapGetters(["getStudentByStudentId"]),
+    studentData() {
+      const data = this.student;
       const studentObject = {
-            StudentID: data.StudentID.toString(),
-            PhoneNumber: data.PhoneNumber,
-            FullName: data.FullName,
-            Source: data.Source,
-            nativeLanguage: data.nativeLanguage,
-            status: data.status,
-            Notes: data.Notes,
-            dateJoined: new Date(data.created_at).toDateString(),
-            EnglishProficiency: data.EnglishProficiency,
-          };
-      return studentObject
-    },
-    studentHistory(){
-    const studentHistory = this.student.statusUpdates.map(update => {
-      if (update.reason == null) {
-        update.reason = {
-          Reason: "_"
-        }
-      } 
-      return {
-        id: update.StatusUpdateID,
-        date: new Date(update.created_at).toDateString(),
-        description: update.nextStatus.Description,
-        status: update.nextStatus.StatusID,
-        reason: update.reason.Reason.split("_")[1],
+        StudentID: data.StudentID.toString(),
+        PhoneNumber: data.PhoneNumber,
+        FullName: data.FullName,
+        Source: data.Source,
+        nativeLanguage: data.nativeLanguage,
+        status: data.status,
+        Notes: data.Notes,
+        dateJoined: new Date(data.created_at).toDateString(),
+        EnglishProficiency: data.EnglishProficiency,
       };
-    });
-    return studentHistory.sort((a, b) => b.id - a.id)
+      return studentObject;
     },
-    latestReason(){
-        return this.studentHistory[0].reason
-
+    studentHistory() {
+      const studentHistory = this.student.statusUpdates.map((update) => {
+        if (update.reason == null) {
+          update.reason = {
+            Reason: "_",
+          };
+        }
+        return {
+          id: update.StatusUpdateID,
+          date: new Date(update.created_at).toDateString(),
+          description: update.nextStatus.Description,
+          status: update.nextStatus.StatusID,
+          reason: update.reason.Reason.split("_")[1],
+        };
+      });
+      return studentHistory.sort((a, b) => b.id - a.id);
     },
-    student(){
-      const id = this.$route.params.id
-      const data = this.getStudentByStudentId(id)
-      return data 
-    }
-  }
+    latestReason() {
+      return this.studentHistory[0].reason;
+    },
+    student() {
+      const id = this.$route.params.id;
+      const data = this.getStudentByStudentId(id);
+      return data;
+    },
+  },
 };
 </script>
 

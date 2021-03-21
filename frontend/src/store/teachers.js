@@ -50,23 +50,9 @@ export const teacherActions = {
   },
 
   async updateTeacherStatus(
-    { commit, dispatch },
+    { dispatch },
     { teacherID, previousStatusString, nextStatusString, updatedBy, reason }
   ) {
-    // PATCH student
-    const teacherRequestOptions = {
-      method: "PATCH",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        TeacherID: teacherID,
-        PreviousStatusString: previousStatusString,
-        NextStatusString: nextStatusString,
-      }),
-    };
-
     // POST statusUpdate
     const statusUpdateRequestOptions = {
       method: "POST",
@@ -83,11 +69,13 @@ export const teacherActions = {
       }),
     };
 
-    fetch("/api/statusUpdates", statusUpdateRequestOptions)
+    return fetch("/api/statusUpdates", statusUpdateRequestOptions)
       .then((response) => {
         if (response.status !== 200) {
           throw new Error(response);
         }
+      })
+      .then(() => {
         dispatch("getAllTeachers");
         // Call deletion API
         fetch("/api/matches/unmatch-teacher", {
@@ -128,7 +116,7 @@ export const teacherGetters = {
     return (studentId) => {
       // 1. Find the student using the ID
       const student = state.students.find(
-        (student) => student.StudentID === studentId
+        (student) => parseInt(student.StudentID) === parseInt(studentId)
       );
       if (!student) {
         return [];
@@ -136,14 +124,18 @@ export const teacherGetters = {
       // 2. Find their native language
       const studentNativeLanguage = student.NativeLanguageID;
 
-      // 3. Get unmatched teachers whose first or second language equals student's native language
+      // 3. Get unmatched teachers whose first or second language equals student's native language, and teacher is not dropped out
       const relevantTeachers = state.teachers.filter((teacher) => {
         const doesNativeLanguageMatch =
           teacher.NativeLanguageID === studentNativeLanguage;
         const doesSecondLanguageMatch =
           teacher.SecondLanguageID === studentNativeLanguage;
+        const isNotDroppedOut = teacher.status.Description !== "DROPPED OUT";
 
-        return doesNativeLanguageMatch || doesSecondLanguageMatch;
+        return (
+          isNotDroppedOut &&
+          (doesNativeLanguageMatch || doesSecondLanguageMatch)
+        );
       });
 
       // 4. Sort teachers by date joined AND status
@@ -172,7 +164,6 @@ export const teacherGetters = {
           }
         }
       });
-
       // 5. Take the top 5
       return relevantTeachers.slice(0, 5);
     };

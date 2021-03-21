@@ -13,7 +13,12 @@
         <div class="content-title">ACTION</div>
         <div class="buttons">
           <Button label="Drop Out" @click.native="unmatchedToDroppedOut()" />
-          <Button v-if="!isTeacher" label="Select Match" solid />
+          <Button
+            v-if="!isTeacher"
+            @click.native="toggleSuggestedTeachersModal()"
+            label="Select Match"
+            solid
+          />
         </div>
       </div>
     </div>
@@ -23,13 +28,15 @@
 <script>
 import Button from "./Button.vue";
 import ModalDroppedOut from "./../modals/ModalDroppedOut.vue";
-import { mapActions } from "vuex";
+import SuggestedTeachersModal from "./../modals/ModalSuggestedTeachers.vue";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "StatusCardUnmatched",
   components: {
     Button,
     ModalDroppedOut,
+    SuggestedTeachersModal,
   },
   props: {
     studentID: {
@@ -42,9 +49,28 @@ export default {
       type: Boolean,
       default: false,
     },
+    studentName: {
+      type: String,
+    },
   },
   methods: {
     ...mapActions(["updateStudentStatus", "updateTeacherStatus"]),
+    toggleSuggestedTeachersModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: SuggestedTeachersModal,
+        props: {
+          teachersData: this.suggestedTeachersData,
+          matchButtonText: "Confirm Match",
+          studentName: this.studentName,
+        },
+        events: {
+          selectTeacher: (teacher) => this.unmatchedToMatched(teacher),
+        },
+        trapFocus: true,
+        hasModalCard: true,
+      });
+    },
     // TODO: Remove the Matched pair from the matching table (not created yet)
     unmatchedToDroppedOut() {
       const previousStatusString = "UNMATCHED";
@@ -58,10 +84,53 @@ export default {
           previousStatusString: previousStatusString,
         },
         hasModalCard: true,
-        customClass: "custom-class custom-class-2",
         trapFocus: true,
       });
     },
+    async unmatchedToMatched(teacher) {
+      try {
+        const previousStatusString = "UNMATCHED";
+        const nextStatusString = "MATCHED";
+        if (teacher.status.Description === "UNMATCHED") {
+          await this.updateTeacherStatus({
+            teacherID: Number(teacher.TeacherID),
+            previousStatusString: teacher.status.Description,
+            nextStatusString: nextStatusString,
+            updatedBy: "IRRCAdmin",
+          });
+        }
+        await this.updateStudentStatus({
+          studentID: Number(this.studentID),
+          previousStatusString: previousStatusString,
+          nextStatusString: nextStatusString,
+          updatedBy: "IRRCAdmin",
+        });
+        this.$buefy.toast.open({
+          duration: 5000,
+          message: `${teacher.FullName} and ${this.studentName} have been successfully matched!`,
+          type: "is-success",
+        });
+      } catch (e) {
+        this.$buefy.toast.open({
+          duration: 5000,
+          message: `Something went wrong, couldn't match.`,
+          type: "is-danger",
+        });
+      }
+    },
+  },
+  computed: {
+    suggestedTeachersData() {
+      return this.suggestedTeachers(this.studentID).map((teacher) => {
+        return {
+          ...teacher,
+          NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
+          SecondLanguage: `${teacher.secondLanguage.NativeLanguage}`,
+          Status: `${teacher.status.Description}`,
+        };
+      });
+    },
+    ...mapGetters(["suggestedTeachers"]),
   },
 };
 </script>
