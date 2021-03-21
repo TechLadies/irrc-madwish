@@ -252,17 +252,19 @@ export default {
 
       this.createTeacher(teacherData).then((response) => {
         if (response.status < 400) {
-          this.$buefy.notification.open({
-            message: "New teacher added. <u>View profile</u>!",
-            duration: 3000,
-            type: "is-success",
-            position: "is-top",
+          response.json().then((teacher) => {
+            this.$buefy.toast.open({
+              message: `Teacher saved. <u><a href="/teachers/${teacher.TeacherID}">View profile</a></u>!`,
+              duration: 3000,
+              type: "is-success",
+              position: "is-top",
+            });
+            // refreshes state
+            this.getNativeLanguages();
+            setTimeout(() => {
+              this.$router.push({ path: `/teachers` });
+            }, 5000);
           });
-          // refreshes state
-          this.getNativeLanguages();
-          setTimeout(() => {
-            this.$router.push({ path: `/teachers` });
-          }, 5000);
         } else {
           this.$buefy.notification.open({
             message: "Something went wrong. Please try again.",

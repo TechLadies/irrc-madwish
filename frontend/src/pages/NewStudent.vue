@@ -177,17 +177,13 @@ export default {
         StatusString: "SCREENING",
       })
         .then((response) => response.json())
-        .then((data) => {
-          this.$buefy.snackbar.open({
-            message: "New Student Added",
-            type: "is-success",
-            position: "is-top",
-            actionText: "View Profile",
-            indefinite: true,
-            onAction: () => {
-              this.$router.push({ path: `/students/${data.StudentID}` });
-            },
-          });
+        .then((student) => {
+            this.$buefy.toast.open({
+              message: `Student saved. <u><a href="/students/${student.StudentID}">View profile</a></u>!`,
+              duration: 3000,
+              type: "is-success",
+              position: "is-top",
+            });
           this.getNativeLanguages();
         })
         .catch((error) => {
