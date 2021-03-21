@@ -10,7 +10,6 @@
         :selected.sync="selected"
         @dblclick="goToTeacher"
         :paginated="isPaginated"
-        :pagination-position="bottom"
         :per-page="perPage"
       >
         <b-table-column

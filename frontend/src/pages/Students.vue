@@ -129,7 +129,6 @@ export default {
       sortIconSize: "is-small",
       sortDirection: "asc",
       isPaginated: true,
-      paginationPosition: "bottom",
       currentPage: 1,
       perPage: 10,
     };

@@ -97,35 +97,34 @@ export default {
         EnglishProficiency: data.EnglishProficiency,
         LanguageProficiency: data.LanguageProficiency,
       };
-      return teacherObject
+      return teacherObject;
     },
-    teacherHistory(){
-      const teacherHistory = this.teacher.statusUpdates.map(update => {
-      if (update.reason == null) {
-        update.reason = {
-          Reason: "_"
+    teacherHistory() {
+      const teacherHistory = this.teacher.statusUpdates.map((update) => {
+        if (update.reason == null) {
+          update.reason = {
+            Reason: "_",
+          };
         }
-      } 
-      return {
-        id: update.StatusUpdateID,
-        date: new Date(update.created_at).toDateString(),
-        description: update.nextStatus.Description,
-        status: update.nextStatus.StatusID,
-        reason: update.reason.Reason.split("_")[1],
-      };
-    });
-    return teacherHistory.sort((a, b) => b.id - a.id)
+        return {
+          id: update.StatusUpdateID,
+          date: new Date(update.created_at).toDateString(),
+          description: update.nextStatus.Description,
+          status: update.nextStatus.StatusID,
+          reason: update.reason.Reason.split("_")[1],
+        };
+      });
+      return teacherHistory.sort((a, b) => b.id - a.id);
     },
-    latestReason(){
-      return this.teacherHistory[0].reason
+    latestReason() {
+      return this.teacherHistory[0].reason;
     },
-    teacher(){
-      const id = this.$route.params.id
-      const data = this.getTeacherByTeacherId(id)
-      return data 
-    }
+    teacher() {
+      const id = this.$route.params.id;
+      const data = this.getTeacherByTeacherId(id);
+      return data;
+    },
   },
-  
 };
 </script>
 
