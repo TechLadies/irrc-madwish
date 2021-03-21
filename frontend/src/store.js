@@ -15,30 +15,30 @@ import {
 import {
   screeningActions,
   screeningState,
-  screeningMutations
+  screeningMutations,
 } from "./store/screening.js";
 import {
   studentActions,
   studentGetters,
   studentMutations,
-  studentState
+  studentState,
 } from "./store/students.js";
 import {
-  matchingActions, 
-  matchingState, 
-  matchingMutations
+  matchingActions,
+  matchingState,
+  matchingMutations,
 } from "./store/matching.js";
 import {
   reasonActions,
   reasonGetters,
   reasonMutations,
-  reasonState
+  reasonState,
 } from "./store/reasons.js";
 import {
   matchesGetters,
   matchesActions,
   matchesMutations,
-  matchesState
+  matchesState,
 } from "./store/matches.js";
 
 Vue.use(Vuex);
@@ -76,7 +76,7 @@ export default new Vuex.Store({
     ...screeningActions,
     ...matchingActions,
     ...reasonActions,
-    ...matchesActions
+    ...matchesActions,
   },
   getters: {
     ...studentGetters,
@@ -84,9 +84,5 @@ export default new Vuex.Store({
     ...teacherGetters,
     ...reasonGetters,
     ...matchesGetters,
-    screeningStudents: (state) => state.students.filter((student) => student.status.Description === "SCREENING"),
-    unmatchedStudents: (state) => state.students.filter((student) => student.status.Description === "UNMATCHED"),
-    getStudentByStudentId: (state) => (id) => state.students.find(student => student.StudentID == id),
-    getTeacherByTeacherId: (state) => (id) => state.teachers.find(teacher => teacher.TeacherID == id)
   },
 });
