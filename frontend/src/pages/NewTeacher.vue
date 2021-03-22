@@ -241,7 +241,7 @@ export default {
         Source: this.source,
         Email: this.Email,
         NativeLanguageString: this.selected.NativeLanguage,
-        ...(this.selected.SecondLanguage && {
+        ...(this.SecondLanguage && {
           SecondLanguageString: this.selected.SecondLanguage,
           LanguageProficiency: this.SecondLanguageProficiency,
         }),
