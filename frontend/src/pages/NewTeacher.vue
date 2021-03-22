@@ -219,6 +219,9 @@ export default {
     SecondLanguage: function () {
       if (this.SecondLanguage != "") {
         this.isDisabled = false;
+      } else {
+        this.isDisabled = true;
+        this.SecondLanguageProficiency = "";
       }
     },
   },
