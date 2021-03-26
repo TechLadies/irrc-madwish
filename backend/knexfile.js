@@ -24,7 +24,7 @@ module.exports = {
     client: "pg",
     useNullAsDefault: true,
     connection: {
-      ...parse(process.env.DATABASE_URL),
+      ...parse(process.env.DATABASE_URL || ""),
       ssl: {
         rejectUnauthorized: false,
       },
