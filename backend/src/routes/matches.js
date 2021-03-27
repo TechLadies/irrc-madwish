@@ -106,6 +106,7 @@ const deleteMatches = async ({ field, id, nextStatusString, res }) => {
   // Delete match
   await db.Match.query().delete().where(field, id);
 };
+
 // Req body should include TeacherID
 router.post("/unmatch-teacher", async (req, res) => {
   const body = req.body;

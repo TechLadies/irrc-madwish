@@ -83,18 +83,25 @@ export const studentActions = {
         }
         dispatch("getAllStudents");
 
-        // Calls deletion API to delete matches if moving from MATCHED -> UNMATCHED/DROPPED OUT
-        fetch("/api/matches/unmatch-student", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            StudentID: studentID,
-            NextStatusString: nextStatusString,
-          }),
-        });
+        if (
+          previousStatusString === "MATCHED" &&
+          (nextStatusString === "UNMATCHED" ||
+            nextStatusString === "DROPPED OUT")
+        ) {
+          // Calls deletion API to delete matches if moving from MATCHED -> UNMATCHED/DROPPED OUT
+          fetch("/api/matches/unmatch-student", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              StudentID: studentID,
+              NextStatusString: nextStatusString,
+            }),
+          });
+        }
+
         // TODO: Call matches API after this to refresh
         // fetch('api/matches').then(response => response.json) ?
       })

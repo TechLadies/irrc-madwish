@@ -54,7 +54,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["updateStudentStatus", "updateTeacherStatus"]),
+    ...mapActions(["matchStudentTeacherPairs"]),
     toggleSuggestedTeachersModal() {
       this.$buefy.modal.open({
         parent: this,
@@ -89,25 +89,22 @@ export default {
     },
     async unmatchedToMatched(teacher) {
       try {
-        const previousStatusString = "UNMATCHED";
-        const nextStatusString = "MATCHED";
-        if (teacher.status.Description === "UNMATCHED") {
-          await this.updateTeacherStatus({
-            teacherID: Number(teacher.TeacherID),
-            previousStatusString: teacher.status.Description,
-            nextStatusString: nextStatusString,
-            updatedBy: "IRRCAdmin",
-          });
-        }
-        await this.updateStudentStatus({
-          studentID: Number(this.studentID),
-          previousStatusString: previousStatusString,
-          nextStatusString: nextStatusString,
-          updatedBy: "IRRCAdmin",
-        });
+        this.matchStudentTeacherPairs([
+          {
+            TeacherID: parseInt(teacher.TeacherID),
+            TeacherFullName: teacher.FullName,
+            StudentID: parseInt(this.studentID),
+            StudentFullName: this.studentName,
+            UpdatedBy: "IRRCAdmin",
+            LastEmailDate: new Date(),
+            MatchStatus: "Pending",
+            ConfirmedDate: new Date(),
+          },
+        ]);
+
         this.$buefy.toast.open({
           duration: 5000,
-          message: `${teacher.FullName} and ${this.studentName} have been successfully matched!`,
+          message: `${teacher.FullName} and ${this.studentName} have been successfully matched! ${teacher.FullName} will receive an email in their inbox.`,
           type: "is-success",
         });
       } catch (e) {
