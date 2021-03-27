@@ -236,7 +236,7 @@ export default {
           SecondLanguageString: this.selected.SecondLanguage,
           LanguageProficiency: this.SecondLanguageProficiency,
         }),
-        EnglishProficiency: this.EnglishProficiency,
+        EnglishProficiency: "Intermediate",
         Notes: this.Notes,
         StatusString: "UNMATCHED",
       };
