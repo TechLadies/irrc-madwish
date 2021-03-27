@@ -38,19 +38,25 @@
               </b-field>
 
               <b-field label="Phone Number" class="half-width">
-                <b-input v-model="teacherData.PhoneNumber" type="string" value="">
+                <b-input
+                  v-model="teacherData.PhoneNumber"
+                  type="string"
+                  value=""
+                >
                 </b-input>
               </b-field>
 
               <b-field label="Email Address" class="half-width">
-                <b-input v-model="teacherData.Email" type="string" value=""> </b-input>
+                <b-input v-model="teacherData.Email" type="string" value="">
+                </b-input>
               </b-field>
 
               <b-field label="Source" class="half-width">
-                <b-input v-model="teacherData.Source" placeholder="Optional"> </b-input>
+                <b-input v-model="teacherData.Source" placeholder="Optional">
+                </b-input>
               </b-field>
               <b-field grouped>
-                <b-field label="Native Language" class="half-width">
+                <b-field label="Language 1" class="half-width">
                   <b-autocomplete
                     v-model="teacherData.nativeLanguage.NativeLanguage"
                     field="NativeLanguage"
@@ -60,7 +66,8 @@
                     @typing="filteredLanguageDataArray"
                     @select="
                       (option) =>
-                        (teacherData.nativeLanguage.NativeLanguage = option.NativeLanguage)
+                        (teacherData.nativeLanguage.NativeLanguage =
+                          option.NativeLanguage)
                     "
                   >
                     <template slot="header">
@@ -71,7 +78,19 @@
                   </b-autocomplete>
                 </b-field>
 
-                <b-field label="English Proficiency" class="half-width">
+                <b-field label="Teaching Experience" class="half-width">
+                  <b-select
+                    v-model="teacherData.TeachingExperience"
+                    placeholder="Yes/No"
+                    expanded
+                  >
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </b-select>
+                </b-field>
+              </b-field>
+              <!-- EnglishProficiency is not currently required -->
+              <!-- <b-field label="English Proficiency" class="half-width">
                   <b-select
                     v-model="teacherData.EnglishProficiency"
                     placeholder="Select one"
@@ -88,8 +107,7 @@
                       Intermediate (Able to understand simple words)
                     </option>
                   </b-select>
-                </b-field>
-              </b-field>
+                </b-field> -->
 
               <b-field grouped>
                 <b-field label="Second Language" class="half-width">
@@ -102,7 +120,8 @@
                     @typing="filteredLanguageDataArray"
                     @select="
                       (option) =>
-                        (teacherData.secondLanguage.NativeLanguage = option.NativeLanguage)
+                        (teacherData.secondLanguage.NativeLanguage =
+                          option.NativeLanguage)
                     "
                   >
                     <template slot="header">
@@ -173,21 +192,24 @@ export default {
       languages: [],
       file: null,
       teacherData: {
-        nativeLanguage: { NativeLanguage: '' },
-        secondLanguage: {NativeLanguage: ''}
-      }
-
+        nativeLanguage: { NativeLanguage: "" },
+        secondLanguage: { NativeLanguage: "" },
+      },
     };
   },
   computed: {
-    ...mapGetters(["API_nativeLanguage", "getTeacherByTeacherId", "getAllTeachers"]),
+    ...mapGetters([
+      "API_nativeLanguage",
+      "getTeacherByTeacherId",
+      "getAllTeachers",
+    ]),
     ...mapState(["updateTeacherSuccess"]),
     // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
     formIsInvalid() {
       if (
         this.teacherData.nativeLanguage === null ||
         this.teacherData.FullName === "" ||
-        this.teacherData.PhoneNumber === "" || 
+        this.teacherData.PhoneNumber === "" ||
         this.teacherData.nativeLanguage.NativeLanguage === ""
       ) {
         return true;
@@ -200,45 +222,47 @@ export default {
       this.uploadFile();
     },
     updateTeacherSuccess(value) {
-      if(value === true){
+      if (value === true) {
         this.$buefy.notification.open({
-            message: "Teacher Data Updated. <u>View profile</u>!",
-            duration: 3000,
-            type: "is-success",
-            position: "is-top",
-          });
-          // refreshes state
-          this.getNativeLanguages();
-          setTimeout(() => {
-            this.$router.push({ path: `/teachers` });
-          }, 2000);
-      }
-      else if (value === false) {
+          message: "Teacher Data Updated. <u>View profile</u>!",
+          duration: 3000,
+          type: "is-success",
+          position: "is-top",
+        });
+        // refreshes state
+        this.getNativeLanguages();
+        setTimeout(() => {
+          this.$router.push({ path: `/teachers` });
+        }, 2000);
+      } else if (value === false) {
         this.$buefy.notification.open({
-            message: "Something went wrong. Please try again.",
-            duration: 3000,
-            type: "is-warning",
-            position: "is-top",
-          });
+          message: "Something went wrong. Please try again.",
+          duration: 3000,
+          type: "is-warning",
+          position: "is-top",
+        });
       }
-      this.resetTeacherUpdateSuccess(undefined)
-
-    }
+      this.resetTeacherUpdateSuccess(undefined);
+    },
   },
 
   async mounted() {
     // Fetch Native Languages
     this.getNativeLanguages();
-    
+
     // Fetch this teacher's data
-    const id = parseInt(this.$route.params.id)
-    this.teacherData = this.getTeacherByTeacherId(id)
+    const id = parseInt(this.$route.params.id);
+    this.teacherData = this.getTeacherByTeacherId(id);
   },
 
   methods: {
     // Copies actions from store, allows you to use it as a native method in the component.
-    ...mapActions(["getNativeLanguages", "patchTeacher", "resetTeacherUpdateSuccess"]),
-    
+    ...mapActions([
+      "getNativeLanguages",
+      "patchTeacher",
+      "resetTeacherUpdateSuccess",
+    ]),
+
     updateTeacher() {
       const teacherUpdate = {
         TeacherID: this.teacherData.TeacherID,
@@ -248,12 +272,13 @@ export default {
         Email: this.teacherData.Email,
         NativeLanguageString: this.teacherData.nativeLanguage.NativeLanguage,
         SecondLanguageString: this.teacherData.secondLanguage.NativeLanguage,
-        EnglishProficiency: this.teacherData.EnglishProficiency,
+        TeachingExperience: this.teacherData.TeachingExperience,
+        // EnglishProficiency: this.teacherData.EnglishProficiency,
         LanguageProficiency: this.teacherData.LanguageProficiency,
         Notes: this.teacherData.Notes,
       };
 
-      this.patchTeacher(teacherUpdate)
+      this.patchTeacher(teacherUpdate);
     },
 
     filteredLanguageDataArray(language = "") {
