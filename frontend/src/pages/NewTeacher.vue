@@ -215,6 +215,15 @@ export default {
     file(val) {
       this.uploadFile();
     },
+
+    SecondLanguage: function () {
+      if (this.SecondLanguage != "") {
+        this.isDisabled = false;
+      } else {
+        this.isDisabled = true;
+        this.SecondLanguageProficiency = "";
+      }
+    },
   },
 
   async mounted() {
@@ -232,7 +241,7 @@ export default {
         Source: this.source,
         Email: this.Email,
         NativeLanguageString: this.selected.NativeLanguage,
-        ...(this.selected.SecondLanguage && {
+        ...(this.SecondLanguage && {
           SecondLanguageString: this.selected.SecondLanguage,
           LanguageProficiency: this.SecondLanguageProficiency,
         }),
@@ -272,9 +281,6 @@ export default {
         );
       });
       this.checkLanguageExists = this.languageExists.length;
-      if (this.SecondLanguage != "") {
-        this.isDisabled = !this.isDisabled;
-      }
       if (this.SecondLanguage != "" && this.checkLanguageExists !== 1) {
         this.$buefy.notification.open({
           message:
