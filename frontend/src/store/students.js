@@ -22,7 +22,12 @@ export const studentActions = {
     };
     const response = await fetch("/api/students", payload);
     dispatch("getAllStudents");
-    return response;
+    dispatch("getNativeLanguages");
+    if (response.status < 400) {
+      return response;
+    } else {
+      throw new Error(response);
+    }
   },
 
   // PATCH Student Data to backend
