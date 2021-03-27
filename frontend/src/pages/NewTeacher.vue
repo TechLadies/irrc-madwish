@@ -50,29 +50,19 @@
                 <b-input v-model="source" placeholder="Optional"> </b-input>
               </b-field>
 
-              <b-field label="English Proficiency" class="half-width">
+              <b-field label="Teaching Experience" class="half-width">
                 <b-select
-                  v-model="EnglishProficiency"
-                  placeholder="Select one"
+                  v-model="TeachingExperience"
+                  placeholder="Yes/No"
                   expanded
                 >
-                  <option value="Little">
-                    Little (Able to understand simple words)
-                  </option>
-                  <option value="Simple">
-                    Simple (Able to speak full sentences)
-                  </option>
-                  <option value="Intermediate">
-                    Intermediate (Able to understand simple words)
-                  </option>
-                  <option value="Fluent">
-                    Fluent (Able to engage in a conversation)
-                  </option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
                 </b-select>
               </b-field>
 
               <b-field grouped>
-                <b-field label="Native Language" class="half-width">
+                <b-field label="Language 1" class="half-width">
                   <b-autocomplete
                     v-model="nativeLanguage"
                     field="NativeLanguage"
@@ -95,7 +85,7 @@
               </b-field>
 
               <b-field grouped>
-                <b-field label="Second Language" class="half-width">
+                <b-field label="Language 2" class="half-width">
                   <b-autocomplete
                     v-model="SecondLanguage"
                     @blur="checkSecondLanguage"
@@ -117,7 +107,8 @@
                   </b-autocomplete>
                 </b-field>
 
-                <b-field label="Second Language Proficiency" class="half-width">
+                <!-- Second Language Proficiency is currently not in use. If users want to implement it in the future, just uncomment this section. -->
+                <!-- <b-field label="Second Language Proficiency" class="half-width">
                   <b-select
                     v-model="SecondLanguageProficiency"
                     placeholder="Select one"
@@ -137,7 +128,7 @@
                       Fluent (Able to engage in a conversation)
                     </option>
                   </b-select>
-                </b-field>
+                </b-field> -->
               </b-field>
 
               <b-field label="Notes" class="half-width">
