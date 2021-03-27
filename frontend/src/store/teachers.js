@@ -113,7 +113,22 @@ export const teacherGetters = {
   },
 
   suggestedTeachers(state) {
-    return (studentId) => {
+    return (studentId, filters) => {
+      if (filters) {
+        return state.teachers.filter((teacher) => {
+          let nameMatch = true;
+          let sourceMatch = true;
+          if (filters.FullName) {
+            nameMatch = new RegExp(filters.FullName, "ig").test(
+              teacher.FullName
+            );
+          }
+          if (filters.Source) {
+            sourceMatch = new RegExp(filters.Source, "ig").test(teacher.Source);
+          }
+          return nameMatch && sourceMatch;
+        });
+      }
       // 1. Find the student using the ID
       const student = state.students.find(
         (student) => parseInt(student.StudentID) === parseInt(studentId)

@@ -9,9 +9,11 @@
     </h4>
     <div class="card-image">
       <b-table
-        v-bind:data="teachersData"
+        v-bind:data="tableData"
         :columns="teachersColumns"
         :selected.sync="selectedTeacher"
+        :backendFiltering="true"
+        @filters-change="onFilter"
       >
       </b-table>
       <b-button class="button field is-blue" @click="handleClose">
@@ -22,6 +24,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "SuggestedTeachersModal",
   props: {
@@ -42,8 +45,20 @@ export default {
       default: "",
     },
   },
+  computed: {
+    ...mapGetters(["suggestedTeachers"]),
+    tableData() {
+      if (this.isSearchingTeacher) {
+        return this.searchedTeachers;
+      } else {
+        return this.teachersData;
+      }
+    },
+  },
   data() {
     return {
+      isSearchingTeacher: false,
+      searchedTeachers: [],
       teachersColumns: [
         {
           field: "FullName",
@@ -71,6 +86,24 @@ export default {
     handleClose() {
       this.$emit("selectTeacher", this.selectedTeacher);
       this.$emit("close");
+    },
+    onFilter(fields) {
+      if (fields.FullName || fields.Source) {
+        this.isSearchingTeacher = true;
+        this.searchedTeachers = this.suggestedTeachers(-1, fields).map(
+          (teacher) => {
+            return {
+              ...teacher,
+              NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
+              SecondLanguage: `${teacher.secondLanguage.NativeLanguage}`,
+              Status: `${teacher.status.Description}`,
+            };
+          }
+        );
+      } else {
+        this.isSearchingTeacher = false;
+        this.searchedTeachers = [];
+      }
     },
   },
 };
