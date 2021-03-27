@@ -154,4 +154,14 @@ export const studentMutations = {
 };
 export const studentGetters = {
   students: (state) => state.students,
+  getStudentByStudentId: (state) => (id) =>
+    state.students.find((student) => student.StudentID == id),
+  screeningStudents: (state) =>
+    state.students.filter(
+      (student) => student.status.Description === "SCREENING"
+    ),
+  unmatchedStudents: (state) =>
+    state.students.filter(
+      (student) => student.status.Description === "UNMATCHED"
+    ),
 };

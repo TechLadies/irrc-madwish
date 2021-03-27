@@ -42,10 +42,10 @@ export default {
   name: "ModalDroppedOut",
   props: {
     studentID: {
-      type: String,
+      type: Number,
     },
     teacherID: {
-      type: String,
+      type: Number,
     },
     previousStatusString: {
       type: String,
@@ -87,15 +87,13 @@ export default {
       "addDroppedReason",
     ]),
     toDroppedOut() {
-      const studentID = parseInt(this.studentID);
-      const teacherID = parseInt(this.teacherID);
       const previousStatusString = this.previousStatusString;
       const nextStatusString = "DROPPED OUT";
       const updatedBy = "IRRCAdmin";
 
       if (this.isTeacher) {
         this.updateTeacherStatus({
-          teacherID: teacherID,
+          teacherID: this.teacherID,
           previousStatusString: previousStatusString,
           nextStatusString: nextStatusString,
           updatedBy: updatedBy,
@@ -104,7 +102,7 @@ export default {
         this.$emit("close");
       } else {
         this.updateStudentStatus({
-          studentID: studentID,
+          studentID: this.studentID,
           previousStatusString: previousStatusString,
           nextStatusString: nextStatusString,
           updatedBy: updatedBy,

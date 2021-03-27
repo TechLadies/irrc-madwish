@@ -40,10 +40,10 @@ export default {
   },
   props: {
     studentID: {
-      type: String,
+      type: Number,
     },
     teacherID: {
-      type: String,
+      type: Number,
     },
     isTeacher: {
       type: Boolean,

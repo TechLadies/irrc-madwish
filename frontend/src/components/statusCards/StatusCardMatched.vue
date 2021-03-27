@@ -52,10 +52,10 @@ export default {
       default: "No Student Assigned",
     },
     studentID: {
-      type: String,
+      type: Number,
     },
     teacherID: {
-      type: String,
+      type: Number,
     },
     isTeacher: {
       type: Boolean,
@@ -95,12 +95,11 @@ export default {
       });
     },
     matchedToUnmatched() {
-      const teacherID = parseInt(this.teacherID);
       const previousStatusString = "MATCHED";
       const nextStatusString = "UNMATCHED";
       const updatedBy = "IRRCAdmin";
       this.updateTeacherStatus({
-        teacherID: teacherID,
+        teacherID: this.teacherID,
         previousStatusString: previousStatusString,
         nextStatusString: nextStatusString,
         updatedBy: updatedBy,

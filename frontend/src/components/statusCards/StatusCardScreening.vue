@@ -33,7 +33,7 @@ export default {
   },
   props: {
     studentID: {
-      type: String,
+      type: Number,
     },
     englishProficiency: {
       type: String,
@@ -43,13 +43,12 @@ export default {
     ...mapActions(["updateStudentStatus", "updateStudentEnglishProficiency"]),
     screeningToUnmatched() {
       // Update student status
-      const studentID = parseInt(this.studentID);
       const previousStatusString = "SCREENING";
       const nextStatusString = "UNMATCHED";
       const updatedBy = "IRRCAdmin";
 
       this.updateStudentStatus({
-        studentID: studentID,
+        studentID: this.studentID,
         previousStatusString: previousStatusString,
         nextStatusString: nextStatusString,
         updatedBy: updatedBy,
@@ -57,7 +56,7 @@ export default {
 
       // Update English proficiency
       this.updateStudentEnglishProficiency({
-        studentID: studentID,
+        studentID: this.studentID,
         englishProficiency: this.englishProficiency,
       });
     },
