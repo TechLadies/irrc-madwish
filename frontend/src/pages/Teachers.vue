@@ -67,7 +67,12 @@
           </template>
         </b-table-column>
 
-        <b-table-column field="status" label="Status" searchable sortable>
+        <b-table-column
+          field="status.Description"
+          label="Status"
+          searchable
+          sortable
+        >
           <template slot="searchable" slot-scope="props">
             <b-input
               v-model="props.filters[props.column.field]"
