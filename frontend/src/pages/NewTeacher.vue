@@ -175,6 +175,7 @@ export default {
       EnglishProficiency: "",
       SecondLanguageProficiency: "",
       SecondLanguage: "",
+      TeachingExperience: "",
       file: null,
       Notes: "",
       isDisabled: true,
