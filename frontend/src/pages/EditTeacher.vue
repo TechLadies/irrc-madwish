@@ -131,8 +131,8 @@
                     </template>
                   </b-autocomplete>
                 </b-field>
-
-                <b-field label="Language Proficiency" class="half-width">
+                <!-- Second Language Proficiency is not currently in use. If needed, uncomment these lines.-->
+                <!-- <b-field label="Language Proficiency" class="half-width">
                   <b-select
                     v-model="teacherData.LanguageProficiency"
                     placeholder="Select one"
@@ -149,7 +149,7 @@
                       Intermediate (Able to understand simple words)
                     </option>
                   </b-select>
-                </b-field>
+                </b-field> -->
               </b-field>
 
               <b-field label="Notes" class="half-width">
