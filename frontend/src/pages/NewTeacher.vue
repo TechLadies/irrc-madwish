@@ -238,6 +238,7 @@ export default {
           LanguageProficiency: this.SecondLanguageProficiency,
         }),
         EnglishProficiency: "Intermediate",
+        TeachingExperience: this.TeachingExperience,
         Notes: this.Notes,
         StatusString: "UNMATCHED",
       };
