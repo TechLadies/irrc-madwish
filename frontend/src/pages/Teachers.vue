@@ -71,6 +71,12 @@
           field="status.Description"
           label="Status"
           searchable
+          :custom-search="
+            (object, input) =>
+              object.status.Description.toLowerCase().startsWith(
+                input.toLowerCase()
+              )
+          "
           sortable
         >
           <template slot="searchable" slot-scope="props">
