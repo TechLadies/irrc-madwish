@@ -177,7 +177,7 @@ export default {
       this.$buefy.dialog.confirm({
         type: "is-blue",
         message:
-          "<b> Students ready to be matched?</b> <br> Confirming will add these students to the page for them to be matched with teachers.",
+          "<b> Students ready to be matched?</b> <br> Clicking OK will add these Students to the page for Matching with Teachers.",
         onConfirm: () => {
           const patchStudentsData = this.checkedRows.map((item) => {
             return {
