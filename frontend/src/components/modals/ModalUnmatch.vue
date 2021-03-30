@@ -99,7 +99,7 @@ export default {
       });
     },
   },
-  async mounted() {
+  mounted() {
     this.getAllStudents();
     this.getAllMatches();
     this.getDroppedReasons();
