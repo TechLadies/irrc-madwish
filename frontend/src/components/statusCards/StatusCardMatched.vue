@@ -28,7 +28,7 @@
             solid
             @click.native="matchedToUnmatched()"
           />
-          <Button v-else label="View Match" solid />
+          <Button v-else label="Unmatch" @click.native="clickUnmatch()" solid />
         </div>
       </div>
     </div>
@@ -38,6 +38,7 @@
 <script>
 import Button from "./Button.vue";
 import ModalDroppedOut from "./../modals/ModalDroppedOut.vue";
+import ModalUnmatch from "./../modals/ModalUnmatch.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -45,6 +46,7 @@ export default {
   components: {
     Button,
     ModalDroppedOut,
+    ModalUnmatch,
   },
   props: {
     studentName: {
@@ -103,6 +105,26 @@ export default {
         previousStatusString: previousStatusString,
         nextStatusString: nextStatusString,
         updatedBy: updatedBy,
+      });
+    },
+    clickUnmatch() {
+      const previousStatusString = "MATCHED";
+      const nextStatusString = "UNMATCHED";
+      this.$buefy.modal.open({
+        parent: this,
+        component: ModalUnmatch,
+        props: {
+          teacherName: this.teacherName,
+          studentName: this.studentName,
+          studentID: this.studentID,
+          teacherID: this.teacherID,
+          isTeacher: this.isTeacher,
+          previousStatusString,
+          nextStatusString,
+        },
+        hasModalCard: true,
+        customClass: "custom-class custom-class-2",
+        trapFocus: true,
       });
     },
   },

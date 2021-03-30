@@ -32,6 +32,7 @@
           />
           <StatusCardMatched
             :studentID="studentData.StudentID"
+            :studentName="studentData.FullName"
             v-if="studentData.status.Description.toUpperCase() === 'MATCHED'"
           />
           <StatusCardDroppedOut
