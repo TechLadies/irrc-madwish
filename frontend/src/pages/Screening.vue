@@ -128,6 +128,11 @@ export default {
           searchable: true,
         },
         {
+          field: "PhoneNumber",
+          label: "Phone Number",
+          searchable: true,
+        },
+        {
           field: "EnglishProficiency",
           label: "English Proficiency",
           searchable: true,
