@@ -433,8 +433,7 @@ export default {
     confirmSelected() {
       this.$buefy.dialog.confirm({
         type: "is-blue",
-        message:
-          "The selected matches will be confirmed. All selected teachers matched will receive an email in their inbox",
+        message: "Clicking OK will confirm all Matches-in-progress.",
         onConfirm: () => {
           const patchMatchesData = this.selectedMatches.map((item) => {
             return {
