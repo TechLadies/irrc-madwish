@@ -53,7 +53,7 @@
                     v-model="NativeLanguage"
                     ref="languageComplete"
                     :data="languages"
-                    placeholder="e.g. Bengali"
+                    placeholder="e.g. Bangla"
                     @typing="filteredLanguageDataArray"
                     @select="(option) => (selected = option)"
                   >
@@ -68,7 +68,7 @@
                 <b-field label="English Proficiency" class="half-width">
                   <b-select
                     v-model="EnglishProficiency"
-                    placeholder="Select one"
+                    placeholder="Unknown"
                     expanded
                   >
                     <option value="No">No (Unable to understand at all)</option>
@@ -125,7 +125,7 @@ export default {
       name: "",
       PhoneNumber: "",
       source: "",
-      EnglishProficiency: "",
+      EnglishProficiency: null,
       file: null,
       Notes: "",
       NativeLanguage: "",
