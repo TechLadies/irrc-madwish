@@ -38,7 +38,7 @@
         >
           <b-button class="button field is-blue" v-on:click="download">
             <b-icon icon="download"></b-icon>
-            <span>Download</span>
+            <span>Download All</span>
           </b-button>
           <!-- Student ID column -->
 
@@ -164,6 +164,19 @@ export default {
         };
       });
     },
+    exportData() {
+      return this.screeningStudents.map((student) => {
+        return {
+          StudentID: `${student.StudentID}`,
+          FullName: `${student.FullName}`,
+          CreatedAt: `${student.created_at}`,
+          Status: `${student.status.Description}`,
+          PhoneNumber: `${student.PhoneNumber}`,
+          FullName: `${student.FullName}`,
+          NativeLanguage: `${student.nativeLanguage.NativeLanguage}`,
+        };
+      });
+    },
   },
   watch: {
     screeningSuccess() {
@@ -199,7 +212,7 @@ export default {
     },
     // Excel download
     download: function () {
-      const data = XLSX.utils.json_to_sheet(this.tableData);
+      const data = XLSX.utils.json_to_sheet(this.exportData);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, data, "data");
       XLSX.writeFile(wb, "screening.csv");
