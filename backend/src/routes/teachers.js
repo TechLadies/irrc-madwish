@@ -125,7 +125,7 @@ router.post("/", async (req, res) => {
 
     res.status(200).json(result);
   } else {
-    const result = addSingleTeacher(req.body);
+    const result = await addSingleTeacher(req.body);
 
     // handle error
     if (result.err) {
