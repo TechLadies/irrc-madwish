@@ -92,6 +92,10 @@ export default {
         this.isSearchingTeacher = true;
         this.searchedTeachers = this.suggestedTeachers(-1, fields).map(
           (teacher) => {
+            if (teacher.secondLanguage === null) {
+              teacher.secondLanguage = {};
+              teacher.secondLanguage.SecondLanguage = "";
+            }
             return {
               ...teacher,
               NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
