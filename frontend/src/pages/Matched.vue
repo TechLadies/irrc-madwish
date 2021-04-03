@@ -3,12 +3,6 @@
     <div class="container">
       <PageHeader slot="header">
         <a class="logo">Matched</a>
-        <div class="header-left">
-          <b-button class="button field is-blue">
-            <b-icon icon="download"></b-icon>
-            <span>Export</span>
-          </b-button>
-        </div>
       </PageHeader>
 
       <!--start of table -->
@@ -26,7 +20,7 @@
         >
           <b-button class="button field is-blue" v-on:click="download">
             <b-icon icon="download"></b-icon>
-            <span>Download</span>
+            <span>Download Selected</span>
           </b-button>
           <template v-for="column in columns">
             <b-table-column :key="column.field" v-bind="column" sortable>
