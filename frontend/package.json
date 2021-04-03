@@ -20,7 +20,8 @@
     "buefy": "^0.9.4",
     "vue": "^2.6.12",
     "vue-router": "^3.4.9",
-    "vuex": "^3.5.1"
+    "vuex": "^3.5.1",
+    "xlsx": "^0.16.9"
   },
   "devDependencies": {
     "vite": "^1.0.0-rc.9",
