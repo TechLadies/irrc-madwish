@@ -15,7 +15,7 @@
           :sort-icon-size="sortIconSize"
           :sortDirection="sortDirection"
           :selected.sync="selectedStudent"
-          @click="isComponentModalActive = true"
+          @click="toggleSuggestedTeachersModal()"
         >
           <!-- date column -->
 
@@ -245,42 +245,22 @@
         >
         </b-table>
       </section>
-      <section>
-        <b-modal v-model="isComponentModalActive" :width="640" scroll="keep">
-          <div class="card">
-            <h2>Select a teacher for student:</h2>
-            <h4>Student Name: {{ selectedStudent.FullName }}</h4>
-            <h4>Teacher Name: {{ selectedTeacher.FullName }}</h4>
-            <div class="card-image">
-              <b-table
-                :data="teachersData"
-                :columns="teachersColumns"
-                :selected.sync="selectedTeacher"
-              >
-              </b-table>
-              <b-button class="button field is-blue" @click="addMatchedPair()">
-                <span>Match temporarily</span>
-              </b-button>
-            </div>
-          </div>
-        </b-modal>
-      </section>
     </div>
   </Page>
 </template>
 
 <script>
+import Vue from "vue";
 import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
 import Status from "../components/Status.vue";
+import SuggestedTeachersModal from "../components/modals/ModalSuggestedTeachers.vue";
 
 export default {
   data() {
     return {
-      isComponentModalActive: false,
       selectedStudent: {},
-      selectedTeacher: {},
       matchedPairs: [],
       selectedMatches: [],
       studentsColumns: [
@@ -412,16 +392,32 @@ export default {
       "getAllTeachers",
       "matchStudentTeacherPairs",
     ]),
-    addMatchedPair() {
+    toggleSuggestedTeachersModal() {
+      Vue.nextTick().then(() => {
+        this.$buefy.modal.open({
+          parent: this,
+          component: SuggestedTeachersModal,
+          props: {
+            teachersData: this.teachersData,
+            matchButtonText: "Match Temporarily",
+            studentName: this.selectedStudent.FullName,
+          },
+          events: {
+            selectTeacher: (teacher) => this.addMatchedPair(teacher),
+          },
+          trapFocus: true,
+          hasModalCard: true,
+        });
+      });
+    },
+    addMatchedPair(teacher) {
       this.matchedPairs.push({
-        TeacherID: this.selectedTeacher.TeacherID,
-        TeacherFullName: this.selectedTeacher.FullName,
+        TeacherID: teacher.TeacherID,
+        TeacherFullName: teacher.FullName,
         StudentID: this.selectedStudent.StudentID,
         StudentFullName: this.selectedStudent.FullName,
       });
       this.selectedStudent = {};
-      this.selectedTeacher = {};
-      this.isComponentModalActive = false;
     },
     unmatchSelected() {
       this.matchedPairs = this.matchedPairs.filter(
@@ -581,3 +577,4 @@ button.button.field.is-white {
   padding: 30px;
 }
 </style>
+s
