@@ -159,10 +159,12 @@ export default {
       this.uploadFile();
     },
   },
-
+  async mounted() {
+    this.getNativeLanguages();
+  },
   methods: {
     // Copies actions from store, allows you to use it as a native method in the component.
-    ...mapActions(["createStudent"]),
+    ...mapActions(["createStudent", "getNativeLanguages"]),
 
     newStudent() {
       this.createStudent({
@@ -186,6 +188,7 @@ export default {
               this.$router.push({ path: `/students/${data.StudentID}` });
             },
           });
+          this.getNativeLanguages();
         })
         .catch((error) => {
           this.$buefy.notification.open({

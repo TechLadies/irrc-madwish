@@ -250,28 +250,29 @@ export default {
         StatusString: "UNMATCHED",
       };
 
-      this.createTeacher(teacherData).then((response) => {
-        if (response.status < 400) {
-          this.$buefy.notification.open({
-            message: "New teacher added. <u>View profile</u>!",
-            duration: 3000,
+      this.createTeacher(teacherData)
+        .then((response) => response.json())
+        .then((data) => {
+          this.$buefy.snackbar.open({
+            message: "New Teacher Added",
             type: "is-success",
             position: "is-top",
+            actionText: "View Profile",
+            indefinite: true,
+            onAction: () => {
+              this.$router.push({ path: `/teachers/${data.TeacherID}` });
+            },
           });
-          // refreshes state
           this.getNativeLanguages();
-          setTimeout(() => {
-            this.$router.push({ path: `/teachers` });
-          }, 5000);
-        } else {
+        })
+        .catch((error) => {
           this.$buefy.notification.open({
             message: "Something went wrong. Please try again.",
             duration: 3000,
             type: "is-warning",
             position: "is-top",
           });
-        }
-      });
+        });
     },
 
     checkSecondLanguage() {
