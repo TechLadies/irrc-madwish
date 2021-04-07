@@ -67,7 +67,18 @@
           </template>
         </b-table-column>
 
-        <b-table-column field="status" label="Status" searchable sortable>
+        <b-table-column
+          field="status.Description"
+          label="Status"
+          searchable
+          :custom-search="
+            (object, input) =>
+              object.status.Description.toLowerCase().startsWith(
+                input.toLowerCase()
+              )
+          "
+          sortable
+        >
           <template slot="searchable" slot-scope="props">
             <b-input
               v-model="props.filters[props.column.field]"
