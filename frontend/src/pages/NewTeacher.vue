@@ -26,6 +26,9 @@
         </div>
         <!-- Start of 2nd column (all input fields) -->
         <div class="column is-two-thirds">
+          <p>
+            Fields marked with <span class="red-asterisk">*</span> are required.
+          </p>
           <form
             method="POST"
             action="/api/teachers"
@@ -33,11 +36,17 @@
           >
             <!--.prevent prevents the default submit behaviour and executes createTeacher instead -->
             <section>
-              <b-field label="Name" class="half-width">
+              <b-field class="half-width">
+                <template #label>
+                  Name <span class="red-asterisk">*</span>
+                </template>
                 <b-input v-model="name" name="Name"></b-input>
               </b-field>
 
-              <b-field label="Phone Number" class="half-width">
+              <b-field class="half-width">
+                <template #label>
+                  Phone Number <span class="red-asterisk">*</span>
+                </template>
                 <b-input v-model="PhoneNumber" type="string" value="">
                 </b-input>
               </b-field>
@@ -50,7 +59,10 @@
                 <b-input v-model="source" placeholder="Optional"> </b-input>
               </b-field>
 
-              <b-field label="Teaching Experience" class="half-width">
+              <b-field label="Teaching Experience *" class="half-width">
+                <template #label>
+                  Teaching Experience <span class="red-asterisk">*</span>
+                </template>
                 <b-select
                   v-model="TeachingExperience"
                   placeholder="Yes/No"
@@ -62,7 +74,10 @@
               </b-field>
 
               <b-field grouped>
-                <b-field label="Language 1" class="half-width">
+                <b-field label="Language 1 *" class="half-width">
+                  <template #label>
+                    Language 1 <span class="red-asterisk">*</span>
+                  </template>
                   <b-autocomplete
                     v-model="nativeLanguage"
                     field="NativeLanguage"
@@ -111,7 +126,7 @@
                 <!-- <b-field label="Second Language Proficiency" class="half-width">
                   <b-select
                     v-model="SecondLanguageProficiency"
-                    placeholder="Select one"
+                    placeholder="Selet one"
                     :disabled="isDisabled"
                     expanded
                   >
@@ -192,7 +207,9 @@ export default {
 
     // Checks if required fields are empty. If required fields are empty, the Create Teacher Button is disabled.
     formIsInvalid() {
-      const formFields = ["name", "PhoneNumber"].map((item) => this[item]);
+      const formFields = ["name", "PhoneNumber", "TeachingExperience"].map(
+        (item) => this[item]
+      );
       if (
         this.selected === null ||
         formFields.includes("") ||
@@ -418,7 +435,9 @@ body {
   color: #3c4f76 !important;
   padding-left: 10px;
 }
-
+.red-asterisk {
+  color: red;
+}
 .half-width {
   width: 50%;
 }
