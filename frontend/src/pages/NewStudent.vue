@@ -47,22 +47,10 @@
               </b-field>
               <b-field grouped>
                 <b-field label="Native Language" class="half-width">
-                  <b-autocomplete
-                    :value="nativeLanguage"
-                    field="NativeLanguage"
-                    v-model="NativeLanguage"
-                    ref="languageComplete"
-                    :data="languages"
-                    placeholder="e.g. Bengali"
-                    @typing="filteredLanguageDataArray"
-                    @select="(option) => (selected = option)"
-                  >
-                    <template slot="header">
-                      <a @click="showAddLanguage">
-                        <span> Add new... </span>
-                      </a>
-                    </template>
-                  </b-autocomplete>
+                  <NativeLanguageDropdown
+                    :selected="selected"
+                    @change="setSelectedLanguage"
+                  />
                 </b-field>
 
                 <b-field label="English Proficiency" class="half-width">
@@ -113,11 +101,13 @@
 <script>
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions } from "vuex";
+import NativeLanguageDropdown from "../components/NativeLanguageDropdown.vue";
 
 export default {
   name: "NewStudent",
   components: {
     Page,
+    NativeLanguageDropdown,
   },
 
   data() {
@@ -128,20 +118,12 @@ export default {
       EnglishProficiency: "",
       file: null,
       Notes: "",
-      NativeLanguage: "",
       selected: {
         NativeLanguage: "",
       },
-      languages: [],
     };
   },
   computed: {
-    ...mapGetters(["API_nativeLanguage"]),
-    // If NativeLanguage is changed, we assign it this value
-    nativeLanguage() {
-      return this.selected ? this.selected.NativeLanguage : "";
-    },
-
     // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
     formIsInvalid() {
       const formFields = ["name", "PhoneNumber"].map((item) => this[item]);
@@ -159,10 +141,11 @@ export default {
       this.uploadFile();
     },
   },
-  async mounted() {
-    this.getNativeLanguages();
-  },
   methods: {
+    setSelectedLanguage(value) {
+      this.selected = value;
+    },
+
     // Copies actions from store, allows you to use it as a native method in the component.
     ...mapActions(["createStudent", "getNativeLanguages"]),
 
@@ -200,13 +183,6 @@ export default {
         });
     },
 
-    filteredLanguageDataArray(language = "") {
-      this.languages = this.API_nativeLanguage.filter((option) => {
-        return option.NativeLanguage.toLowerCase().includes(
-          (language || "").toLowerCase()
-        );
-      });
-    },
     uploadFile() {
       this.$buefy.notification.open({
         message: "The file was uploaded successfully!",
@@ -223,21 +199,6 @@ export default {
         duration: 5000,
         type: "is-danger",
         position: "is-top",
-      });
-    },
-
-    showAddLanguage() {
-      this.$buefy.dialog.prompt({
-        message: `Add new language`,
-        inputAttrs: {
-          placeholder: "e.g. Italian",
-          maxlength: 255,
-          value: this.NativeLanguage,
-        },
-        confirmText: "Add",
-        onConfirm: async (value) => {
-          this.selected.NativeLanguage = value;
-        },
       });
     },
 
