@@ -109,7 +109,9 @@ export const teacherGetters = {
     return state.teachers;
   },
   getTeacherByTeacherId: (state) => (id) => {
-    return state.teachers.find((teacher) => teacher.TeacherID == id);
+    const teacher = state.teachers.find((teacher) => teacher.TeacherID == id);
+    const secondLanguage = teacher.secondLanguage || {};
+    return { ...teacher, secondLanguage };
   },
 
   suggestedTeachers(state) {
