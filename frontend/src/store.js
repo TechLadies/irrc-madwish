@@ -40,15 +40,14 @@ import {
   matchesMutations,
   matchesState,
 } from "./store/matches.js";
+import {
+  authState,
+  authActions,
+  authGetters,
+  authMutations,
+} from "./store/auth.js";
 
 Vue.use(Vuex);
-
-// Create enum style variables (to reduce typo errors)
-const MUTATIONS = Object.freeze({
-  SET_STUDENTS: "SET_STUDENTS",
-  SET_TEACHERS: "SET_TEACHERS",
-  SET_MATCHES: "SET_MATCHES",
-});
 
 export default new Vuex.Store({
   state: {
@@ -59,6 +58,7 @@ export default new Vuex.Store({
     ...matchingState,
     ...reasonState,
     ...matchesState,
+    ...authState,
   },
   mutations: {
     ...studentMutations,
@@ -68,6 +68,7 @@ export default new Vuex.Store({
     ...matchingMutations,
     ...reasonMutations,
     ...matchesMutations,
+    ...authMutations,
   },
   actions: {
     ...studentActions,
@@ -77,6 +78,7 @@ export default new Vuex.Store({
     ...matchingActions,
     ...reasonActions,
     ...matchesActions,
+    ...authActions,
   },
   getters: {
     ...studentGetters,
@@ -84,5 +86,6 @@ export default new Vuex.Store({
     ...teacherGetters,
     ...reasonGetters,
     ...matchesGetters,
+    ...authGetters,
   },
 });
