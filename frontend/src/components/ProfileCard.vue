@@ -63,6 +63,14 @@
           {{ profile.languageProficiency }}
         </div>
       </div>
+      <div>
+        <div class="profile-label-small padding-small" v-if="isTeacher">
+          Teaching Experience
+        </div>
+        <div class="profile-detail" v-if="isTeacher">
+          {{ profile.teachingExperience }}
+        </div>
+      </div>
     </div>
 
     <hr />
@@ -91,6 +99,7 @@ export default {
           proficiencyLevel: "Little (able to understand simple words)",
           secondLanguage: "Bangla",
           languageProficiency: "Intermediate",
+          teachingExperience: "No",
         };
       },
     },
