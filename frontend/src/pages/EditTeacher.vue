@@ -110,7 +110,7 @@
                 </b-field> -->
 
               <b-field grouped>
-                <b-field label="Second Language" class="half-width">
+                <b-field label="Language 2" class="half-width">
                   <b-autocomplete
                     v-model="teacherData.secondLanguage.NativeLanguage"
                     field="NativeLanguage"
