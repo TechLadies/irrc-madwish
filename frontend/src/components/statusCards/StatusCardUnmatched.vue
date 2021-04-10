@@ -119,6 +119,10 @@ export default {
   computed: {
     suggestedTeachersData() {
       return this.suggestedTeachers(this.studentID).map((teacher) => {
+        if (teacher.secondLanguage === null) {
+          teacher.secondLanguage = {};
+          teacher.secondLanguage.SecondLanguage = "";
+        }
         return {
           ...teacher,
           NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
