@@ -5,20 +5,18 @@
 </template>
 
 <script>
-
 export default {
-  name: 'PageHeader'
-}
+  name: "PageHeader",
+};
 </script>
 
 <style>
-
 .header {
   overflow: hidden;
   background-color: none;
   padding: 20px 10px;
   width: 100%;
-  height: 10%;
+  max-height: 10%;
   border-bottom: 1px solid lightgray;
 }
 
