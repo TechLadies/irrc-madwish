@@ -85,25 +85,10 @@
 
               <b-field grouped>
                 <b-field label="Second Language" class="half-width">
-                  <b-autocomplete
-                    v-model="teacherData.secondLanguage.NativeLanguage"
-                    field="NativeLanguage"
-                    ref="secondlanguagevalue"
-                    :data="languages"
-                    placeholder="e.g. Tamil"
-                    @typing="filteredLanguageDataArray"
-                    @select="
-                      (option) =>
-                        (teacherData.secondLanguage.NativeLanguage =
-                          option.NativeLanguage)
-                    "
-                  >
-                    <template slot="header">
-                      <a @click="showAddSecondLanguage">
-                        <span> Add new... </span>
-                      </a>
-                    </template>
-                  </b-autocomplete>
+                  <NativeLanguageDropdown
+                    :selected="teacherData.secondLanguage"
+                    @change="setSelectedSecondLanguage"
+                  />
                 </b-field>
 
                 <b-field label="Language Proficiency" class="half-width">
@@ -165,24 +150,15 @@ export default {
 
   data() {
     return {
-      languages: [],
       file: null,
       teacherData: {
         nativeLanguage: { NativeLanguage: "" },
         secondLanguage: { NativeLanguage: "" },
       },
-      selected: {
-        NativeLanguage: "",
-        SecondLanguage: "",
-      },
     };
   },
   computed: {
-    ...mapGetters([
-      "API_nativeLanguage",
-      "getTeacherByTeacherId",
-      "getAllTeachers",
-    ]),
+    ...mapGetters(["getTeacherByTeacherId", "getAllTeachers"]),
     ...mapState(["updateTeacherSuccess"]),
     // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
     formIsInvalid() {
@@ -227,13 +203,9 @@ export default {
   },
 
   async mounted() {
-    // Fetch Native Languages
-    this.getNativeLanguages();
-
     // Fetch this teacher's data
     const id = parseInt(this.$route.params.id);
     this.teacherData = this.getTeacherByTeacherId(id);
-    // this.selected.NativeLanguage = this.teacherData.nativeLanguage.NativeLanguage
   },
 
   methods: {
@@ -261,14 +233,6 @@ export default {
       this.patchTeacher(teacherUpdate);
     },
 
-    filteredLanguageDataArray(language = "") {
-      this.languages = this.API_nativeLanguage.filter((option) => {
-        return option.NativeLanguage.toLowerCase().includes(
-          (language || "").toLowerCase()
-        );
-      });
-    },
-
     uploadFile() {
       this.$buefy.notification.open({
         message: "The file was uploaded successfully!",
@@ -292,38 +256,8 @@ export default {
       this.teacherData.nativeLanguage.NativeLanguage = value.NativeLanguage;
     },
 
-    showAddLanguage() {
-      this.$buefy.dialog.prompt({
-        message: `Add new language`,
-        inputAttrs: {
-          placeholder: "e.g. Italian",
-          maxlength: 255,
-          value: this.nativeLanguage,
-        },
-        confirmText: "Add",
-        onConfirm: (value) => {
-          this.$refs.languageComplete.setSelected({
-            NativeLanguage: value,
-          });
-        },
-      });
-    },
-
-    showAddSecondLanguage() {
-      this.$buefy.dialog.prompt({
-        message: `Add new language`,
-        inputAttrs: {
-          placeholder: "e.g. Italian",
-          maxlength: 255,
-          value: this.SecondLanguage,
-        },
-        confirmText: "Add",
-        onConfirm: (value) => {
-          this.$refs.secondlanguagevalue.setSelected({
-            NativeLanguage: value,
-          });
-        },
-      });
+    setSelectedSecondLanguage(value) {
+      this.teacherData.secondLanguage.NativeLanguage = value.NativeLanguage;
     },
 
     showAddSource() {
