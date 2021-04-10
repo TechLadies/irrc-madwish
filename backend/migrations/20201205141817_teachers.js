@@ -25,7 +25,6 @@ exports.up = (knex) => {
       "Simple",
       "Intermediate",
     ]);
-    table.enu("TeachingExperience", ["Yes", "No"]);
     table.text("Notes");
     table
       .integer("StatusID")
