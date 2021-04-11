@@ -130,7 +130,7 @@ export default {
       sortDirection: "asc",
       isPaginated: true,
       currentPage: 1,
-      perPage: 10,
+      perPage: 20,
     };
   },
   computed: {
