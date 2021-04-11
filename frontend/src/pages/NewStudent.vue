@@ -208,11 +208,60 @@ export default {
       });
     },
     uploadFile() {
-      this.$buefy.notification.open({
-        message: "The file was uploaded successfully!",
-        duration: 5000,
-        type: "is-success",
-        position: "is-top",
+      // Parse the file client-side
+      this.file.text().then((f) => {
+        // Initialise array of Student Objects
+        var students = [];
+
+        // Split by newline, handling the Windows '\r' break as well
+        f = f.replace("\r", "").split("\n");
+
+        // Assume first row of .csv contains headers
+        const headers = f.shift().split(",");
+
+        // Use headers as object fields for cells in each row
+        f.forEach(function (d) {
+          // Loop through each row
+          var tmp = {};
+          const row = d.replace("\r", "").split(",");
+          for (var i = 0; i < headers.length; i++) {
+            tmp[headers[i]] = row[i];
+          }
+          // Add object to list
+          students.push(tmp);
+        });
+
+        const studentBatchCreate = {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(students),
+        };
+
+        fetch("/api/students", studentBatchCreate).then((response) => {
+          if (response.status < 400) {
+            this.$buefy.notification.open({
+              message: "The file was uploaded successfully!",
+              duration: 5000,
+              type: "is-success",
+              position: "is-top",
+            });
+            // refreshes state
+            this.getNativeLanguages();
+            setTimeout(() => {
+              this.$router.push({ path: `/students` });
+            }, 5000);
+          } else {
+            this.$buefy.notification.open({
+              message: "Something went wrong. Please try again.",
+              duration: 3000,
+              type: "is-warning",
+              position: "is-top",
+            });
+          }
+        });
       });
     },
 

@@ -1,0 +1,7 @@
+FullName,PhoneNumber,Email,Source,Notes,EnglishProficiency,NativeLanguageString,SecondLanguageString,LanguageProficiency
+teacher1,90000001,email1,source1,notes1,Fluent,Malayalam,Hindi,Fluent
+teacher2,90000002,email2,source2,notes2,Fluent,Hindi,Malayalam,Little
+teacher3,90000003,email3,source3,,Intermediate,Chinese,Malay,Little
+teacher4,90000004,email1,source1,notes4,Simple,Malayalam,Bangla,Simple
+teacher5,90000005,email2,source2,notes5,Little,Hindi,Tamil,Fluent
+teacher6,90000006,email3,source3,,Fluent,Chinese,English,Intermediate
