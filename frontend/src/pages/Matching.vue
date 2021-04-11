@@ -438,9 +438,9 @@ export default {
               StudentID: parseInt(item.StudentID),
               StudentFullName: item.StudentFullName,
               UpdatedBy: "IRRCAdmin",
-              LastEmailDate: new Date(),
+              LastEmailDate: null,
               MatchStatus: "Pending",
-              ConfirmedDate: new Date(),
+              ConfirmedDate: null,
             };
           });
           this.matchStudentTeacherPairs(patchMatchesData).then(() =>
@@ -462,9 +462,9 @@ export default {
               StudentID: parseInt(item.StudentID),
               StudentFullName: item.StudentFullName,
               UpdatedBy: "IRRCAdmin",
-              LastEmailDate: new Date(),
+              LastEmailDate: null,
               MatchStatus: "Pending",
-              ConfirmedDate: new Date(),
+              ConfirmedDate: null,
             };
           });
           this.matchStudentTeacherPairs(patchMatchesData).then(() =>
