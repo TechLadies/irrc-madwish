@@ -162,13 +162,13 @@ export default {
           ? teacher.secondLanguage.NativeLanguage
           : "";
         return {
-          TeacherID: `${teacher.TeacherID}`,
-          FullName: `${teacher.FullName}`,
-          CreatedAt: `${teacher.created_at}`,
-          Status: `${teacher.status.Description}`,
-          PhoneNumber: `${teacher.PhoneNumber}`,
-          Email: `${teacher.Email}`,
-          Language1: `${teacher.nativeLanguage.NativeLanguage}`,
+          TeacherID: teacher.TeacherID,
+          FullName: teacher.FullName,
+          CreatedAt: teacher.created_at,
+          Status: teacher.status.Description,
+          PhoneNumber: teacher.PhoneNumber,
+          Email: teacher.Email,
+          Language1: teacher.nativeLanguage.NativeLanguage,
           Language2: language2,
         };
       });

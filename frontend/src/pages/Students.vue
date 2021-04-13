@@ -157,13 +157,13 @@ export default {
     exportData() {
       return this.students.map((student) => {
         return {
-          StudentID: `${student.StudentID}`,
-          FullName: `${student.FullName}`,
-          CreatedAt: `${student.created_at}`,
-          Status: `${student.status.Description}`,
-          PhoneNumber: `${student.PhoneNumber}`,
-          FullName: `${student.FullName}`,
-          NativeLanguage: `${student.nativeLanguage.NativeLanguage}`,
+          StudentID: student.StudentID,
+          FullName: student.FullName,
+          CreatedAt: student.created_at,
+          Status: student.status.Description,
+          PhoneNumber: student.PhoneNumber,
+          FullName: student.FullName,
+          NativeLanguage: student.nativeLanguage.NativeLanguage,
         };
       });
     },
