@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "./store";
 
 Vue.use(VueRouter);
 
@@ -12,9 +13,22 @@ const StudentProfile = () => import("./pages/StudentProfile.vue");
 const EditStudent = () => import("./pages/EditStudent.vue");
 const NewTeacher = () => import("./pages/NewTeacher.vue");
 const EditTeacher = () => import("./pages/EditTeacher.vue");
-const AllTeachers = () => import ("./pages/Teachers.vue")
+const AllTeachers = () => import("./pages/Teachers.vue");
 const TeacherProfile = () => import("./pages/TeacherProfile.vue");
-const Matched = () => import("./pages/Matched.vue")
+const Matched = () => import("./pages/Matched.vue");
+const Login = () => import("./pages/Login.vue");
+
+const authGuard = (to, _, next) => {
+  if (store.state.token) {
+    return next();
+  } else {
+    let loginPath = "/login";
+    if (to.path) {
+      loginPath = `${loginPath}?return=${to.path}`;
+    }
+    return next(loginPath);
+  }
+};
 
 const router = new VueRouter({
   mode: "history",
@@ -32,7 +46,12 @@ const router = new VueRouter({
     { path: "/edit-teacher/:id", component: EditTeacher },
     { path: "/teachers/:id", component: TeacherProfile },
     { path: "/matched", component: Matched },
-  ],
+    { path: "/login", component: Login },
+  ].map((route) => {
+    if (!window.IRRC_LOGIN_ENABLED) return route;
+    if (route.path === "/login") return route;
+    return { ...route, beforeEnter: authGuard };
+  }),
 });
 
 export default router;
