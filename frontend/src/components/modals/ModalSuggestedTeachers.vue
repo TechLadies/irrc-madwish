@@ -7,7 +7,7 @@
     <h4>
       Teacher Name: <strong>{{ selectedTeacher.FullName }}</strong>
     </h4>
-    <h4 v-if="displayText"><br>Showing all teachers because there's no perfect match for this student<br></h4>
+    <h4 v-if="!isSearchingTeachers && teachersData.length === 0"><br>Showing all teachers because there's no perfect match for this student<br></h4>
     <div class="card-image">
       <b-table
         v-bind:data="tableData"
