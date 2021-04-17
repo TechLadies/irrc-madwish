@@ -19,7 +19,12 @@ exports.patchMatchStatus = async function (MatchID, MatchStatus) {
   try {
     let query = await db.Match.query()
       .findById(MatchID)
-      .patch({ MatchStatus: MatchStatus });
+      .patch(
+        {
+           MatchStatus: MatchStatus,
+           ConfirmedDate: new Date()
+        }
+      );
     return query;
   } catch (err) {
     return { err };
