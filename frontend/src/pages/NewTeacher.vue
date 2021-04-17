@@ -74,11 +74,26 @@
               </b-field>
 
               <b-field grouped>
-                <b-field label="Native Language" class="half-width">
-                  <NativeLanguageDropdown
-                    :selected="selected"
-                    @change="setSelectedLanguage"
-                  />
+                <b-field label="Language 1" class="half-width">
+                  <template #label> Language 1 </template>
+                  <b-autocomplete
+                    v-model="nativeLanguage"
+                    field="NativeLanguage"
+                    ref="languageComplete"
+                    :data="languages"
+                    placeholder="e.g. Bengali"
+                    @typing="filteredLanguageDataArray"
+                    @select="
+                      (option) =>
+                        (selected.NativeLanguage = option.NativeLanguage)
+                    "
+                  >
+                    <template slot="header">
+                      <a @click="showAddLanguage">
+                        <span> Add new... </span>
+                      </a>
+                    </template>
+                  </b-autocomplete>
                 </b-field>
               </b-field>
 
@@ -197,8 +212,9 @@ export default {
       );
       if (
         this.selected === null ||
-        formFields.includes("") ||
-        this.selected?.NativeLanguage === ""
+        formFields.includes("")
+        // Currently, the NativeLanguage / Language 1 is not required for input before submitting a new teacher.  If users want to implment this in the future, just uncomment this section. -->
+        // this.selected?.NativeLanguage === ""
       ) {
         return true;
       }
@@ -213,6 +229,7 @@ export default {
     SecondLanguage: function () {
       if (this.SecondLanguage != "") {
         this.isDisabled = false;
+        this.SecondLanguageProficiency = "";
       } else {
         this.isDisabled = true;
         this.SecondLanguageProficiency = "";
@@ -238,9 +255,11 @@ export default {
         FullName: this.name,
         Source: this.source,
         Email: this.Email,
-        NativeLanguageString: this.selected.NativeLanguage,
+        NativeLanguageString: this.selected.NativeLanguage, // Language 1
         ...(this.SecondLanguage && {
           SecondLanguageString: this.selected.SecondLanguage,
+        }),
+        ...(this.SecondLanguageProficiency && {
           LanguageProficiency: this.SecondLanguageProficiency,
         }),
         EnglishProficiency: "Intermediate",

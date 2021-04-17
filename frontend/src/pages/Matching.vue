@@ -310,11 +310,11 @@ export default {
         },
         {
           field: "NativeLanguage",
-          label: "Native Language",
+          label: "Language 1",
         },
         {
           field: "SecondLanguage",
-          label: "Second Language",
+          label: "Language 2",
         },
         {
           field: "Source",
