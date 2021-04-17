@@ -10,11 +10,58 @@
     <div class="card-image">
       <b-table
         v-bind:data="tableData"
-        :columns="teachersColumns"
         :selected.sync="selectedTeacher"
         :backendFiltering="true"
         @filters-change="onFilter"
       >
+        <b-table-column field="FullName" label="Teacher Name" searchable>
+          <template slot="searchable" slot-scope="props">
+            <b-input
+              v-model="props.filters[props.column.field]"
+              icon="magnify"
+              size="is-small"
+            />
+          </template>
+          <template v-slot="props">
+            <div>{{ props.row.FullName }}</div>
+          </template>
+        </b-table-column>
+        <b-table-column field="Status" label="Teacher Status">
+          <template v-slot="props">
+            <Status :status="props.row.Status"></Status>
+          </template>
+        </b-table-column>
+        <b-table-column field="NativeLanguage" label="Language 1">
+          <template v-slot="props">
+            <div class="languageTable">
+              {{ props.row.NativeLanguage.toLowerCase() }}
+            </div>
+          </template>
+        </b-table-column>
+        <b-table-column field="SecondLanguage" label="Language 2">
+          <template v-slot="props">
+            <div class="languageTable">
+              {{ props.row.SecondLanguage.toLowerCase() }}
+            </div>
+          </template>
+        </b-table-column>
+        <b-table-column field="TeachingExperience" label="Teaching Experience">
+          <template v-slot="props">
+            <div>{{ props.row.TeachingExperience }}</div>
+          </template>
+        </b-table-column>
+        <b-table-column field="Source" label="Source" searchable>
+          <template slot="searchable" slot-scope="props">
+            <b-input
+              v-model="props.filters[props.column.field]"
+              icon="magnify"
+              size="is-small"
+            />
+          </template>
+          <template v-slot="props">
+            <div>{{ props.row.Source }}</div>
+          </template>
+        </b-table-column>
       </b-table>
       <b-button class="button field is-blue" @click="handleClose">
         <span>{{ matchButtonText }}</span>
@@ -25,6 +72,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import Status from "../Status.vue";
 export default {
   name: "SuggestedTeachersModal",
   props: {
@@ -45,6 +93,9 @@ export default {
       default: "",
     },
   },
+  components: {
+    Status: Status,
+  },
   computed: {
     ...mapGetters(["suggestedTeachers"]),
     tableData() {
@@ -59,34 +110,6 @@ export default {
     return {
       isSearchingTeacher: false,
       searchedTeachers: [],
-      teachersColumns: [
-        {
-          field: "FullName",
-          label: "Teacher Name",
-          searchable: true,
-        },
-        {
-          field: "Status",
-          label: "Teacher Status",
-        },
-        {
-          field: "NativeLanguage",
-          label: "Language 1",
-        },
-        {
-          field: "SecondLanguage",
-          label: "Language 2",
-        },
-        {
-          field: "TeachingExperience",
-          label: "Teaching Experience",
-        },
-        {
-          field: "Source",
-          label: "Source",
-          searchable: true,
-        },
-      ],
       selectedTeacher: {},
     };
   },
@@ -152,5 +175,9 @@ button.button.field.is-white {
 
 .card {
   padding: 30px;
+}
+
+.languageTable {
+  text-transform: capitalize;
 }
 </style>
