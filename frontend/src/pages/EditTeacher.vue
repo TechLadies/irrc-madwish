@@ -63,7 +63,19 @@
                   />
                 </b-field>
 
-                <b-field label="English Proficiency" class="half-width">
+                <b-field label="Teaching Experience" class="half-width">
+                  <b-select
+                    v-model="teacherData.TeachingExperience"
+                    placeholder="Yes/No"
+                    expanded
+                  >
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </b-select>
+                </b-field>
+              </b-field>
+              <!-- EnglishProficiency is not currently required -->
+              <!-- <b-field label="English Proficiency" class="half-width">
                   <b-select
                     v-model="teacherData.EnglishProficiency"
                     placeholder="Select one"
@@ -80,8 +92,7 @@
                       Intermediate (Able to understand simple words)
                     </option>
                   </b-select>
-                </b-field>
-              </b-field>
+                </b-field> -->
 
               <b-field grouped>
                 <b-field label="Second Language" class="half-width">
@@ -90,8 +101,8 @@
                     @change="setSelectedSecondLanguage"
                   />
                 </b-field>
-
-                <b-field label="Language Proficiency" class="half-width">
+                <!-- Second Language Proficiency is not currently in use. If needed, uncomment these lines.-->
+                <!-- <b-field label="Language Proficiency" class="half-width">
                   <b-select
                     v-model="teacherData.LanguageProficiency"
                     placeholder="Select one"
@@ -108,7 +119,7 @@
                       Intermediate (Able to understand simple words)
                     </option>
                   </b-select>
-                </b-field>
+                </b-field> -->
               </b-field>
 
               <b-field label="Notes" class="half-width">
@@ -225,7 +236,8 @@ export default {
         Email: this.teacherData.Email,
         NativeLanguageString: this.teacherData.nativeLanguage.NativeLanguage,
         SecondLanguageString: this.teacherData.secondLanguage.NativeLanguage,
-        EnglishProficiency: this.teacherData.EnglishProficiency,
+        TeachingExperience: this.teacherData.TeachingExperience,
+        // EnglishProficiency: this.teacherData.EnglishProficiency,
         LanguageProficiency: this.teacherData.LanguageProficiency,
         Notes: this.teacherData.Notes,
       };

@@ -17,7 +17,6 @@ router.get("/", async (req, res) => {
 
   // handle error
   if (result.err) {
-    // console.log('entered result.err')
     const err = result.err;
     res.status(500).send({
       message: err.message,
@@ -32,88 +31,189 @@ router.get("/", async (req, res) => {
 
 /* POST teachers listing */
 router.post("/", async (req, res) => {
-  // If request does not contain StatusID
-  if (req.body.StatusID == null) {
-    let statusString = "UNMATCHED";
-    // If request contains a statusString
-    if (req.body.StatusString != null) {
-      statusString = req.body.StatusString;
-      delete req.body.StatusString;
-    }
-    const status = await statuses.getStatusPromise(statusString);
-    req.body.StatusID = status.StatusID;
-  }
-
-  // If request does not contain NativeLanguageID
-  try {
-    if (req.body.NativeLanguageID == null) {
-      let nativeLanguageString;
-      // If request contains a nativeLanguageString
-      if (req.body.NativeLanguageString != null) {
-        nativeLanguageString = req.body.NativeLanguageString;
-        delete req.body.NativeLanguageString;
-      }
-      const nativeLanguage = await nativeLanguages.getNativeLanguagePromise(
-        nativeLanguageString
+  if (Array.isArray(req.body)) {
+    async function processLanguageStrings(array) {
+      var languageSet = new Set(
+        array.map((teacher) => {
+          if (
+            teacher.NativeLanguageString &&
+            teacher.NativeLanguageString != undefined
+          ) {
+            return teacher.NativeLanguageString.toUpperCase();
+          }
+        })
       );
-      req.body.NativeLanguageID = nativeLanguage.NativeLanguageID;
-    }
-  } catch (err) {
-    return res.status(400).send({
-      message: err.message,
-      type: "MissingParams",
-      data: {},
-    });
-  }
-
-  // second language
-  try {
-    if (req.body.SecondLanguageID == null) {
-      let secondLanguageString;
-      // If request contains a nativeLanguageString
-      if (req.body.SecondLanguageString != null) {
-        secondLanguageString = req.body.SecondLanguageString;
-        delete req.body.SecondLanguageString;
-        const secondLanguage = await nativeLanguages.getNativeLanguagePromise(
-          secondLanguageString
-        );
-        req.body.SecondLanguageID = secondLanguage.NativeLanguageID;
-      }
-    }
-  } catch (err) {
-    return res.status(400).send({
-      message: err.message,
-      type: "MissingParams",
-      data: {},
-    });
-  }
-
-  const result = await teachers.addTeacher(req.body);
-  console.log(result.err);
-  console.log(result);
-  // handle error
-  if (result.err) {
-    const err = result.err;
-    if (err instanceof UniqueViolationError) {
-      return res.status(409).send({
-        message: err.message,
-        type: "UniqueViolation",
-        data: {
-          columns: err.columns,
-          table: err.table,
-          constraint: err.constraint,
-        },
+      array.forEach((teacher) => {
+        if (
+          teacher.SecondLanguageString &&
+          teacher.SecondLanguageString != undefined
+        ) {
+          languageSet.add(teacher.SecondLanguageString.toUpperCase());
+        }
       });
-    } else {
-      return res.status(500).send({
+
+      languageSet = Array.from(languageSet);
+      const result = Promise.all(
+        await languageSet.map(async (nativeLanguageString) => {
+          if (nativeLanguageString != undefined) {
+            const nativeLanguage = await nativeLanguages.getNativeLanguagePromise(
+              nativeLanguageString
+            );
+            console.log(nativeLanguage);
+
+            array.map((teacher) => {
+              if (teacher.NativeLanguageString) {
+                if (
+                  teacher.NativeLanguageString.toUpperCase() ===
+                  nativeLanguage.NativeLanguage.toUpperCase()
+                ) {
+                  teacher.NativeLanguageID = nativeLanguage.NativeLanguageID;
+                  delete teacher.NativeLanguageString;
+                }
+              }
+              if (teacher.SecondLanguageString) {
+                if (
+                  teacher.SecondLanguageString.toUpperCase() ===
+                  nativeLanguage.NativeLanguage.toUpperCase()
+                ) {
+                  teacher.SecondLanguageID = nativeLanguage.NativeLanguageID;
+                  delete teacher.SecondLanguageString;
+                }
+              }
+            });
+          }
+          return array;
+        })
+      );
+      return result;
+    }
+    // Process all the NativeLanguageStrings and SecondLanguageStrings
+    const processedArray = await processLanguageStrings(req.body);
+    const result = await Promise.all(
+      processedArray[0].map(async (teacher) => {
+        Object.keys(teacher).forEach(
+          (k) => !teacher[k] && teacher[k] !== undefined && delete teacher[k]
+        );
+        return await addSingleTeacher(teacher);
+      })
+    );
+    console.log(result);
+
+    // handle error
+    if (result.err) {
+      const err = result.err;
+      if (err instanceof UniqueViolationError) {
+        res.status(409).send({
+          message: err.message,
+          type: "UniqueViolation",
+          data: {
+            columns: err.columns,
+            table: err.table,
+            constraint: err.constraint,
+          },
+        });
+      } else {
+        res.status(500).send({
+          message: err.message,
+          type: "UnknownError",
+          data: {},
+        });
+      }
+
+      return;
+    }
+
+    res.status(200).json(result);
+  } else {
+    const result = await addSingleTeacher(req.body);
+
+    // handle error
+    if (result.err) {
+      const err = result.err;
+      if (err instanceof UniqueViolationError) {
+        res.status(409).send({
+          message: err.message,
+          type: "UniqueViolation",
+          data: {
+            columns: err.columns,
+            table: err.table,
+            constraint: err.constraint,
+          },
+        });
+      } else {
+        res.status(500).send({
+          message: err.message,
+          type: "UnknownError",
+          data: {},
+        });
+      }
+
+      return;
+    }
+
+    res.status(200).json(result);
+  }
+
+  async function addSingleTeacher(teacher) {
+    // If request does not contain StatusID
+    if (teacher.StatusID == null) {
+      let statusString = "UNMATCHED";
+      // If request contains a statusString
+      if (teacher.StatusString != null) {
+        statusString = teacher.StatusString;
+        delete teacher.StatusString;
+      }
+      const status = await statuses.getStatusPromise(statusString);
+      teacher.StatusID = status.StatusID;
+    }
+
+    // If request does not contain NativeLanguageID
+    try {
+      if (teacher.NativeLanguageID == null) {
+        let nativeLanguageString;
+        // If request contains a NativeLanguageString
+        if (teacher.NativeLanguageString != null) {
+          nativeLanguageString = teacher.NativeLanguageString;
+          delete teacher.NativeLanguageString;
+        }
+        const nativeLanguage = await nativeLanguages.getNativeLanguagePromise(
+          nativeLanguageString
+        );
+        teacher.NativeLanguageID = nativeLanguage.NativeLanguageID;
+      }
+    } catch (err) {
+      return res.status(400).send({
         message: err.message,
-        type: "UnknownError",
+        type: "MissingParams",
         data: {},
       });
     }
-  }
 
-  return res.status(200).json(result);
+    // second language
+    try {
+      if (teacher.SecondLanguageID == null) {
+        let secondLanguageString;
+        // If request contains a SecondLanguageString
+        if (teacher.SecondLanguageString != null) {
+          secondLanguageString = teacher.SecondLanguageString;
+          delete teacher.SecondLanguageString;
+          const secondLanguage = await nativeLanguages.getNativeLanguagePromise(
+            secondLanguageString
+          );
+          teacher.SecondLanguageID = secondLanguage.NativeLanguageID;
+        }
+      }
+    } catch (err) {
+      return res.status(400).send({
+        message: err.message,
+        type: "MissingParams",
+        data: {},
+      });
+    }
+
+    const result = await teachers.addTeacher(teacher);
+    return result;
+  }
 });
 
 router.patch("/:id", async (req, res) => {
