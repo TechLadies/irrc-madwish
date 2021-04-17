@@ -14,6 +14,7 @@
             proficiencyLevel: teacherData.EnglishProficiency,
             secondLanguage: teacherData.secondLanguage.NativeLanguage,
             languageProficiency: teacherData.LanguageProficiency,
+            teachingExperience: teacherData.TeachingExperience,
           }"
           v-bind:isTeacher="true"
           v-on:englishProficiencyIsSelected="englishProficiency = $event"
@@ -101,6 +102,7 @@ export default {
         dateJoined: new Date(data.created_at).toDateString(),
         EnglishProficiency: data.EnglishProficiency,
         LanguageProficiency: data.LanguageProficiency,
+        TeachingExperience: data.TeachingExperience,
       };
       return teacherObject;
     },

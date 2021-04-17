@@ -26,6 +26,9 @@
         </div>
         <!-- Start of 2nd column (all input fields) -->
         <div class="column is-two-thirds">
+          <p>
+            Fields marked with <span class="red-asterisk">*</span> are required.
+          </p>
           <form
             method="POST"
             action="/api/teachers"
@@ -33,11 +36,17 @@
           >
             <!--.prevent prevents the default submit behaviour and executes createTeacher instead -->
             <section>
-              <b-field label="Name" class="half-width">
+              <b-field class="half-width">
+                <template #label>
+                  Name <span class="red-asterisk">*</span>
+                </template>
                 <b-input v-model="name" name="Name"></b-input>
               </b-field>
 
-              <b-field label="Phone Number" class="half-width">
+              <b-field class="half-width">
+                <template #label>
+                  Phone Number <span class="red-asterisk">*</span>
+                </template>
                 <b-input v-model="PhoneNumber" type="string" value="">
                 </b-input>
               </b-field>
@@ -50,29 +59,25 @@
                 <b-input v-model="source" placeholder="Optional"> </b-input>
               </b-field>
 
-              <b-field label="English Proficiency" class="half-width">
+              <b-field label="Teaching Experience *" class="half-width">
+                <template #label>
+                  Teaching Experience <span class="red-asterisk">*</span>
+                </template>
                 <b-select
-                  v-model="EnglishProficiency"
-                  placeholder="Select one"
+                  v-model="TeachingExperience"
+                  placeholder="Yes/No"
                   expanded
                 >
-                  <option value="Little">
-                    Little (Able to understand simple words)
-                  </option>
-                  <option value="Simple">
-                    Simple (Able to speak full sentences)
-                  </option>
-                  <option value="Intermediate">
-                    Intermediate (Able to understand simple words)
-                  </option>
-                  <option value="Fluent">
-                    Fluent (Able to engage in a conversation)
-                  </option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
                 </b-select>
               </b-field>
 
               <b-field grouped>
-                <b-field label="Native Language" class="half-width">
+                <b-field label="Language 1 *" class="half-width">
+                  <template #label>
+                    Language 1 <span class="red-asterisk">*</span>
+                  </template>
                   <b-autocomplete
                     v-model="nativeLanguage"
                     field="NativeLanguage"
@@ -95,7 +100,7 @@
               </b-field>
 
               <b-field grouped>
-                <b-field label="Second Language" class="half-width">
+                <b-field label="Language 2" class="half-width">
                   <b-autocomplete
                     v-model="SecondLanguage"
                     @blur="checkSecondLanguage"
@@ -117,10 +122,11 @@
                   </b-autocomplete>
                 </b-field>
 
-                <b-field label="Second Language Proficiency" class="half-width">
+                <!-- Second Language Proficiency is currently not in use. If users want to implement it in the future, just uncomment this section. -->
+                <!-- <b-field label="Second Language Proficiency" class="half-width">
                   <b-select
                     v-model="SecondLanguageProficiency"
-                    placeholder="Select one"
+                    placeholder="Selet one"
                     :disabled="isDisabled"
                     expanded
                   >
@@ -137,7 +143,7 @@
                       Fluent (Able to engage in a conversation)
                     </option>
                   </b-select>
-                </b-field>
+                </b-field> -->
               </b-field>
 
               <b-field label="Notes" class="half-width">
@@ -184,6 +190,7 @@ export default {
       EnglishProficiency: "",
       SecondLanguageProficiency: "",
       SecondLanguage: "",
+      TeachingExperience: "",
       file: null,
       Notes: "",
       isDisabled: true,
@@ -200,7 +207,9 @@ export default {
 
     // Checks if required fields are empty. If required fields are empty, the Create Teacher Button is disabled.
     formIsInvalid() {
-      const formFields = ["name", "PhoneNumber"].map((item) => this[item]);
+      const formFields = ["name", "PhoneNumber", "TeachingExperience"].map(
+        (item) => this[item]
+      );
       if (
         this.selected === null ||
         formFields.includes("") ||
@@ -245,7 +254,8 @@ export default {
           SecondLanguageString: this.selected.SecondLanguage,
           LanguageProficiency: this.SecondLanguageProficiency,
         }),
-        EnglishProficiency: this.EnglishProficiency,
+        EnglishProficiency: "Intermediate",
+        TeachingExperience: this.TeachingExperience,
         Notes: this.Notes,
         StatusString: "UNMATCHED",
       };
@@ -472,7 +482,9 @@ body {
   color: #3c4f76 !important;
   padding-left: 10px;
 }
-
+.red-asterisk {
+  color: red;
+}
 .half-width {
   width: 50%;
 }
