@@ -7,6 +7,7 @@
     <h4>
       Teacher Name: <strong>{{ selectedTeacher.FullName }}</strong>
     </h4>
+    <h4 v-if="!isSearchingTeachers && teachersData.length === 0"><br>Showing all teachers because there's no perfect match for this student<br></h4>
     <div class="card-image">
       <b-table
         v-bind:data="tableData"
@@ -14,6 +15,7 @@
         :selected.sync="selectedTeacher"
         :backendFiltering="true"
         @filters-change="onFilter"
+        :sticky-header=true
       >
       </b-table>
       <b-button class="button field is-blue" @click="handleClose">
@@ -24,7 +26,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "SuggestedTeachersModal",
   props: {
@@ -51,13 +53,19 @@ export default {
       if (this.isSearchingTeacher) {
         return this.searchedTeachers;
       } else {
-        return this.teachersData;
+        if (this.teachersData.length > 0) {
+          return this.teachersData;
+        } else {
+          this.displayText = true;
+          return this.allTeachers()
+        }
       }
     },
   },
   data() {
     return {
       isSearchingTeacher: false,
+      displayText: false,
       searchedTeachers: [],
       teachersColumns: [
         {
@@ -84,9 +92,12 @@ export default {
         },
       ],
       selectedTeacher: {},
+      myTeachers: [],
     };
   },
   methods: {
+    ...mapGetters(["teachers"]),
+
     handleClose() {
       this.$emit("selectTeacher", this.selectedTeacher);
       this.$emit("close");
@@ -110,9 +121,27 @@ export default {
         );
       } else {
         this.isSearchingTeacher = false;
-        this.searchedTeachers = [];
+        this.searchedTeachers = []
       }
     },
+    allTeachers() {
+      this.myTeachers = this.teachers();
+
+      return this.myTeachers.map(
+          (teacher) => {
+            if (teacher.secondLanguage === null) {
+              teacher.secondLanguage = {};
+              teacher.secondLanguage.SecondLanguage = "";
+            }
+            return {
+              ...teacher,
+              NativeLanguage: `${teacher.nativeLanguage.NativeLanguage}`,
+              SecondLanguage: `${teacher.secondLanguage.NativeLanguage}`,
+              Status: `${teacher.status.Description}`,
+            };
+          }
+        )
+    }
   },
 };
 </script>
