@@ -12,6 +12,12 @@
         :paginated="isPaginated"
         :per-page="perPage"
       >
+        <!-- Download button  -->
+        <b-button class="button field is-blue" v-on:click="download">
+          <b-icon icon="download"></b-icon>
+          <span>Download</span>
+        </b-button>
+
         <b-table-column
           field="created_at"
           label="Date Joined"
@@ -131,6 +137,7 @@ import Page from "../components/Page.vue";
 import PageHeader from "../components/PageHeader.vue";
 import Status from "../components/Status.vue";
 import { mapGetters, mapActions } from "vuex";
+import XLSX from "xlsx";
 
 export default {
   name: "AllTeachers",
@@ -148,6 +155,24 @@ export default {
         };
       });
     },
+
+    exportTeachersData() {
+      return this.teachers.map((teacher) => {
+        var language2 = teacher.secondLanguage
+          ? teacher.secondLanguage.NativeLanguage
+          : "";
+        return {
+          TeacherID: teacher.TeacherID,
+          FullName: teacher.FullName,
+          CreatedAt: teacher.created_at,
+          Status: teacher.status.Description,
+          PhoneNumber: teacher.PhoneNumber,
+          Email: teacher.Email,
+          Language1: teacher.nativeLanguage.NativeLanguage,
+          Language2: language2,
+        };
+      });
+    },
     ...mapGetters(["teachers"]),
   },
   data() {
@@ -161,6 +186,13 @@ export default {
     ...mapActions(["getAllTeachers"]),
     goToTeacher() {
       this.$router.push({ path: `/teachers/${this.selected.TeacherID}` });
+    },
+    // Download function
+    download: function () {
+      const data = XLSX.utils.json_to_sheet(this.exportTeachersData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, data, "data");
+      XLSX.writeFile(wb, "teachers.csv");
     },
   },
   mounted() {
@@ -239,5 +271,10 @@ table th:not([align]) {
 }
 .b-table .table th.is-current-sort .b-table .table th.is-sortable:hover {
   border-color: white !important;
+}
+
+button.button.field.is-blue {
+  background: #3c4f76;
+  color: white;
 }
 </style>
