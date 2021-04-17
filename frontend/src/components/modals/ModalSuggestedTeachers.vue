@@ -78,6 +78,10 @@ export default {
           label: "Language 2",
         },
         {
+          field: "TeachingExperience",
+          label: "Teaching Experience",
+        },
+        {
           field: "Source",
           label: "Source",
           searchable: true,
