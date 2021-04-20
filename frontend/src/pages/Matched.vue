@@ -54,12 +54,6 @@
             </b-table-column>
           </template>
           <b-table-column label=" ">
-            <b-button>
-              <b-icon icon="email-outline"></b-icon>
-              <span>Resend</span>
-            </b-button>
-          </b-table-column>
-          <b-table-column label=" ">
             <b-button @click="clickUnmatch()">
               <b-icon icon="account-multiple-check"></b-icon>
               <span>Unmatch</span>
@@ -161,6 +155,11 @@ export default {
           searchable: true,
         },
         {
+          field: "TeacherPhoneNumber",
+          label: "Teacher Phone Number",
+          searchable: true,
+        },
+        {
           field: "StudentName",
           label: "Student Name/ID",
           subtitle: "StudentID",
@@ -180,11 +179,6 @@ export default {
         {
           field: "ConfirmedDate",
           label: "Confirmed On",
-          searchable: true,
-        },
-        {
-          field: "LastEmailDate",
-          label: "Last Email Sent",
           searchable: true,
         },
       ],
@@ -237,6 +231,7 @@ export default {
         return {
           DateMatched: DateMatched,
           TeacherName: `${match.teacher.FullName}`,
+          TeacherPhoneNumber: `${match.teacher.PhoneNumber}`,
           TeacherID: `${match.teacher.TeacherID}`,
           PhoneNumber: `${match.teacher.PhoneNumber}`,
           StudentName: `${match.student.FullName}`,
