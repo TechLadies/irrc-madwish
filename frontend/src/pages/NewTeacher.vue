@@ -74,28 +74,11 @@
               </b-field>
 
               <b-field grouped>
-                <b-field label="Language 1 *" class="half-width">
-                  <template #label>
-                    Language 1 <span class="red-asterisk">*</span>
-                  </template>
-                  <b-autocomplete
-                    v-model="nativeLanguage"
-                    field="NativeLanguage"
-                    ref="languageComplete"
-                    :data="languages"
-                    placeholder="e.g. Bengali"
-                    @typing="filteredLanguageDataArray"
-                    @select="
-                      (option) =>
-                        (selected.NativeLanguage = option.NativeLanguage)
-                    "
-                  >
-                    <template slot="header">
-                      <a @click="showAddLanguage">
-                        <span> Add new... </span>
-                      </a>
-                    </template>
-                  </b-autocomplete>
+                <b-field label="Native Language" class="half-width">
+                  <NativeLanguageDropdown
+                    :selected="selected"
+                    @change="setSelectedLanguage"
+                  />
                 </b-field>
               </b-field>
 
@@ -174,11 +157,13 @@
 <script>
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions } from "vuex";
+import NativeLanguageDropdown from "../components/NativeLanguageDropdown.vue";
 
 export default {
   name: "NewTeacher",
   components: {
     Page,
+    NativeLanguageDropdown,
   },
 
   data() {
@@ -242,6 +227,10 @@ export default {
   methods: {
     // Copies actions from store, allows you to use it as a native method in the component.
     ...mapActions(["getNativeLanguages", "createTeacher"]),
+
+    setSelectedLanguage(value) {
+      this.selected.NativeLanguage = value.NativeLanguage;
+    },
 
     createNewTeacher() {
       const teacherData = {
@@ -373,23 +362,6 @@ export default {
         duration: 5000,
         type: "is-danger",
         position: "is-top",
-      });
-    },
-
-    showAddLanguage() {
-      this.$buefy.dialog.prompt({
-        message: `Add new language`,
-        inputAttrs: {
-          placeholder: "e.g. Italian",
-          maxlength: 255,
-          value: this.nativeLanguage,
-        },
-        confirmText: "Add",
-        onConfirm: (value) => {
-          this.$refs.languageComplete.setSelected({
-            NativeLanguage: value,
-          });
-        },
       });
     },
 

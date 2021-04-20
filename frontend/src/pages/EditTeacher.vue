@@ -56,26 +56,11 @@
                 </b-input>
               </b-field>
               <b-field grouped>
-                <b-field label="Language 1" class="half-width">
-                  <b-autocomplete
-                    v-model="teacherData.nativeLanguage.NativeLanguage"
-                    field="NativeLanguage"
-                    ref="languageComplete"
-                    :data="languages"
-                    placeholder="e.g. Bengali"
-                    @typing="filteredLanguageDataArray"
-                    @select="
-                      (option) =>
-                        (teacherData.nativeLanguage.NativeLanguage =
-                          option.NativeLanguage)
-                    "
-                  >
-                    <template slot="header">
-                      <a @click="showAddLanguage">
-                        <span> Add new... </span>
-                      </a>
-                    </template>
-                  </b-autocomplete>
+                <b-field label="Native Language" class="half-width">
+                  <NativeLanguageDropdown
+                    :selected="teacherData.nativeLanguage"
+                    @change="setSelectedLanguage"
+                  />
                 </b-field>
 
                 <b-field label="Teaching Experience" class="half-width">
@@ -110,26 +95,11 @@
                 </b-field> -->
 
               <b-field grouped>
-                <b-field label="Language 2" class="half-width">
-                  <b-autocomplete
-                    v-model="teacherData.secondLanguage.NativeLanguage"
-                    field="NativeLanguage"
-                    ref="secondlanguagevalue"
-                    :data="languages"
-                    placeholder="e.g. Tamil"
-                    @typing="filteredLanguageDataArray"
-                    @select="
-                      (option) =>
-                        (teacherData.secondLanguage.NativeLanguage =
-                          option.NativeLanguage)
-                    "
-                  >
-                    <template slot="header">
-                      <a @click="showAddSecondLanguage">
-                        <span> Add new... </span>
-                      </a>
-                    </template>
-                  </b-autocomplete>
+                <b-field label="Second Language" class="half-width">
+                  <NativeLanguageDropdown
+                    :selected="teacherData.secondLanguage"
+                    @change="setSelectedSecondLanguage"
+                  />
                 </b-field>
                 <!-- Second Language Proficiency is not currently in use. If needed, uncomment these lines.-->
                 <!-- <b-field label="Language Proficiency" class="half-width">
@@ -180,16 +150,17 @@
 <script>
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
+import NativeLanguageDropdown from "../components/NativeLanguageDropdown.vue";
 
 export default {
   name: "NewTeacher",
   components: {
     Page,
+    NativeLanguageDropdown,
   },
 
   data() {
     return {
-      languages: [],
       file: null,
       teacherData: {
         nativeLanguage: { NativeLanguage: "" },
@@ -198,11 +169,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-      "API_nativeLanguage",
-      "getTeacherByTeacherId",
-      "getAllTeachers",
-    ]),
+    ...mapGetters(["getTeacherByTeacherId", "getAllTeachers"]),
     ...mapState(["updateTeacherSuccess"]),
     // Checks if required fields are empty. If required fields are empty, the Create Student Button is disabled.
     formIsInvalid() {
@@ -247,9 +214,6 @@ export default {
   },
 
   async mounted() {
-    // Fetch Native Languages
-    this.getNativeLanguages();
-
     // Fetch this teacher's data
     const id = parseInt(this.$route.params.id);
     this.teacherData = this.getTeacherByTeacherId(id);
@@ -281,14 +245,6 @@ export default {
       this.patchTeacher(teacherUpdate);
     },
 
-    filteredLanguageDataArray(language = "") {
-      this.languages = this.API_nativeLanguage.filter((option) => {
-        return option.NativeLanguage.toLowerCase().includes(
-          (language || "").toLowerCase()
-        );
-      });
-    },
-
     uploadFile() {
       this.$buefy.notification.open({
         message: "The file was uploaded successfully!",
@@ -308,38 +264,12 @@ export default {
       });
     },
 
-    showAddLanguage() {
-      this.$buefy.dialog.prompt({
-        message: `Add new language`,
-        inputAttrs: {
-          placeholder: "e.g. Italian",
-          maxlength: 255,
-          value: this.nativeLanguage,
-        },
-        confirmText: "Add",
-        onConfirm: (value) => {
-          this.$refs.languageComplete.setSelected({
-            NativeLanguage: value,
-          });
-        },
-      });
+    setSelectedLanguage(value) {
+      this.teacherData.nativeLanguage.NativeLanguage = value.NativeLanguage;
     },
 
-    showAddSecondLanguage() {
-      this.$buefy.dialog.prompt({
-        message: `Add new language`,
-        inputAttrs: {
-          placeholder: "e.g. Italian",
-          maxlength: 255,
-          value: this.SecondLanguage,
-        },
-        confirmText: "Add",
-        onConfirm: (value) => {
-          this.$refs.secondlanguagevalue.setSelected({
-            NativeLanguage: value,
-          });
-        },
-      });
+    setSelectedSecondLanguage(value) {
+      this.teacherData.secondLanguage.NativeLanguage = value.NativeLanguage;
     },
 
     showAddSource() {
