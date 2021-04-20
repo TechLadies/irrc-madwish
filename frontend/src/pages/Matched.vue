@@ -10,6 +10,7 @@
         <b-table
           :data="tableData"
           :sort-icon="sortIcon"
+          @dblclick="goToTeacher"
           :sort-icon-size="sortIconSize"
           :sortDirection="sortDirection"
           :selected.sync="selected"
@@ -166,6 +167,11 @@ export default {
           searchable: true,
         },
         {
+          field: "PhoneNumber",
+          label: "Teacher's Phone Number",
+          searchable: true,
+        },
+        {
           field: "MatchStatus",
           label: "Confirmation",
           searchable: true,
@@ -232,8 +238,7 @@ export default {
           DateMatched: DateMatched,
           TeacherName: `${match.teacher.FullName}`,
           TeacherID: `${match.teacher.TeacherID}`,
-          TeacherEmail: `${match.teacher.Email}`,
-          TeacherPhoneNumber: `${match.teacher.PhoneNumber}`,
+          PhoneNumber: `${match.teacher.PhoneNumber}`,
           StudentName: `${match.student.FullName}`,
           StudentID: `${match.student.StudentID}`,
           StudentPhoneNumber: `${match.student.PhoneNumber}`,
@@ -302,6 +307,9 @@ export default {
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, data, "data");
       XLSX.writeFile(wb, "matched.csv");
+    },
+    goToTeacher() {
+      this.$router.push({ path: `/teachers/${this.selected.TeacherID}` });
     },
   },
   mounted() {
