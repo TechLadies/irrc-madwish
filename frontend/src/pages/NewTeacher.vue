@@ -384,6 +384,23 @@ export default {
       });
     },
 
+    showAddLanguage() {
+      this.$buefy.dialog.prompt({
+        message: `Add new language`,
+        inputAttrs: {
+          placeholder: "e.g. Italian",
+          maxlength: 255,
+          value: this.nativeLanguage,
+        },
+        confirmText: "Add",
+        onConfirm: (value) => {
+          this.$refs.languageComplete.setSelected({
+            NativeLanguage: value,
+          });
+        },
+      });
+    },
+
     showAddSecondLanguage() {
       this.$buefy.dialog.prompt({
         message: `Add new language`,
