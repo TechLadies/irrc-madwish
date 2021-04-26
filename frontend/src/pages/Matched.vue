@@ -3,12 +3,6 @@
     <div class="container">
       <PageHeader slot="header">
         <a class="logo">Matched</a>
-        <div class="header-left">
-          <b-button class="button field is-blue">
-            <b-icon icon="download"></b-icon>
-            <span>Export</span>
-          </b-button>
-        </div>
       </PageHeader>
 
       <!--start of table -->
@@ -16,11 +10,19 @@
         <b-table
           :data="tableData"
           :sort-icon="sortIcon"
+          @dblclick="goToTeacher"
           :sort-icon-size="sortIconSize"
           :sortDirection="sortDirection"
           :selected.sync="selected"
           selectable
+          :checked-rows.sync="checkedRows"
+          checkable
+          :checkbox-position="checkboxPosition"
         >
+          <b-button class="button field is-blue" v-on:click="download">
+            <b-icon icon="download"></b-icon>
+            <span>Download Selected</span>
+          </b-button>
           <template v-for="column in columns">
             <b-table-column :key="column.field" v-bind="column" sortable>
               <template
@@ -51,12 +53,6 @@
               </template>
             </b-table-column>
           </template>
-          <b-table-column label=" ">
-            <b-button>
-              <b-icon icon="email-outline"></b-icon>
-              <span>Resend</span>
-            </b-button>
-          </b-table-column>
           <b-table-column label=" ">
             <b-button @click="clickUnmatch()">
               <b-icon icon="account-multiple-check"></b-icon>
@@ -128,6 +124,7 @@ import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
 import MatchStatus from "../components/MatchStatus.vue";
+import XLSX from "xlsx";
 
 export default {
   data() {
@@ -158,9 +155,19 @@ export default {
           searchable: true,
         },
         {
+          field: "TeacherPhoneNumber",
+          label: "Teacher Phone Number",
+          searchable: true,
+        },
+        {
           field: "StudentName",
           label: "Student Name/ID",
           subtitle: "StudentID",
+          searchable: true,
+        },
+        {
+          field: "PhoneNumber",
+          label: "Teacher's Phone Number",
           searchable: true,
         },
         {
@@ -172,11 +179,6 @@ export default {
         {
           field: "ConfirmedDate",
           label: "Confirmed On",
-          searchable: true,
-        },
-        {
-          field: "LastEmailDate",
-          label: "Last Email Sent",
           searchable: true,
         },
       ],
@@ -229,9 +231,12 @@ export default {
         return {
           DateMatched: DateMatched,
           TeacherName: `${match.teacher.FullName}`,
+          TeacherPhoneNumber: `${match.teacher.PhoneNumber}`,
           TeacherID: `${match.teacher.TeacherID}`,
+          PhoneNumber: `${match.teacher.PhoneNumber}`,
           StudentName: `${match.student.FullName}`,
           StudentID: `${match.student.StudentID}`,
+          StudentPhoneNumber: `${match.student.PhoneNumber}`,
           MatchStatus: `${match.MatchStatus}`,
           ConfirmedDate: ConfirmedDate,
           LastEmailDate: LastEmailDate,
@@ -291,6 +296,15 @@ export default {
         this.isComponentModalActive = false;
         this.getAllStudents().then(() => this.$router.go(0));
       });
+    },
+    download: function () {
+      const data = XLSX.utils.json_to_sheet(this.checkedRows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, data, "data");
+      XLSX.writeFile(wb, "matched.csv");
+    },
+    goToTeacher() {
+      this.$router.push({ path: `/teachers/${this.selected.TeacherID}` });
     },
   },
   mounted() {

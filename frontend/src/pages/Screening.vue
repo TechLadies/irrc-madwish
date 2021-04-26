@@ -19,10 +19,6 @@
           >
             <span>Ready to match</span>: {{ checkedRows.length }}
           </button>
-          <b-button class="button field is-blue">
-            <b-icon icon="download"></b-icon>
-            <span>Export</span>
-          </b-button>
         </div>
       </PageHeader>
 
@@ -40,6 +36,10 @@
           :selected.sync="selected"
           @dblclick="goToStudent"
         >
+          <b-button class="button field is-blue" v-on:click="download">
+            <b-icon icon="download"></b-icon>
+            <span>Download All</span>
+          </b-button>
           <!-- Student ID column -->
 
           <template v-for="column in columns">
@@ -104,6 +104,7 @@
 import PageHeader from "../components/PageHeader.vue";
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
+import XLSX from "xlsx";
 
 export default {
   data() {
@@ -163,6 +164,19 @@ export default {
         };
       });
     },
+    exportData() {
+      return this.screeningStudents.map((student) => {
+        return {
+          StudentID: student.StudentID,
+          FullName: student.FullName,
+          CreatedAt: student.created_at,
+          Status: student.status.Description,
+          PhoneNumber: student.PhoneNumber,
+          FullName: student.FullName,
+          NativeLanguage: student.nativeLanguage.NativeLanguage,
+        };
+      });
+    },
   },
   watch: {
     screeningSuccess() {
@@ -195,6 +209,13 @@ export default {
     },
     goToStudent() {
       this.$router.push({ path: `/students/${this.selected.StudentID}` });
+    },
+    // Excel download
+    download: function () {
+      const data = XLSX.utils.json_to_sheet(this.exportData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, data, "data");
+      XLSX.writeFile(wb, "screening.csv");
     },
   },
 };

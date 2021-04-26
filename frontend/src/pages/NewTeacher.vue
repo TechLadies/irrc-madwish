@@ -74,10 +74,8 @@
               </b-field>
 
               <b-field grouped>
-                <b-field label="Language 1 *" class="half-width">
-                  <template #label>
-                    Language 1 <span class="red-asterisk">*</span>
-                  </template>
+                <b-field label="Language 1" class="half-width">
+                  <template #label> Language 1 </template>
                   <b-autocomplete
                     v-model="nativeLanguage"
                     field="NativeLanguage"
@@ -174,11 +172,13 @@
 <script>
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions } from "vuex";
+import NativeLanguageDropdown from "../components/NativeLanguageDropdown.vue";
 
 export default {
   name: "NewTeacher",
   components: {
     Page,
+    NativeLanguageDropdown,
   },
 
   data() {
@@ -212,8 +212,9 @@ export default {
       );
       if (
         this.selected === null ||
-        formFields.includes("") ||
-        this.selected?.NativeLanguage === ""
+        formFields.includes("")
+        // Currently, the NativeLanguage / Language 1 is not required for input before submitting a new teacher.  If users want to implment this in the future, just uncomment this section. -->
+        // this.selected?.NativeLanguage === ""
       ) {
         return true;
       }
@@ -228,6 +229,7 @@ export default {
     SecondLanguage: function () {
       if (this.SecondLanguage != "") {
         this.isDisabled = false;
+        this.SecondLanguageProficiency = "";
       } else {
         this.isDisabled = true;
         this.SecondLanguageProficiency = "";
@@ -243,15 +245,21 @@ export default {
     // Copies actions from store, allows you to use it as a native method in the component.
     ...mapActions(["getNativeLanguages", "createTeacher"]),
 
+    setSelectedLanguage(value) {
+      this.selected.NativeLanguage = value.NativeLanguage;
+    },
+
     createNewTeacher() {
       const teacherData = {
         PhoneNumber: this.PhoneNumber,
         FullName: this.name,
         Source: this.source,
         Email: this.Email,
-        NativeLanguageString: this.selected.NativeLanguage,
+        NativeLanguageString: this.selected.NativeLanguage, // Language 1
         ...(this.SecondLanguage && {
           SecondLanguageString: this.selected.SecondLanguage,
+        }),
+        ...(this.SecondLanguageProficiency && {
           LanguageProficiency: this.SecondLanguageProficiency,
         }),
         EnglishProficiency: "Intermediate",

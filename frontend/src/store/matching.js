@@ -3,7 +3,7 @@ const MUTATIONS = Object.freeze({
 });
 export const matchingState = { matchingSuccess: false };
 export const matchingActions = {
-  async matchStudentTeacherPairs({ commit }, data) {
+  async matchStudentTeacherPairs({ commit, dispatch }, data) {
     const studentTeacherPairs = {
       method: "POST",
       headers: {
@@ -17,6 +17,7 @@ export const matchingActions = {
     const result = await response.json();
     if (response.status === 200) {
       commit(MUTATIONS.SET_SUCCESS, true);
+      dispatch("getAllStudents")
     }
   },
 };

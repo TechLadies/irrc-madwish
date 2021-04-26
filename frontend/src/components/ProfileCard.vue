@@ -1,6 +1,11 @@
 <template>
   <div class="card">
-    <div class="edit-container">Edit</div>
+    <div class="edit-container">
+      <router-link v-if="isTeacher" :to="'/edit-teacher/' + profile.id"
+        >Edit</router-link
+      >
+      <router-link v-else :to="'/edit-student/' + profile.id">Edit</router-link>
+    </div>
     <div class="profile-grid">
       <img v-if="isTeacher" src="../assets/teacher.png" />
       <img v-else src="../assets/images/student.png" />
@@ -17,10 +22,15 @@
         <div class="profile-detail">{{ profile.source }}</div>
       </div>
       <div>
-        <div class="profile-label-small padding-small">Native Language</div>
+        <div class="profile-label-small padding-small" v-if="!isTeacher">
+          Native Language
+        </div>
+        <div class="profile-label-small padding-small" v-if="isTeacher">
+          Language 1
+        </div>
         <div class="profile-detail">{{ profile.nativeLanguage }}</div>
       </div>
-      <div>
+      <div v-if="!isTeacher">
         <div class="profile-label-small padding-small">English Proficiency</div>
         <div>
           <b-select
@@ -49,20 +59,21 @@
       </div>
       <div>
         <div class="profile-label-small padding-small" v-if="isTeacher">
-          Second Language
+          Language 2
         </div>
         <div class="profile-detail" v-if="isTeacher">
           {{ profile.secondLanguage }}
         </div>
       </div>
-      <div>
+      <!-- Native Language Proficiency is currently not in use. If users want to implement it in the future, just uncomment this section. -->
+      <!-- <div>
         <div class="profile-label-small padding-small" v-if="isTeacher">
           Language Proficiency
         </div>
         <div class="profile-detail" v-if="isTeacher">
           {{ profile.languageProficiency }}
         </div>
-      </div>
+      </div> -->
       <div>
         <div class="profile-label-small padding-small" v-if="isTeacher">
           Teaching Experience
@@ -89,6 +100,7 @@ export default {
       type: Object,
       default: function () {
         return {
+          id: 0,
           name: "Default Name",
           contact: "9123 4567",
           dateJoined: "Sept 07 2020",

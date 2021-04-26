@@ -4,6 +4,7 @@
       <div class="teacher-profile-left">
         <ProfileCard
           v-bind:profile="{
+            id: teacherData.TeacherID,
             name: teacherData.FullName,
             contact: teacherData.PhoneNumber,
             source: teacherData.Source,
@@ -95,8 +96,8 @@ export default {
         PhoneNumber: data.PhoneNumber,
         FullName: data.FullName,
         Source: data.Source,
-        nativeLanguage: data.nativeLanguage,
-        secondLanguage: data.secondLanguage,
+        nativeLanguage: data.nativeLanguage || "",
+        secondLanguage: data.secondLanguage || "",
         status: data.status,
         Notes: data.Notes,
         dateJoined: new Date(data.created_at).toDateString(),
