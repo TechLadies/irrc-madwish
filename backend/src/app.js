@@ -31,16 +31,39 @@ app.use(cookieParser());
 app.use(express.static(path.resolve(__dirname, "../public")));
 
 // Backend routes
-app.use("/api/students", studentsRouter);
-app.use("/api/teachers", teachersRouter);
-app.use("/api/nativeLanguages", nativeLanguagesRouter);
-app.use("/api/statuses", statusesRouter);
-app.use("/api/statusUpdates", statusUpdatesRouter);
-app.use("/api/matches", matchesRouter);
-app.use("/api/screening", screeningRouter);
-app.use("/api/matching", matchingRouter);
-app.use("/api/reasons", reasonsRouter);
-app.use("/api/users", usersRouter);
+function auth() {
+  if (process.env.ENABLE_AUTH === "true") {
+    return passport.authenticate("jwt", { session: false });
+  }
+}
+
+const routesConfig = [
+  ["/api/students", auth(), studentsRouter],
+  ["/api/teachers", auth(), teachersRouter],
+  ["/api/nativeLanguages", auth(), nativeLanguagesRouter],
+  ["/api/statuses", auth(), statusesRouter],
+  ["/api/statusUpdates", auth(), statusUpdatesRouter],
+  ["/api/matches", auth(), matchesRouter],
+  ["/api/screening", auth(), screeningRouter],
+  ["/api/matching", auth(), matchingRouter],
+  ["/api/reasons", auth(), reasonsRouter],
+  ["/api/users", usersRouter],
+];
+
+routesConfig.forEach((routeConfig) => {
+  app.use(...routeConfig.filter(Boolean));
+});
+
+// app.use("/api/students", studentsRouter);
+// app.use("/api/teachers", teachersRouter);
+// app.use("/api/nativeLanguages", nativeLanguagesRouter);
+// app.use("/api/statuses", statusesRouter);
+// app.use("/api/statusUpdates", statusUpdatesRouter);
+// app.use("/api/matches", matchesRouter);
+// app.use("/api/screening", screeningRouter);
+// app.use("/api/matching", matchingRouter);
+// app.use("/api/reasons", reasonsRouter);
+// app.use("/api/users", usersRouter);
 
 app.get("*", function (req, res) {
   res.sendFile(path.resolve(__dirname, "../public/index.html"));

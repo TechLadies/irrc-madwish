@@ -1,3 +1,5 @@
+import { getAuthHeaders, handleResponse } from "../helpers/auth";
+
 const MUTATIONS = Object.freeze({
   SET_STUDENTS: "SET_STUDENTS",
   SET_UPDATE_STUDENT_SUCCESS: "SET_UPDATE_STUDENT_SUCCESS",
@@ -6,9 +8,18 @@ const MUTATIONS = Object.freeze({
 export const studentState = { students: [], updateStudentSuccess: undefined };
 export const studentActions = {
   async getAllStudents({ commit }) {
-    const response = await fetch("/api/students");
-    const studentData = await response.json();
-    commit(MUTATIONS.SET_STUDENTS, studentData);
+    try {
+      const response = await fetch("/api/students", {
+        headers: {
+          ...getAuthHeaders(),
+        },
+      });
+      handleResponse(response);
+      const studentData = await response.json();
+      commit(MUTATIONS.SET_STUDENTS, studentData);
+    } catch (e) {
+      // no-op
+    }
   },
 
   async createStudent({ dispatch }, studentData) {
@@ -17,6 +28,7 @@ export const studentActions = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
       body: JSON.stringify(studentData),
     };
@@ -37,6 +49,7 @@ export const studentActions = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
       body: JSON.stringify(studentData),
     };
@@ -66,6 +79,7 @@ export const studentActions = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
       body: JSON.stringify({
         StudentID: parseInt(studentID),
@@ -94,6 +108,7 @@ export const studentActions = {
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
+              ...getAuthHeaders(),
             },
             body: JSON.stringify({
               StudentID: studentID,
@@ -124,6 +139,7 @@ export const studentActions = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
       body: JSON.stringify({
         StudentID: studentID,

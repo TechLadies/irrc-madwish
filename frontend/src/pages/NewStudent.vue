@@ -102,6 +102,7 @@
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions } from "vuex";
 import NativeLanguageDropdown from "../components/NativeLanguageDropdown.vue";
+import { getAuthHeaders } from "../helpers/auth";
 
 export default {
   name: "NewStudent",
@@ -212,6 +213,7 @@ export default {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           body: JSON.stringify(students),
         };

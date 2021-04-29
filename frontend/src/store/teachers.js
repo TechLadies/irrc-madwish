@@ -1,4 +1,5 @@
 import Vuex from "vuex";
+import { getAuthHeaders } from "../helpers/auth";
 
 const MUTATIONS = Object.freeze({
   SET_TEACHERS: "SET_TEACHERS",
@@ -7,7 +8,11 @@ const MUTATIONS = Object.freeze({
 export const teacherState = { teachers: [], updateTeacherSuccess: undefined };
 export const teacherActions = {
   async getAllTeachers({ commit }) {
-    const response = await fetch("/api/teachers");
+    const response = await fetch("/api/teachers", {
+      headers: {
+        ...getAuthHeaders(),
+      },
+    });
     const teacherData = await response.json();
     commit(MUTATIONS.SET_TEACHERS, teacherData);
   },
@@ -17,6 +22,7 @@ export const teacherActions = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
 
       body: JSON.stringify(teacherData),
@@ -31,6 +37,7 @@ export const teacherActions = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
       body: JSON.stringify(teacherData),
     };
@@ -59,6 +66,7 @@ export const teacherActions = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
       body: JSON.stringify({
         TeacherID: teacherID,
@@ -83,6 +91,7 @@ export const teacherActions = {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           body: JSON.stringify({
             TeacherID: teacherID,

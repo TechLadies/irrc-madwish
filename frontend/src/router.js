@@ -22,36 +22,41 @@ const authGuard = (to, _, next) => {
   if (store.state.token) {
     return next();
   } else {
-    let loginPath = "/login";
+    let loginPath = "/login?";
     if (to.path) {
-      loginPath = `${loginPath}?return=${to.path}`;
+      loginPath = `${loginPath}return=${to.path}&`;
     }
-    return next(loginPath);
+    if (store.state.logoutReason) {
+      loginPath = `${loginPath}reason=${store.state.logoutReason}`;
+    }
+    return next(loginPath.replace(/\?$/, ""));
   }
 };
+
+export const secureRoutes = [
+  { path: "/", component: HelloWorld },
+  { path: "/screening", component: Screening },
+  { path: "/matching", component: Matching },
+  { path: "/new-student", component: NewStudent },
+  { path: "/new-teacher", component: NewTeacher },
+  { path: "/students", component: AllStudents },
+  { path: "/teachers", component: AllTeachers },
+  { path: "/students/:id", component: StudentProfile },
+  { path: "/edit-student/:id", component: EditStudent },
+  { path: "/edit-teacher/:id", component: EditTeacher },
+  { path: "/teachers/:id", component: TeacherProfile },
+  { path: "/matched", component: Matched },
+].map((route) => {
+  if (!window.IRRC_LOGIN_ENABLED) return route;
+  return { ...route, beforeEnter: authGuard };
+});
+
+export const publicRoutes = [{ path: "/login", component: Login }];
 
 const router = new VueRouter({
   mode: "history",
   hash: false,
-  routes: [
-    { path: "/", component: HelloWorld },
-    { path: "/screening", component: Screening },
-    { path: "/matching", component: Matching },
-    { path: "/new-student", component: NewStudent },
-    { path: "/new-teacher", component: NewTeacher },
-    { path: "/students", component: AllStudents },
-    { path: "/teachers", component: AllTeachers },
-    { path: "/students/:id", component: StudentProfile },
-    { path: "/edit-student/:id", component: EditStudent },
-    { path: "/edit-teacher/:id", component: EditTeacher },
-    { path: "/teachers/:id", component: TeacherProfile },
-    { path: "/matched", component: Matched },
-    { path: "/login", component: Login },
-  ].map((route) => {
-    if (!window.IRRC_LOGIN_ENABLED) return route;
-    if (route.path === "/login") return route;
-    return { ...route, beforeEnter: authGuard };
-  }),
+  routes: [...secureRoutes, ...publicRoutes],
 });
 
 export default router;

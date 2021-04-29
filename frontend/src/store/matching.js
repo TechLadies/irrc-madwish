@@ -1,3 +1,5 @@
+import { getAuthHeaders } from "../helpers/auth";
+
 const MUTATIONS = Object.freeze({
   SET_SUCCESS: "SET_SUCCESS",
 });
@@ -9,6 +11,7 @@ export const matchingActions = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
       body: JSON.stringify(data),
     };
@@ -17,7 +20,7 @@ export const matchingActions = {
     const result = await response.json();
     if (response.status === 200) {
       commit(MUTATIONS.SET_SUCCESS, true);
-      dispatch("getAllStudents")
+      dispatch("getAllStudents");
     }
   },
 };
