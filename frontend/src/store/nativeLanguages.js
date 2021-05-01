@@ -1,4 +1,4 @@
-import { getAuthHeaders } from "../helpers/auth";
+import { getAuthHeaders, handleResponse } from "../helpers/auth";
 
 const MUTATIONS = Object.freeze({
   SET_NATIVE_LANGUAGES: "SET_NATIVE_LANGUAGES",
@@ -11,6 +11,7 @@ export const nativeLanguageActions = {
         ...getAuthHeaders(),
       },
     });
+    handleResponse(response);
     const languageData = await response.json();
     commit(MUTATIONS.SET_NATIVE_LANGUAGES, languageData);
   },

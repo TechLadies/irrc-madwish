@@ -294,7 +294,7 @@ export default {
         reason: "DROPPED_" + this.selectedStudent.Reason,
       }).then(() => {
         this.isComponentModalActive = false;
-        this.getAllStudents().then(() => this.$router.go(0));
+        this.getAllStudents();
       });
     },
     download: function () {

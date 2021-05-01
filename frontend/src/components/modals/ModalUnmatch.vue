@@ -167,7 +167,7 @@ export default {
         updatedBy: "IRRCAdmin",
         reason: this.selected.Status + "_" + this.selected.Reason,
       }).then(() => {
-        this.getAllStudents().then(() => this.$router.go(0));
+        this.getAllStudents();
         +this.$emit("close");
       });
     },

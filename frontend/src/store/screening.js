@@ -1,4 +1,4 @@
-import { getAuthHeaders } from "../helpers/auth";
+import { getAuthHeaders, handleResponse } from "../helpers/auth";
 
 const MUTATIONS = Object.freeze({
   SET_SUCCESS: "SET_SUCCESS",
@@ -16,7 +16,7 @@ export const screeningActions = {
       body: JSON.stringify(data),
     };
     const response = await fetch("/api/screening", patchScreening);
-    const result = await response.json();
+    handleResponse(response);
     if (response.status === 200) {
       commit(MUTATIONS.SET_SUCCESS, true);
     }

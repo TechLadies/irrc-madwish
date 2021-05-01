@@ -99,10 +99,10 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import Page from "../components/Page.vue";
-import { mapGetters, mapActions } from "vuex";
+import { getAuthHeaders, handleResponse } from "../helpers/auth";
 import NativeLanguageDropdown from "../components/NativeLanguageDropdown.vue";
-import { getAuthHeaders } from "../helpers/auth";
 
 export default {
   name: "NewStudent",
@@ -219,6 +219,8 @@ export default {
         };
 
         fetch("/api/students", studentBatchCreate).then((response) => {
+          handleResponse(response);
+
           if (response.status < 400) {
             this.$buefy.notification.open({
               message: "The file was uploaded successfully!",

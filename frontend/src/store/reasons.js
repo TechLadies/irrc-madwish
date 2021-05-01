@@ -1,4 +1,4 @@
-import { getAuthHeaders } from "../helpers/auth";
+import { getAuthHeaders, handleResponse } from "../helpers/auth";
 
 const MUTATIONS = Object.freeze({
   SET_DROPPED_REASONS: "SET_DROPPED_REASONS",
@@ -12,6 +12,7 @@ export const reasonActions = {
         ...getAuthHeaders(),
       },
     });
+    handleResponse(response);
     const reasonData = await response.json();
     const parsedReasonData = reasonData.map((reason) => {
       return {
@@ -27,6 +28,7 @@ export const reasonActions = {
         ...getAuthHeaders(),
       },
     });
+    handleResponse(response);
     const reasonData = await response.json();
     const parsedReasonData = reasonData.map((reason) => {
       return {
@@ -51,6 +53,7 @@ export const reasonActions = {
     };
 
     fetch("/api/reasons/", reasonRequestOptions).then((response) => {
+      handleResponse(response);
       // If PATCH fails, return
       if (response.status !== 200) {
         console.log(response);
@@ -75,6 +78,7 @@ export const reasonActions = {
     };
 
     fetch("/api/reasons/", reasonRequestOptions).then((response) => {
+      handleResponse(response);
       // If PATCH fails, return
       if (response.status !== 200) {
         console.log(response);

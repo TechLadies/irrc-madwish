@@ -1,5 +1,4 @@
 import store from "../store";
-import router from "../router";
 
 export function getAuthHeaders() {
   if (Boolean(window.IRRC_LOGIN_ENABLED)) {

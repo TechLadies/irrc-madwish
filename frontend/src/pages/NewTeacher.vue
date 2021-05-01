@@ -173,7 +173,7 @@
 import Page from "../components/Page.vue";
 import { mapGetters, mapActions } from "vuex";
 import NativeLanguageDropdown from "../components/NativeLanguageDropdown.vue";
-import { getAuthHeaders } from "../helpers/auth";
+import { getAuthHeaders, handleResponse } from "../helpers/auth";
 
 export default {
   name: "NewTeacher",
@@ -353,6 +353,8 @@ export default {
           body: JSON.stringify(teachers),
         };
         fetch("/api/teachers", teacherBatchCreate).then((response) => {
+          handleResponse(response);
+
           if (response.status < 400) {
             this.$buefy.notification.open({
               message: "The file was uploaded successfully!",

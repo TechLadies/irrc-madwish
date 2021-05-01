@@ -1,4 +1,4 @@
-import { getAuthHeaders } from "../helpers/auth";
+import { getAuthHeaders, handleResponse } from "../helpers/auth";
 
 const MUTATIONS = Object.freeze({
   SET_MATCHES: "SET_MATCHES",
@@ -12,6 +12,7 @@ export const matchesActions = {
         ...getAuthHeaders(),
       },
     });
+    handleResponse(response);
     const matchesData = await response.json();
     commit(MUTATIONS.SET_MATCHES, matchesData);
   },
@@ -22,6 +23,7 @@ export const matchesActions = {
         ...getAuthHeaders(),
       },
     });
+    handleResponse(response);
     await response.json();
     if (response.status == 200) {
       dispatch("getAllMatches");

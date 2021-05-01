@@ -1,4 +1,4 @@
-import { getAuthHeaders } from "../helpers/auth";
+import { getAuthHeaders, handleResponse } from "../helpers/auth";
 
 const MUTATIONS = Object.freeze({
   SET_SUCCESS: "SET_SUCCESS",
@@ -17,10 +17,12 @@ export const matchingActions = {
     };
     //TODO create matching endpoint
     const response = await fetch("/api/matching", studentTeacherPairs);
-    const result = await response.json();
+    handleResponse(response);
+
     if (response.status === 200) {
       commit(MUTATIONS.SET_SUCCESS, true);
       dispatch("getAllStudents");
+      dispatch("getAllMatches");
     }
   },
 };

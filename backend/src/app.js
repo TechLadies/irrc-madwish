@@ -54,17 +54,6 @@ routesConfig.forEach((routeConfig) => {
   app.use(...routeConfig.filter(Boolean));
 });
 
-// app.use("/api/students", studentsRouter);
-// app.use("/api/teachers", teachersRouter);
-// app.use("/api/nativeLanguages", nativeLanguagesRouter);
-// app.use("/api/statuses", statusesRouter);
-// app.use("/api/statusUpdates", statusUpdatesRouter);
-// app.use("/api/matches", matchesRouter);
-// app.use("/api/screening", screeningRouter);
-// app.use("/api/matching", matchingRouter);
-// app.use("/api/reasons", reasonsRouter);
-// app.use("/api/users", usersRouter);
-
 app.get("*", function (req, res) {
   res.sendFile(path.resolve(__dirname, "../public/index.html"));
 });
