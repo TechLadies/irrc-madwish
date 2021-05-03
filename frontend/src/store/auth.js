@@ -1,19 +1,24 @@
+import router from "../router";
+
 const MUTATIONS = Object.freeze({
   SET_TOKEN: "SET_TOKEN",
   SET_ERROR: "SET_ERROR",
   SET_LOADING: "SET_LOADING",
+  SET_LOGOUT_REASON: "SET_LOGOUT_REASON",
 });
 
 export const authState = {
   token: "",
   authError: "",
   authLoading: false,
+  logoutReason: "",
 };
 
 export const authActions = {
   async login({ commit }, credentials) {
     commit(MUTATIONS.SET_ERROR, "");
     commit(MUTATIONS.SET_LOADING, true);
+    commit(MUTATIONS.SET_LOGOUT_REASON, "");
     const config = {
       method: "POST",
       headers: {
@@ -41,8 +46,23 @@ export const authActions = {
     }
     commit(MUTATIONS.SET_LOADING, false);
   },
-  logout({ commit }) {
+  logout({ commit }, reason) {
+    commit(MUTATIONS.SET_LOGOUT_REASON, reason);
     commit(MUTATIONS.SET_TOKEN, "");
+
+    // Reload the route to trigger route guards
+    if (reason) {
+      router.replace({
+        path: router.history.current.path,
+        params: router.history.current.params,
+        query: {
+          ...router.history.current.query,
+          reason,
+        },
+      });
+    } else {
+      router.go();
+    }
   },
 };
 
@@ -55,6 +75,9 @@ export const authMutations = {
   },
   [MUTATIONS.SET_LOADING](state, isLoading) {
     state.authLoading = isLoading;
+  },
+  [MUTATIONS.SET_LOGOUT_REASON](state, reason) {
+    state.logoutReason = reason;
   },
 };
 

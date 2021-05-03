@@ -443,9 +443,7 @@ export default {
               ConfirmedDate: null,
             };
           });
-          this.matchStudentTeacherPairs(patchMatchesData).then(() =>
-            this.$router.go(0)
-          );
+          this.matchStudentTeacherPairs(patchMatchesData);
         },
       });
     },
@@ -467,9 +465,7 @@ export default {
               ConfirmedDate: null,
             };
           });
-          this.matchStudentTeacherPairs(patchMatchesData).then(() =>
-            this.$router.go(0)
-          );
+          this.matchStudentTeacherPairs(patchMatchesData);
         },
       });
     },

@@ -12,6 +12,6 @@ export default {
     },
   },
   define: {
-    IRRC_LOGIN_ENABLED: false,
+    IRRC_LOGIN_ENABLED: true,
   },
 };

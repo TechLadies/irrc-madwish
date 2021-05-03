@@ -99,8 +99,9 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import Page from "../components/Page.vue";
-import { mapGetters, mapActions } from "vuex";
+import { getAuthHeaders, handleResponse } from "../helpers/auth";
 import NativeLanguageDropdown from "../components/NativeLanguageDropdown.vue";
 
 export default {
@@ -212,11 +213,14 @@ export default {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           body: JSON.stringify(students),
         };
 
         fetch("/api/students", studentBatchCreate).then((response) => {
+          handleResponse(response);
+
           if (response.status < 400) {
             this.$buefy.notification.open({
               message: "The file was uploaded successfully!",

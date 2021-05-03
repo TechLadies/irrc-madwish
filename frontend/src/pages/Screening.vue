@@ -201,9 +201,7 @@ export default {
               UpdatedBy: "IRRCAdmin",
             };
           });
-          this.patchScreeningStudents(patchStudentsData).then(() =>
-            this.$router.go(0)
-          );
+          this.patchScreeningStudents(patchStudentsData);
         },
       });
     },

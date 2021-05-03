@@ -117,7 +117,7 @@ router.post("/unmatch-teacher", async (req, res) => {
     nextStatusString: body.NextStatusString,
     res,
   });
-  return res.json(200, "successful");
+  return res.status(200).json("successful");
 });
 
 // Delete student-teacher (1:1) match when you cilck Unmatch/Dropped Out from a student profile

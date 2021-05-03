@@ -14,7 +14,9 @@ exports.getTokenMiddleware = (req, res, next) => {
         }
 
         const body = { _id: user.UserID, username: user.Username };
-        const token = jwt.sign({ user: body }, process.env.JWT_KEY);
+        const token = jwt.sign({ user: body }, process.env.JWT_KEY, {
+          expiresIn: "30 days",
+        });
         res.locals.token = token;
 
         return next();

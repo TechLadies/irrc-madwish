@@ -8,32 +8,34 @@
           <span>Export</span>
         </b-button>
       </div>
-    </PageHeader>   
+    </PageHeader>
     <h1>Your Content Here</h1>
   </Page>
 </template>
 
 <script>
-import PageHeader from '../components/PageHeader.vue'
-import Page from '../components/Page.vue'
-
+import PageHeader from "../components/PageHeader.vue";
+import Page from "../components/Page.vue";
 
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   components: {
     Page,
     PageHeader,
-  }
-}
+  },
+  mounted() {
+    this.$router.push("/students");
+  },
+};
 </script>
 
 <style lang="scss">
 .header-right {
   button {
-    background-color: #2F4858;
+    background-color: #2f4858;
     color: #ffffff;
     &:hover {
-      background-color: #2F4858;
+      background-color: #2f4858;
       color: #ffffff;
     }
   }

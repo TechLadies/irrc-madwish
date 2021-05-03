@@ -1,4 +1,5 @@
 import Vuex from "vuex";
+import { getAuthHeaders, handleResponse } from "../helpers/auth";
 
 const MUTATIONS = Object.freeze({
   SET_TEACHERS: "SET_TEACHERS",
@@ -7,7 +8,12 @@ const MUTATIONS = Object.freeze({
 export const teacherState = { teachers: [], updateTeacherSuccess: undefined };
 export const teacherActions = {
   async getAllTeachers({ commit }) {
-    const response = await fetch("/api/teachers");
+    const response = await fetch("/api/teachers", {
+      headers: {
+        ...getAuthHeaders(),
+      },
+    });
+    handleResponse(response);
     const teacherData = await response.json();
     commit(MUTATIONS.SET_TEACHERS, teacherData);
   },
@@ -17,11 +23,13 @@ export const teacherActions = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
 
       body: JSON.stringify(teacherData),
     };
     const response = await fetch("api/teachers", payload);
+    handleResponse(response);
     dispatch("getAllTeachers");
     return response;
   },
@@ -31,6 +39,7 @@ export const teacherActions = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
       body: JSON.stringify(teacherData),
     };
@@ -38,6 +47,7 @@ export const teacherActions = {
       `api/teachers/${teacherData.TeacherID}`,
       payload
     );
+    handleResponse(result);
     if (result.status < 400) {
       commit(MUTATIONS.SET_UPDATE_TEACHER_SUCCESS, true);
       dispatch("getAllTeachers");
@@ -59,6 +69,7 @@ export const teacherActions = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
       body: JSON.stringify({
         TeacherID: teacherID,
@@ -71,6 +82,7 @@ export const teacherActions = {
 
     return fetch("/api/statusUpdates", statusUpdateRequestOptions)
       .then((response) => {
+        handleResponse(response);
         if (response.status !== 200) {
           throw new Error(response);
         }
@@ -78,18 +90,23 @@ export const teacherActions = {
       .then(() => {
         dispatch("getAllTeachers");
         // Call deletion API
-        fetch("/api/matches/unmatch-teacher", {
+        return fetch("/api/matches/unmatch-teacher", {
           method: "POST",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            ...getAuthHeaders(),
           },
           body: JSON.stringify({
             TeacherID: teacherID,
             NextStatusString: nextStatusString,
           }),
         });
-        // TODO: Call matches API after this to refresh
+      })
+      .then((response) => {
+        handleResponse(response);
+        dispatch("getAllMatches");
+        return response;
       })
       .catch((err) => {
         console.error(err);
