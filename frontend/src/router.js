@@ -47,7 +47,7 @@ export const secureRoutes = [
   { path: "/teachers/:id", component: TeacherProfile },
   { path: "/matched", component: Matched },
 ].map((route) => {
-  if (!window.IRRC_LOGIN_ENABLED) return route;
+  if (!IRRC_LOGIN_ENABLED) return route;
   return { ...route, beforeEnter: authGuard };
 });
 

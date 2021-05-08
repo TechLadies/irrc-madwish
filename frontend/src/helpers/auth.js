@@ -1,7 +1,7 @@
 import store from "../store";
 
 export function getAuthHeaders() {
-  if (Boolean(window.IRRC_LOGIN_ENABLED)) {
+  if (Boolean(IRRC_LOGIN_ENABLED)) {
     return {
       Authorization: `Bearer ${store.state.token}`,
     };

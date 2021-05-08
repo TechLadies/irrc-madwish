@@ -18,7 +18,7 @@ export default {
   computed: {
     ...mapGetters(["isLoggedIn"]),
     loginEnabled() {
-      return Boolean(window.IRRC_LOGIN_ENABLED);
+      return Boolean(IRRC_LOGIN_ENABLED);
     },
   },
 };
