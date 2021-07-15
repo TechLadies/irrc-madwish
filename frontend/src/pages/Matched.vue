@@ -166,8 +166,8 @@ export default {
           searchable: true,
         },
         {
-          field: "PhoneNumber",
-          label: "Teacher's Phone Number",
+          field: "StudentPhoneNumber",
+          label: "Student's Phone Number",
           searchable: true,
         },
         {
