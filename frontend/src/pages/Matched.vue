@@ -160,14 +160,19 @@ export default {
           searchable: true,
         },
         {
+          field: "TeacherEmail",
+          label: "Teacher Email",
+          searchable: true,
+        },
+        {
           field: "StudentName",
           label: "Student Name/ID",
           subtitle: "StudentID",
           searchable: true,
         },
         {
-          field: "PhoneNumber",
-          label: "Teacher's Phone Number",
+          field: "StudentPhoneNumber",
+          label: "Student's Phone Number",
           searchable: true,
         },
         {
@@ -233,7 +238,7 @@ export default {
           TeacherName: `${match.teacher.FullName}`,
           TeacherPhoneNumber: `${match.teacher.PhoneNumber}`,
           TeacherID: `${match.teacher.TeacherID}`,
-          PhoneNumber: `${match.teacher.PhoneNumber}`,
+          TeacherEmail: `${match.teacher.Email}`,
           StudentName: `${match.student.FullName}`,
           StudentID: `${match.student.StudentID}`,
           StudentPhoneNumber: `${match.student.PhoneNumber}`,
