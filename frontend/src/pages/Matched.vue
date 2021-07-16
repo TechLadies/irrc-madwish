@@ -171,8 +171,8 @@ export default {
           searchable: true,
         },
         {
-          field: "PhoneNumber",
-          label: "Teacher's Phone Number",
+          field: "StudentPhoneNumber",
+          label: "Student's Phone Number",
           searchable: true,
         },
         {
@@ -239,7 +239,6 @@ export default {
           TeacherPhoneNumber: `${match.teacher.PhoneNumber}`,
           TeacherID: `${match.teacher.TeacherID}`,
           TeacherEmail: `${match.teacher.Email}`,
-          PhoneNumber: `${match.teacher.PhoneNumber}`,
           StudentName: `${match.student.FullName}`,
           StudentID: `${match.student.StudentID}`,
           StudentPhoneNumber: `${match.student.PhoneNumber}`,
